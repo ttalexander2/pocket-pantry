@@ -1,0 +1,19 @@
+{
+  "name": "pocketpantry",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Backend/server.js",
+  "scripts": {
+    "start": "node Backend/server.js",
+    "dev": "concurrently --kill-others \"node Backend/server.js\" \"cd Client && expo start\"",
+    "build:web": "cd Client && expo build:web && cd ..",
+    "build:ios": "cd Client && expo build:ios && cd ..",
+    "build:android": "cd Client && expo build:android && cd .."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^5.3.0",
+    "express": "^4.17.1"
+  }
+}
