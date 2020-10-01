@@ -5,7 +5,8 @@
   "main": "Backend/server.js",
   "scripts": {
     "start": "node Backend/server.js",
-    "dev": "concurrently --kill-others \"node Backend/server.js\" \"cd Client && expo start\"",
+    "installer": "npm install && cd Client && npm install && cd ..",
+    "dev": "concurrently --kill-others \"node Backend/server.js\" \"cd Client && expo start && cd ..\"",
     "build:web": "cd Client && expo build:web && cd ..",
     "build:ios": "cd Client && expo build:ios && cd ..",
     "build:android": "cd Client && expo build:android && cd .."
