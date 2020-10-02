@@ -2,7 +2,7 @@
   "name": "pocketpantry",
   "version": "1.0.0",
   "description": "",
-  "main": "Backend/server.js",
+  "main": "Backend/Server.js",
   "scripts": {
     "start": "node Backend/server.js",
     "installer": "npm install && cd Client && npm install && cd ..",
