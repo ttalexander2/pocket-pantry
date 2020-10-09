@@ -3,27 +3,35 @@ Okay, here's some quick notes on how to get all this shit up and running.
 
 ## Prerequisites
 1. Install Node.js. See [nodejs.org](https://nodejs.org/en/download/)
+3. Install yarn. See [yarn](https://classic.yarnpkg.com/en/docs/install/#windows-stable)
 2. Install expo-cli:
 	`npm install --global expo-cli`
 
-## Clone the repo
+I *think* thats all you need, I'll have to double check.
 
-    git clone https://github.com/ttalexander2/pocket-pantry.git
 
-## Run the node module installation script
+## Client Commands
 
-    npm run installer
+Start the development server
+`expo start`
 
-## Start the development environment
+Build the expo distributions:
+`expo build:web`
+`expo build:android`
+`expo build:ios`
 
-	npm run dev
-    
-    
-This will start the development environment and the Node.Js server. 
-The backend server will be running at [localhost:3000](http://localhost:3000). The client can be accessed at [localhost:19002](http://localhost:19002).The expo development interface will automatically rebuild the client interface upon code change. The development version does not need to be changed. The back end serves the built version of the client, and will need to be restarted in order to view changes.
+Compile and start Electron
+`yarn expo-electron start`
 
-## To run the server
+Idk how to build electron distributions yet lmao
 
-	npm start
-  
-This will supply the REST api as well as serve the built version of the client. In order to build the client, consider running `npm run build:web`.
+
+For most of this, the [expo documentation](docs.expo.io) will be useful.
+
+## Development Notes
+
+The ios, android, and web versions will all be written in javascript with react native.
+
+`foo.js`
+To write web specific code, put in `foo.web.js`
+To write desktop specific code, put in `foo.electron.js`
