@@ -1,7 +1,17 @@
 # Pocket Pantry
-Okay, here's some quick notes on how to get all this shit up and running.
+So I have the Client all set up. I have an example server in Node.js just for testing,
+but for the backend we can do whatever.
 
-## Prerequisites
+The client is setup to run on web, android, ios, windows, osx, and linux.
+
+The client is built with [expo](docs.expo.io) and will be written in react native.
+Desktop versions of the application will be built with electron.
+
+
+## Client
+Here's some quick notes on how to get all this shit up and running.
+
+## Client Prerequisites
 1. Install Node.js. See [nodejs.org](https://nodejs.org/en/download/)
 3. Install yarn. See [yarn](https://classic.yarnpkg.com/en/docs/install/#windows-stable)
 2. Install expo-cli:
@@ -28,7 +38,7 @@ Idk how to build electron distributions yet lmao
 
 For most of this, the [expo documentation](docs.expo.io) will be useful.
 
-## Development Notes
+## Client Development Notes
 
 The ios, android, and web versions will all be written in javascript with react native.
 
