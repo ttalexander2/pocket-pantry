@@ -1,6 +1,7 @@
 Client/node_modules/**/*
+Backend/node_modules/**/*
 node_modules/**/*
-.expo/*
+Client/.expo/*
 npm-debug.*
 *.jks
 *.p8
@@ -8,7 +9,9 @@ npm-debug.*
 *.key
 *.mobileprovision
 *.orig.*
+Client/web-build/
 web-build/
+
 
 # macOS
 .DS_Store
