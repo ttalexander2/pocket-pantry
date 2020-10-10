@@ -48,3 +48,4 @@ InnoDB: using atomic writes.
 2020-10-10 15:17:47 0 [Note] Added new Master_info '' to hash table
 2020-10-10 15:17:47 0 [Note] C:\Program Files\MariaDB 10.5\bin\mysqld.exe: ready for connections.
 Version: '10.5.6-MariaDB'  socket: ''  port: 3306  mariadb.org binary distribution
+2020-10-10 15:25:42 4 [Warning] Access denied for user 'root'@'localhost' (using password: NO)
