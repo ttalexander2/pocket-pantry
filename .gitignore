@@ -11,7 +11,7 @@ npm-debug.*
 *.orig.*
 Client/web-build/
 web-build/
-
+.expo/*
 
 # macOS
 .DS_Store
