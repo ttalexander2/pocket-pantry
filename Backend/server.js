@@ -13,9 +13,12 @@ const pool = mariadb.createPool({
 
 app.use(express.static(path.join(__dirname, '../client/web-build')));
 insertFDAInfo(1234, "test", "ur mom", new Date());
-//deleteFDAInfo(1234);
-//insertIngredientInfo(1234, "test", "ur mom", 6.9, "tbsp", new Date(), new Date());
-//deleteIngredientInfo(1234);
+insertIngredientInfo(1234, "test", "ur mom", 6.9, "tbsp", new Date(), new Date());
+insertMealInfo("mush", 2, new Date());
+
+deleteIngredientInfo(1234);
+deleteFDAInfo(1234);
+deleteMealInfo("mush");
 
 // Once client is built in production
 app.get('/', (req, res) => {
@@ -35,9 +38,9 @@ async function insertFDAInfo(upc, name, brand, expiration) {
   try {
     conn = await pool.getConnection();
     const res = await conn.query("USE pantry");
-    console.log(res);
+    
     res = await conn.query("INSERT INTO FDARecommendations value (?, ?, ?, ?)", [upc, name, brand, expiration]);
-    console.log(res);
+    
   } catch (err) {
     console.log(err);
   } finally {
@@ -50,9 +53,9 @@ async function deleteFDAInfo(upc) {
   try {
     conn = await pool.getConnection();
     const res = await conn.query("USE pantry");
-    console.log(res);
+    
     res = await conn.query("DELETE FROM FDARecommendations WHERE upc='" + upc + "'");
-    console.log(res);
+    
   } catch (err) {
     console.log(err);
   } finally {
@@ -65,9 +68,9 @@ async function insertIngredientInfo(upc, name, brand, amount, unitOfAmount, expi
   try {
     conn = await pool.getConnection();
     const res = await conn.query("USE pantry");
-    console.log(res);
-    res = await conn.query("INSERT INTO Ingredients value (?, ?, ?, ?)", [upc, name, brand, amount, unitOfAmount, expiration, datePurchased]);
-    console.log(res);
+    
+    res = await conn.query("INSERT INTO Ingredients(upc,name,brand,amount,unitOfAmount,expirationDate,dateOfPurchase) value (?, ?, ?, ?, ?, ?, ?)", [upc, name, brand, amount, unitOfAmount, expiration, datePurchased]);
+    
   } catch (err) {
     console.log(err);
   } finally {
@@ -80,9 +83,39 @@ async function deleteIngredientInfo(upc) {
   try {
     conn = await pool.getConnection();
     const res = await conn.query("USE pantry");
-    console.log(res);
+    
     res = await conn.query("DELETE FROM Ingredients WHERE upc='" + upc + "'");
-    console.log(res);
+    
+  } catch (err) {
+    console.log(err);
+  } finally {
+    if (conn) conn.release();
+  }
+}
+
+async function insertMealInfo(name, portions, dateOfCreation) {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    const res = await conn.query("USE pantry");
+    
+    res = await conn.query("INSERT INTO Meals(name,portions,dateOfCreation) value (?, ?, ?)", [name, portions, dateOfCreation]);
+    
+  } catch (err) {
+    console.log(err);
+  } finally {
+    if (conn) conn.release();
+  }
+}
+
+async function deleteMealInfo(name) {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    const res = await conn.query("USE pantry");
+    
+    res = await conn.query("DELETE FROM Meals WHERE name='" + name + "'");
+   
   } catch (err) {
     console.log(err);
   } finally {
