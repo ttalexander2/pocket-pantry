@@ -1,6 +1,9 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
-import { ThemeProvider, Header, ListItem, Card } from 'react-native-elements';
+import { useState } from 'react';
+import { Text } from 'react-native';
+import NewPantryForm from './../forms/NewPantryForm'
+import { ThemeProvider, Header, Overlay, Card, Button } from 'react-native-elements';
+import HomeBar from './HomeBar';
 
 const list = [
   {
@@ -14,11 +17,12 @@ const list = [
 ]
 
 export default class Pantry extends React.Component{
+  state = {formVisible: false}
 
 render() {
     return (
       <ThemeProvider>
-        <Header centerComponent={{ text: 'PANTRY', style: { color: '#fff' } }}/>
+        <HomeBar name='Pantry' />
         <Card>
             <Card.Title>Food Items That You Have</Card.Title>
             <Card.Divider/>
@@ -30,6 +34,14 @@ render() {
                 })
             }
           </Card>
+          <Button title="Add an Item" onPress={() => {
+            this.setState({formVisible: !this.state.formVisible });
+          }}/>
+          <Overlay isVisible={this.state.formVisible}>
+            <NewPantryForm />
+          </Overlay>
+          
+          
       </ThemeProvider>
     );
   }
