@@ -3,10 +3,23 @@
 const express = require('express')
 const path = require('path');
 const fetch = require('node-fetch');
+const bodyParser = require('body-parser');
+const cors = require('cors')
+const jsonParser = bodyParser.json();
 const app = express()
 const port = 42069
 
 app.use(express.static(path.join(__dirname, '../client/web-build')));
+
+// Remove in production
+var corsOptions = {
+  origin: 'http://localhost:19006',
+  optionsSuccessStatus: 200, // For legacy browser support
+  methods: "GET, PUT, POST"
+}
+app.use(cors(corsOptions));
+
+
 
 // Once client is built in production
 app.get('/', (req, res) => {
@@ -17,12 +30,17 @@ app.get('/', (req, res) => {
     });
   })
 
-const bodyParser = require('body-parser');
-const jsonParser = bodyParser.json();
+
 
 app.post('/api/recipes', jsonParser, function (req, res) {
+  console.log(req.headers)
 
   const ingredients = req.body.ingredients;
+  console.log(req.body)
+  if (ingredients.length < 1){
+    res.sendStatus(400);
+    return;
+  }
 
   let url = 'http://www.recipepuppy.com/api/?i=' + ingredients[0];
   for (var i = 1; i < ingredients.length; i++){
@@ -30,7 +48,6 @@ app.post('/api/recipes', jsonParser, function (req, res) {
   }
   console.log(url);
   
-  let jsonObj = {};
 
   (async () => {
       const body = {a: 1};

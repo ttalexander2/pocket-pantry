@@ -21,9 +21,9 @@ export default class Pantry extends React.Component{
 
 render() {
     return (
-      <ThemeProvider>
+      <ThemeProvider style={{flex: 1, flexDirection: 'row'}}>
         <HomeBar name='Pantry' />
-        <Card>
+        <Card style={ {width: '45%' }} >
             <Card.Title>Food Items That You Have</Card.Title>
             <Card.Divider/>
             {
@@ -37,10 +37,11 @@ render() {
           <Button title="Add an Item" onPress={() => {
             this.setState({formVisible: !this.state.formVisible });
           }}/>
-          <Overlay isVisible={this.state.formVisible}>
+
+          {
+            this.state.formVisible &&
             <NewPantryForm />
-          </Overlay>
-          
+          }
           
       </ThemeProvider>
     );

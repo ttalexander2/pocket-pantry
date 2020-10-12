@@ -849,26 +849,26 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* WEBPACK VAR INJECTION */(f
 /***/ }),
 
 /***/ "./node_modules/electron-webpack/out/electron-main-hmr/main-hmr.js":
-/*!*********************************************************************************!*\
-  !*** ../Client/node_modules/electron-webpack/out/electron-main-hmr/main-hmr.js ***!
-  \*********************************************************************************/
+/*!*************************************************************************!*\
+  !*** ./node_modules/electron-webpack/out/electron-main-hmr/main-hmr.js ***!
+  \*************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\n__webpack_require__(/*! source-map-support/source-map-support.js */ \"source-map-support/source-map-support.js\").install();\n\nconst socketPath = process.env.ELECTRON_HMR_SOCKET_PATH;\n\nif (socketPath == null) {\n  throw new Error(`[HMR] Env ELECTRON_HMR_SOCKET_PATH is not set`);\n} // module, but not relative path must be used (because this file is used as entry)\n\n\nconst HmrClient = __webpack_require__(/*! electron-webpack/out/electron-main-hmr/HmrClient */ \"electron-webpack/out/electron-main-hmr/HmrClient\").HmrClient; // tslint:disable:no-unused-expression\n\n\nnew HmrClient(socketPath, module.hot, () => {\n  return __webpack_require__.h();\n}); \n// __ts-babel@6.0.4\n//# sourceMappingURL=main-hmr.js.map//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi4vQ2xpZW50L25vZGVfbW9kdWxlcy9lbGVjdHJvbi13ZWJwYWNrL291dC9lbGVjdHJvbi1tYWluLWhtci9tYWluLWhtci5qcz9kYTgzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFhOztBQUViLG1CQUFPLENBQUMsMEZBQTBDOztBQUVsRDs7QUFFQTtBQUNBO0FBQ0EsQ0FBQzs7O0FBR0Qsa0JBQWtCLG1CQUFPLENBQUMsMEdBQWtELFlBQVk7OztBQUd4RjtBQUNBLFNBQVMsdUJBQWdCO0FBQ3pCLENBQUMsRTtBQUNEO0FBQ0EiLCJmaWxlIjoiLi9ub2RlX21vZHVsZXMvZWxlY3Ryb24td2VicGFjay9vdXQvZWxlY3Ryb24tbWFpbi1obXIvbWFpbi1obXIuanMuanMiLCJzb3VyY2VzQ29udGVudCI6WyJcInVzZSBzdHJpY3RcIjtcblxucmVxdWlyZShcInNvdXJjZS1tYXAtc3VwcG9ydC9zb3VyY2UtbWFwLXN1cHBvcnQuanNcIikuaW5zdGFsbCgpO1xuXG5jb25zdCBzb2NrZXRQYXRoID0gcHJvY2Vzcy5lbnYuRUxFQ1RST05fSE1SX1NPQ0tFVF9QQVRIO1xuXG5pZiAoc29ja2V0UGF0aCA9PSBudWxsKSB7XG4gIHRocm93IG5ldyBFcnJvcihgW0hNUl0gRW52IEVMRUNUUk9OX0hNUl9TT0NLRVRfUEFUSCBpcyBub3Qgc2V0YCk7XG59IC8vIG1vZHVsZSwgYnV0IG5vdCByZWxhdGl2ZSBwYXRoIG11c3QgYmUgdXNlZCAoYmVjYXVzZSB0aGlzIGZpbGUgaXMgdXNlZCBhcyBlbnRyeSlcblxuXG5jb25zdCBIbXJDbGllbnQgPSByZXF1aXJlKFwiZWxlY3Ryb24td2VicGFjay9vdXQvZWxlY3Ryb24tbWFpbi1obXIvSG1yQ2xpZW50XCIpLkhtckNsaWVudDsgLy8gdHNsaW50OmRpc2FibGU6bm8tdW51c2VkLWV4cHJlc3Npb25cblxuXG5uZXcgSG1yQ2xpZW50KHNvY2tldFBhdGgsIG1vZHVsZS5ob3QsICgpID0+IHtcbiAgcmV0dXJuIF9fd2VicGFja19oYXNoX187XG59KTsgXG4vLyBfX3RzLWJhYmVsQDYuMC40XG4vLyMgc291cmNlTWFwcGluZ1VSTD1tYWluLWhtci5qcy5tYXAiXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///./node_modules/electron-webpack/out/electron-main-hmr/main-hmr.js\n");
+eval("\n\n__webpack_require__(/*! source-map-support/source-map-support.js */ \"source-map-support/source-map-support.js\").install();\n\nconst socketPath = process.env.ELECTRON_HMR_SOCKET_PATH;\n\nif (socketPath == null) {\n  throw new Error(`[HMR] Env ELECTRON_HMR_SOCKET_PATH is not set`);\n} // module, but not relative path must be used (because this file is used as entry)\n\n\nconst HmrClient = __webpack_require__(/*! electron-webpack/out/electron-main-hmr/HmrClient */ \"electron-webpack/out/electron-main-hmr/HmrClient\").HmrClient; // tslint:disable:no-unused-expression\n\n\nnew HmrClient(socketPath, module.hot, () => {\n  return __webpack_require__.h();\n}); \n// __ts-babel@6.0.4\n//# sourceMappingURL=main-hmr.js.map//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9ub2RlX21vZHVsZXMvZWxlY3Ryb24td2VicGFjay9vdXQvZWxlY3Ryb24tbWFpbi1obXIvbWFpbi1obXIuanM/MWJkYyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBYTs7QUFFYixtQkFBTyxDQUFDLDBGQUEwQzs7QUFFbEQ7O0FBRUE7QUFDQTtBQUNBLENBQUM7OztBQUdELGtCQUFrQixtQkFBTyxDQUFDLDBHQUFrRCxZQUFZOzs7QUFHeEY7QUFDQSxTQUFTLHVCQUFnQjtBQUN6QixDQUFDLEU7QUFDRDtBQUNBIiwiZmlsZSI6Ii4vbm9kZV9tb2R1bGVzL2VsZWN0cm9uLXdlYnBhY2svb3V0L2VsZWN0cm9uLW1haW4taG1yL21haW4taG1yLmpzLmpzIiwic291cmNlc0NvbnRlbnQiOlsiXCJ1c2Ugc3RyaWN0XCI7XG5cbnJlcXVpcmUoXCJzb3VyY2UtbWFwLXN1cHBvcnQvc291cmNlLW1hcC1zdXBwb3J0LmpzXCIpLmluc3RhbGwoKTtcblxuY29uc3Qgc29ja2V0UGF0aCA9IHByb2Nlc3MuZW52LkVMRUNUUk9OX0hNUl9TT0NLRVRfUEFUSDtcblxuaWYgKHNvY2tldFBhdGggPT0gbnVsbCkge1xuICB0aHJvdyBuZXcgRXJyb3IoYFtITVJdIEVudiBFTEVDVFJPTl9ITVJfU09DS0VUX1BBVEggaXMgbm90IHNldGApO1xufSAvLyBtb2R1bGUsIGJ1dCBub3QgcmVsYXRpdmUgcGF0aCBtdXN0IGJlIHVzZWQgKGJlY2F1c2UgdGhpcyBmaWxlIGlzIHVzZWQgYXMgZW50cnkpXG5cblxuY29uc3QgSG1yQ2xpZW50ID0gcmVxdWlyZShcImVsZWN0cm9uLXdlYnBhY2svb3V0L2VsZWN0cm9uLW1haW4taG1yL0htckNsaWVudFwiKS5IbXJDbGllbnQ7IC8vIHRzbGludDpkaXNhYmxlOm5vLXVudXNlZC1leHByZXNzaW9uXG5cblxubmV3IEhtckNsaWVudChzb2NrZXRQYXRoLCBtb2R1bGUuaG90LCAoKSA9PiB7XG4gIHJldHVybiBfX3dlYnBhY2tfaGFzaF9fO1xufSk7IFxuLy8gX190cy1iYWJlbEA2LjAuNFxuLy8jIHNvdXJjZU1hcHBpbmdVUkw9bWFpbi1obXIuanMubWFwIl0sInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///./node_modules/electron-webpack/out/electron-main-hmr/main-hmr.js\n");
 
 /***/ }),
 
 /***/ 0:
-/*!*************************************************************************************************************!*\
-  !*** multi ../Client/node_modules/electron-webpack/out/electron-main-hmr/main-hmr ./electron/main/index.js ***!
-  \*************************************************************************************************************/
+/*!*****************************************************************************************************!*\
+  !*** multi ./node_modules/electron-webpack/out/electron-main-hmr/main-hmr ./electron/main/index.js ***!
+  \*****************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! C:\Users\Thomas\Documents\School\CSC436\pocket-pantry\Client\node_modules\electron-webpack\out\electron-main-hmr\main-hmr */"./node_modules/electron-webpack/out/electron-main-hmr/main-hmr.js");
-module.exports = __webpack_require__(/*! C:\Users\Thomas\Documents\School\CSC436\pocket-pantry\client\electron\main\index.js */"./electron/main/index.js");
+module.exports = __webpack_require__(/*! C:\Users\Thomas\Documents\School\CSC436\pocket-pantry\Client\electron\main\index.js */"./electron/main/index.js");
 
 
 /***/ }),
