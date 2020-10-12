@@ -38,7 +38,10 @@ render() {
             this.setState({formVisible: !this.state.formVisible });
           }}/>
 
-          
+          {
+            this.state.formVisible &&
+            <NewPantryForm />
+          }
           
       </ThemeProvider>
     );
