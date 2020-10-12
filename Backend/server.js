@@ -20,7 +20,8 @@ app.get('/', (req, res) => {
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
-app.post('/recipes', jsonParser, function (req, res) {
+app.post('/api/recipes', jsonParser, function (req, res) {
+
   const ingredients = req.body.ingredients;
 
   let url = 'http://www.recipepuppy.com/api/?i=' + ingredients[0];
@@ -31,12 +32,20 @@ app.post('/recipes', jsonParser, function (req, res) {
   
   let jsonObj = {};
 
-  fetch(url)
-      .then(res => res.json())
-      .then(json => jsonObj = (json));
+  (async () => {
+      const body = {a: 1};
+    
+      const response = await fetch(url, {
+        method: 'GET'
+      });
+      const json = await response.json();
+    
+      res.send(JSON.stringify(json));
+    })();
 
-  res.send(JSON.stringify(jsonObj));
 })
+
+
 
 app.listen(port, () => {
     console.log(`Pocket pantry running at http://localhost:${port}`)
