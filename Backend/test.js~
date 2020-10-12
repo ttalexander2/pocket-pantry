@@ -1,0 +1,3 @@
+const fetch = require('node-fetch');
+fetch('localhost:42069/recipes', {method: 'POST', body: '{ingredients: [fish, chips]}'}
+	.then(res => res.json()).then(json => console.log(json)));Î
