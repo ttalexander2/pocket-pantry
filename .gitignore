@@ -12,6 +12,7 @@ npm-debug.*
 Client/web-build/
 web-build/
 .expo/*
+Backend/MariaDB/data/my.ini
 
 # macOS
 .DS_Store
