@@ -11,7 +11,12 @@ npm-debug.*
 *.orig.*
 Client/web-build/
 web-build/
+.expo/electron/cache
+.expo/web/cache
+.vscode/*
 .expo/*
+Backend/MariaDB/data/my.ini
+
 
 # macOS
 .DS_Store

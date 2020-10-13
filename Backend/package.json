@@ -11,5 +11,9 @@
   "dependencies": {
     "express": "^4.17.1",
     "mariadb": "^2.4.2"
+    "cors": "^2.8.5",
+    "node-fetch": "^2.6.1",
+    "python-shell": "^2.0.2",
+    "request": "^2.88.2"
   }
 }
