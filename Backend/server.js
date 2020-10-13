@@ -1,6 +1,5 @@
 const express = require('express');
 const db = require('./Database')
-// Recipe Puppy http://www.recipepuppy.com/about/api/
 const path = require('path');
 const fetch = require('node-fetch');
 const bodyParser = require('body-parser');
@@ -10,12 +9,13 @@ const jsonParser = bodyParser.json();
 const app = express();
 const port = 42069;
 
+// Recipe Puppy http://www.recipepuppy.com/about/api/
 
 
 app.use(express.static(path.join(__dirname, '../client/web-build')));
-db.insertFDAInfo(1234, "test", "ur mom", new Date());
-db.insertIngredientInfo(1234, "test", "ur mom", 6.9, "tbsp", new Date(), new Date());
-db.insertMealInfo("mush", 2, new Date());
+//db.insertFDAInfo(1234, "test", "ur mom", new Date());
+//db.insertIngredientInfo(1234, "test", "ur mom", 6.9, "tbsp", new Date(), new Date());
+//db.insertMealInfo("mush", 2, new Date());
 
 //deleteIngredientInfo(1234);
 //deleteFDAInfo(1234);

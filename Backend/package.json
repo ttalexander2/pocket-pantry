@@ -2,7 +2,7 @@
   "name": "pocketpantry",
   "version": "1.0.0",
   "description": "",
-  "main": "Server.js",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "mariadb": "^2.4.2"
+    "mariadb": "^2.4.2",
     "cors": "^2.8.5",
     "node-fetch": "^2.6.1",
     "python-shell": "^2.0.2",
