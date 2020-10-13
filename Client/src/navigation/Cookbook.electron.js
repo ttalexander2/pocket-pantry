@@ -111,8 +111,7 @@ export default class Cookbook extends React.Component{
                         source={{ uri: item.thumbnail }}>
                       </Image>
                       <Text>Ingredients: {item.ingredients}</Text>
-                      <Text style={{color: 'blue'}}
-                          onPress={() => Linking.openURL(item.href)}>
+                      <Text style={{color: 'blue'}}>
                         {item.href}
                       </Text>
                       <Button title="Open" onPress={() => {
@@ -202,7 +201,7 @@ const styles = StyleSheet.create({
   fixed: {
     position: 'absolute',
     left: 0,
-    top: 139,
+    top: 140,
     display: 'flex',
     alignItems: 'stretch',
     width: '50%',
