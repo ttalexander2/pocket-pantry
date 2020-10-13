@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { ThemeProvider, Card, Header, Text } from 'react-native-elements';
+import HomeBar from './HomeBar';
 
 const foodExpire = [{name: 'sushi', date: 'xx/xx'}, {name: 'nigiri', date: 'xx/xx'}, {name: 'ramen', date: 'xx/xx'}, {name: 'tempura', date: 'xx/xx'}]
 const foodFavorite = [{name: 'sushi'}, {name: 'ramen'}]
@@ -10,7 +11,7 @@ export default class Dashboard extends React.Component{
 render() {
     return (
         <ThemeProvider>
-            <Header centerComponent={{ text: 'DASHBOARD', style: { color: '#fff' } }}/>
+            <HomeBar name='Dashboard' />
             <Text h1>Hello, World!</Text>
             <Card>
                 <Card.Title>Food to be Expired This Week</Card.Title>
