@@ -1,6 +1,6 @@
+const express = require('express');
+const db = require('./Database')
 // Recipe Puppy http://www.recipepuppy.com/about/api/
-
-const express = require('express')
 const path = require('path');
 const fetch = require('node-fetch');
 const bodyParser = require('body-parser');
@@ -10,7 +10,16 @@ const jsonParser = bodyParser.json();
 const app = express();
 const port = 42069;
 
+
+
 app.use(express.static(path.join(__dirname, '../client/web-build')));
+db.insertFDAInfo(1234, "test", "ur mom", new Date());
+db.insertIngredientInfo(1234, "test", "ur mom", 6.9, "tbsp", new Date(), new Date());
+db.insertMealInfo("mush", 2, new Date());
+
+//deleteIngredientInfo(1234);
+//deleteFDAInfo(1234);
+//deleteMealInfo("mush");
 
 // Remove in production
 var corsOptions = {
@@ -89,3 +98,4 @@ app.post('/api/recipes/scrape', jsonParser, function (req, res) {
 app.listen(port, () => {
     console.log(`Pocket pantry running at http://localhost:${port}`)
 })
+
