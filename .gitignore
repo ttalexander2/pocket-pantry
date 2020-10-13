@@ -13,6 +13,7 @@ Client/web-build/
 web-build/
 .expo/electron/cache
 .expo/web/cache
+.vscode/*
 
 # macOS
 .DS_Store
