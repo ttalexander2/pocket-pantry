@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { useState } from 'react';
-import { Text } from 'react-native';
-import NewPantryForm from './../forms/NewPantryForm'
-import { ThemeProvider, Header, Overlay, Card, Button } from 'react-native-elements';
+import {StyleSheet, View} from 'react-native';
+import { Card } from '@ui-kitten/components';
 import HomeBar from './HomeBar';
+import { Layout, Text } from '@ui-kitten/components';
 
 const list = [
   {
@@ -16,34 +15,35 @@ const list = [
   }
 ]
 
-export default class Pantry extends React.Component{
-  state = {formVisible: false}
-
-render() {
-    return (
-      <ThemeProvider style={{flex: 1, flexDirection: 'row'}}>
-        <HomeBar name='Pantry' />
-        <Card style={ {width: '45%' }} >
-            <Card.Title>Food Items That You Have</Card.Title>
-            <Card.Divider/>
-            {
-                list.map((u) => {
-                    return (
-                        <Text>- {u.name}: {u.subtitle}</Text>
-                    );
-                })
-            }
-          </Card>
-          <Button title="Add an Item" onPress={() => {
-            this.setState({formVisible: !this.state.formVisible });
-          }}/>
-
+export default class Pantry extends React.Component {
+  render(){
+    return(
+      <Layout style={styles.container}>
+      <HomeBar name='Pantry' />
+      <Card header='Food Items That You Have'>
           {
-            this.state.formVisible &&
-            <NewPantryForm />
+              list.map((u) => {
+                  return (
+                      <Text>- {u.name}: {u.subtitle}</Text>
+                  );
+              })
           }
-          
-      </ThemeProvider>
-    );
+        </Card>      
+    </Layout>
+    )
   }
-}
+
+};
+
+/*===========================Styles================================*/
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  layout: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

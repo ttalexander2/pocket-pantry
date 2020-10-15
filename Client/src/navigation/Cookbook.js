@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { View, ScrollView, Linking, StyleSheet, ActivityIndicator  } from "react-native";
-import { Text, ThemeProvider, Input, Button,  Card, Image } from 'react-native-elements';
-import { FlatList } from 'react-native-gesture-handler';
+import { View, ScrollView, Linking, StyleSheet, ActivityIndicator, Image } from "react-native";
+import { Layout, Text, Input, Button, Card } from '@ui-kitten/components';
 import HomeBar from './HomeBar';
+import Header from '../modules/Header';
 
 
 
@@ -15,32 +15,23 @@ export default class Cookbook extends React.Component{
     data: ['SELECTED','NOT SELECTED']
   }
 
-  renderJson = () => {
-    let comp = []
-
-    
-    return(comp)
-  }
-
 
 
   render() {
     return (
-      <ThemeProvider>
+      <Layout style={styles.container}>
           <HomeBar name='Cookbook' />
             <View>
               <Input placeholder="Ingredient" onChangeText={(text) => {this.setState({queryStr: text})}} />
-              <Button title="Search" onPress={() => { this.getJson()}}/>
+              <Button onPress={() => { this.getJson()}}>Search</Button>
             </View>
             <View style={styles.fixed}>
                     {
                       this.state.selected != null
                       &&
-                      <Card style={{width: '50%'}}>
-                        <Card.Title>
-                          {this.state.selected.trim()}
-                        </Card.Title>
-                        <Card.Divider/>
+                      <Card style={{width: '50%'}}
+                      header={<Header title={this.state.selected.trim()} />}
+                      >
                         <Text>
                           {
                           this.state.recipeContent.hasOwnProperty('title')
@@ -55,14 +46,14 @@ export default class Cookbook extends React.Component{
                               PlaceholderContent={<ActivityIndicator/>}
                             />
                             }
-                            <Text h4>
+                            <Text category='h4'>
                             {
                             this.state.recipeContent.hasOwnProperty('yield')
                             &&
                             this.state.recipeContent.yield
                             }
                             </Text>
-                            <Text h3>
+                            <Text category='h3'>
                               Ingredients
                             </Text>
                             <View>
@@ -78,7 +69,7 @@ export default class Cookbook extends React.Component{
                               })
                             }
                             </View>
-                            <Text h3>
+                            <Text category='h3'>
                               Instructions
                             </Text>
                             <Text>
@@ -102,11 +93,9 @@ export default class Cookbook extends React.Component{
                 {
                   this.state.recipeResults.results.map((item) => {
                     return(
-                      <Card>
-                      <Card.Title>
-                        {item.title.trim()}
-                      </Card.Title>
-                      <Card.Divider/>
+                      <Card
+                      header={<Header title={item.title.trim()} />}
+                      >
                       <Image resizeMode="cover"
                         source={{ uri: item.thumbnail }}>
                       </Image>
@@ -115,10 +104,10 @@ export default class Cookbook extends React.Component{
                           onPress={() => Linking.openURL(item.href)}>
                         {item.href}
                       </Text>
-                      <Button title="Open" onPress={() => {
+                      <Button onPress={() => {
                         this.setState({selected: item.title});
                         this.scrapeRecipe(item.href);
-                      }}/>
+                      }}>Open</Button>
                     </Card>
                     )
                   })
@@ -126,7 +115,7 @@ export default class Cookbook extends React.Component{
                 </View>
               </View>
             </ScrollView>
-      </ThemeProvider>
+      </Layout>
     );
   }
 

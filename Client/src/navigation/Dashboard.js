@@ -1,21 +1,23 @@
 import * as React from 'react';
-import { ThemeProvider, Card, Header, Text } from 'react-native-elements';
+import { View } from 'react-native';
+import { Layout, Card, Text } from '@ui-kitten/components';
 import HomeBar from './HomeBar';
+import Header from '../modules/Header';
 
 const foodExpire = [{name: 'sushi', date: 'xx/xx'}, {name: 'nigiri', date: 'xx/xx'}, {name: 'ramen', date: 'xx/xx'}, {name: 'tempura', date: 'xx/xx'}]
 const foodFavorite = [{name: 'sushi'}, {name: 'ramen'}]
 const foodRecipe = [{name: 'sushi'}]
 
+
+
 export default class Dashboard extends React.Component{
 
 render() {
     return (
-        <ThemeProvider>
+        <Layout>
             <HomeBar name='Dashboard' />
             <Text h1>Hello, World!</Text>
-            <Card>
-                <Card.Title>Food to be Expired This Week</Card.Title>
-                <Card.Divider/>
+            <Card header={<Header title={'Food to be Expired this Week'} />}>
                 {
                     foodExpire.map((expire) => {
                         return (
@@ -24,9 +26,7 @@ render() {
                     })
                 }
             </Card>
-            <Card>
-                <Card.Title>Food Favorites</Card.Title>
-                <Card.Divider/>
+            <Card header={<Header title={'Food Favorites'} />}>
                 {
                     foodFavorite.map((favorite) => {
                         return (
@@ -35,9 +35,7 @@ render() {
                     })
                 }
             </Card>
-            <Card>
-                <Card.Title>Your Recommended Recipe of the Day</Card.Title>
-                <Card.Divider/>
+            <Card header={<Header title={'Recipe of the Day'} />}>
                 {
                     foodRecipe.map((recipe) => {
                         return (
@@ -46,7 +44,7 @@ render() {
                     })
                 }
             </Card>
-        </ThemeProvider>
+        </Layout>
     );
   }
 }
