@@ -9,7 +9,7 @@ Desktop versions of the application will be built with electron.
 
 
 ## Client
-Here's some quick notes on how to get all this shit up and running.
+Here's some quick notes on how to get it up and running.
 
 ## Client Prerequisites
 1. Install Node.js. See [nodejs.org](https://nodejs.org/en/download/)
