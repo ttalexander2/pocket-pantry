@@ -867,8 +867,8 @@ eval("\n\n__webpack_require__(/*! source-map-support/source-map-support.js */ \"
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Thomas\Documents\School\CSC436\pocket-pantry\Client\node_modules\electron-webpack\out\electron-main-hmr\main-hmr */"./node_modules/electron-webpack/out/electron-main-hmr/main-hmr.js");
-module.exports = __webpack_require__(/*! C:\Users\Thomas\Documents\School\CSC436\pocket-pantry\Client\electron\main\index.js */"./electron/main/index.js");
+__webpack_require__(/*! C:\Users\gekay\Desktop\PocketPantry\pocket-pantry\Client\node_modules\electron-webpack\out\electron-main-hmr\main-hmr */"./node_modules/electron-webpack/out/electron-main-hmr/main-hmr.js");
+module.exports = __webpack_require__(/*! C:\Users\gekay\Desktop\PocketPantry\pocket-pantry\Client\electron\main\index.js */"./electron/main/index.js");
 
 
 /***/ }),

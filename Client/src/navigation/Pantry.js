@@ -11,6 +11,14 @@ const list = [
     subtitle: '120 Grains'
   },
   {
+    name: 'Sushi',
+    subtitle: 'Alot'
+  },
+  {
+    name: 'Nachos',
+    subtitle: '20'
+  },
+  {
     name: 'Pasta',
     subtitle: '232 Shells'
   }
@@ -23,20 +31,27 @@ render() {
     return (
       <ThemeProvider style={{flex: 1, flexDirection: 'row'}}>
         <HomeBar name='Pantry' />
-        <Card style={ {width: '45%' }} >
-            <Card.Title>Food Items That You Have</Card.Title>
+        <Card style={ {width: '45%'}} >
+            <div style={{display: 'flex', justifyContent: 'space-between'}}>
+              <Card.Title style={{fontSize: '28.1px'}}>Your Pantry</Card.Title>
+              <Button style={{margin: 'auto', paddingBottom: '15px' }} title="Add an Item"  onPress={() => {
+              this.setState({formVisible: !this.state.formVisible });
+              }}/>
+          </div>
             <Card.Divider/>
-            {
-                list.map((u) => {
-                    return (
-                        <Text>- {u.name}: {u.subtitle}</Text>
-                    );
-                })
-            }
+                {
+                  list.map((u) => {
+                      return (
+                        <ul style={{margin: '0', padding: '0',  listStyle: "circle"}}>
+                          <li style={{float: 'left', display: "inline-block"}}>
+                            <div>{u.name}: {u.subtitle}</div>
+                          </li>
+                        </ul>
+                        );
+                  })
+                }
           </Card>
-          <Button title="Add an Item" onPress={() => {
-            this.setState({formVisible: !this.state.formVisible });
-          }}/>
+
 
           {
             this.state.formVisible &&

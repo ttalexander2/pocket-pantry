@@ -12,7 +12,7 @@ render() {
     return (
         <ThemeProvider>
             <HomeBar name='Dashboard' />
-            <Text h1>Hello, World!</Text>
+            <Text h1>Welcome, User!</Text>
             <Card>
                 <Card.Title>Food to be Expired This Week</Card.Title>
                 <Card.Divider/>
