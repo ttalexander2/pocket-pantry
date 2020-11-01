@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { View, ScrollView, Linking, StyleSheet, ActivityIndicator  } from "react-native";
-import { Text, ThemeProvider, Input, Button,  Card, Image } from 'react-native-elements';
-import { FlatList } from 'react-native-gesture-handler';
+import { View, ScrollView, Linking, StyleSheet, ActivityIndicator, Image } from "react-native";
+import { Layout, Text, Input, Button, Card } from '@ui-kitten/components';
 import HomeBar from './HomeBar';
+import Header from '../modules/Header';
 
 
 
@@ -15,32 +15,24 @@ export default class Cookbook extends React.Component{
     data: ['SELECTED','NOT SELECTED']
   }
 
-  renderJson = () => {
-    let comp = []
-
-    
-    return(comp)
-  }
-
 
 
   render() {
     return (
-      <ThemeProvider>
-          <HomeBar name='Cookbook' />
+      <Layout>
+          <HomeBar name='Cookbook' navigation={this.props.navigation}/>
             <View>
-              <Input placeholder="Ingredient" onChangeText={(text) => {this.setState({queryStr: text})}} />
-              <Button title="Search" onPress={() => { this.getJson()}}/>
+              <Input placeholder="Ingredient" value={this.state.queryStr} onChangeText={(text) => {this.setState({queryStr: text})}} />
+              <Button onPress={() => { this.getJson()}}>Search</Button>
             </View>
             <View style={styles.fixed}>
                     {
                       this.state.selected != null
                       &&
-                      <Card style={{width: '50%'}}>
-                        <Card.Title>
+                      <Layout>
+                        <Text>
                           {this.state.selected.trim()}
-                        </Card.Title>
-                        <Card.Divider/>
+                        </Text>
                         <Text>
                           {
                           this.state.recipeContent.hasOwnProperty('title')
@@ -55,14 +47,14 @@ export default class Cookbook extends React.Component{
                               PlaceholderContent={<ActivityIndicator/>}
                             />
                             }
-                            <Text h4>
+                            <Text category='h4'>
                             {
                             this.state.recipeContent.hasOwnProperty('yield')
                             &&
                             this.state.recipeContent.yield
                             }
                             </Text>
-                            <Text h3>
+                            <Text category='h3'>
                               Ingredients
                             </Text>
                             <View>
@@ -78,7 +70,7 @@ export default class Cookbook extends React.Component{
                               })
                             }
                             </View>
-                            <Text h3>
+                            <Text category='h3'>
                               Instructions
                             </Text>
                             <Text>
@@ -93,7 +85,7 @@ export default class Cookbook extends React.Component{
                           JSON.stringify(this.state.recipeContent)
                           }
                         </Text>
-                      </Card>
+                      </Layout>
                     }    
             </View>
             <ScrollView>
@@ -102,31 +94,30 @@ export default class Cookbook extends React.Component{
                 {
                   this.state.recipeResults.results.map((item) => {
                     return(
-                      <Card>
-                      <Card.Title>
-                        {item.title.trim()}
-                      </Card.Title>
-                      <Card.Divider/>
-                      <Image resizeMode="cover"
-                        source={{ uri: item.thumbnail }}>
-                      </Image>
-                      <Text>Ingredients: {item.ingredients}</Text>
-                      <Text style={{color: 'blue'}}
-                          onPress={() => Linking.openURL(item.href)}>
-                        {item.href}
-                      </Text>
-                      <Button title="Open" onPress={() => {
-                        this.setState({selected: item.title});
-                        this.scrapeRecipe(item.href);
-                      }}/>
-                    </Card>
+                      <Layout>
+                        <Text>
+                          {item.title.trim()}
+                        </Text>
+                        <Image resizeMode="cover"
+                          source={{ uri: item.thumbnail }}>
+                        </Image>
+                        <Text>Ingredients: {item.ingredients}</Text>
+                        <Text style={{color: 'blue'}}
+                            onPress={() => Linking.openURL(item.href)}>
+                          {item.href}
+                        </Text>
+                        <Button onPress={() => {
+                          this.setState({selected: item.title});
+                          this.scrapeRecipe(item.href);
+                        }}>Open</Button>
+                      </Layout>
                     )
                   })
                 }
                 </View>
               </View>
             </ScrollView>
-      </ThemeProvider>
+      </Layout>
     );
   }
 
@@ -151,9 +142,16 @@ export default class Cookbook extends React.Component{
       redirect: 'follow'
     };
 
-    fetch("http://localhost:42069/api/recipes", requestOptions)
+    fetch("https://pocketpantry.app/api/recipes", requestOptions)
       .then(response => response.text())
-      .then(result => this.setState({recipeResults: JSON.parse(result)}))
+      .then(result => {
+        try {
+          this.setState({recipeResults: JSON.parse(result)});
+        } catch (e) {
+          console.log(e)
+        }
+        
+        })
       .catch(error => console.log('error', error));
  
   }
@@ -173,7 +171,7 @@ export default class Cookbook extends React.Component{
       redirect: 'follow'
     };
 
-    fetch("http://localhost:42069/api/recipes/scrape", requestOptions)
+    fetch("https://pocketpantry.app/api/recipes/scrape", requestOptions)
       .then(response => response.text())
       .then(result => {
         try {
@@ -189,24 +187,12 @@ export default class Cookbook extends React.Component{
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    paddingBottom: 10,
-    alignItems: 'flex-start' // if you want to fill rows left to right
+
   },
   item: {
-    left: '50%',
-    width: '50%', // is 50% of container width
+
   },
   fixed: {
-    position: 'absolute',
-    left: 0,
-    top: 139,
-    display: 'flex',
-    alignItems: 'stretch',
-    width: '50%',
-    height: '100%'
 
   }
 })
