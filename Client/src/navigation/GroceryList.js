@@ -8,7 +8,7 @@ export default class GroceryList extends React.Component{
 render() {
     return (
       <View>
-        <HomeBar name='Grocery List' />
+        <HomeBar name='Grocery List' navigation={this.props.navigation} />
       </View>
     );
   }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { Layout, Card, Text } from '@ui-kitten/components';
+import { Layout, Card, Text, List, ListItem } from '@ui-kitten/components';
 import HomeBar from './HomeBar';
 import Header from '../modules/Header';
 
@@ -10,41 +10,27 @@ const foodRecipe = [{name: 'sushi'}]
 
 
 
-export default class Dashboard extends React.Component{
+const Dashboard = ({ navigation }) => {
 
-render() {
+    const renderItem = ({item, index}) => (
+        <ListItem
+        title={`${item.name}`}
+        accessoryRight={() => (<Text>{item.date}</Text>)}
+      />        
+    );
+
+
+
     return (
         <Layout>
-            <HomeBar name='Dashboard' />
+            <HomeBar name='Dashboard' navigation={navigation} />    
             <Text h1>Hello, World!</Text>
-            <Card header={<Header title={'Food to be Expired this Week'} />}>
-                {
-                    foodExpire.map((expire) => {
-                        return (
-                            <Text>- {expire.date}: {expire.name}</Text>
-                        );
-                    })
-                }
-            </Card>
-            <Card header={<Header title={'Food Favorites'} />}>
-                {
-                    foodFavorite.map((favorite) => {
-                        return (
-                            <Text>- {favorite.name}</Text>
-                        );
-                    })
-                }
-            </Card>
-            <Card header={<Header title={'Recipe of the Day'} />}>
-                {
-                    foodRecipe.map((recipe) => {
-                        return (
-                            <Text> {recipe.name}</Text>
-                        );
-                    })
-                }
-            </Card>
+            <List
+                data={foodExpire}
+                renderItem={renderItem}
+            />
         </Layout>
     );
-  }
 }
+
+export default Dashboard;

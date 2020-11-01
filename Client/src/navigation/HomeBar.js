@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Layout, MenuItem, OverflowMenu, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+import { Text, Icon, Layout, MenuItem, OverflowMenu, TopNavigation, TopNavigationAction, Button } from '@ui-kitten/components';
 import { StyleSheet } from 'react-native';
 
 const BackIcon = (props) => (
@@ -8,6 +8,10 @@ const BackIcon = (props) => (
 
 const EditIcon = (props) => (
   <Icon {...props} name='edit'/>
+);
+
+const DrawerIcon = (props) => (
+  <Icon {...props} name='menu'/>
 );
 
 const MenuIcon = (props) => (
@@ -36,7 +40,6 @@ const HomeBar = (props) => {
 
   const renderRightActions = () => (
     <React.Fragment>
-      <TopNavigationAction icon={EditIcon}/>
       <OverflowMenu
         anchor={renderMenuAction}
         visible={menuVisible}
@@ -48,7 +51,9 @@ const HomeBar = (props) => {
   );
 
   const renderLeftActions = () => (
-    <TopNavigationAction icon={BackIcon}/>
+    <Button appearance='ghost' size='giant' accessoryLeft={DrawerIcon}
+      onPress={() => props.navigation.toggleDrawer()}
+    />
   );
 
   return (

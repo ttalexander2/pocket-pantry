@@ -18,18 +18,9 @@ const list = [
 export default class Pantry extends React.Component {
   render(){
     return(
-      <Layout style={styles.container}>
-      <HomeBar name='Pantry' />
-      <Card header='Food Items That You Have'>
-          {
-              list.map((u) => {
-                  return (
-                      <Text>- {u.name}: {u.subtitle}</Text>
-                  );
-              })
-          }
-        </Card>      
-    </Layout>
+      <Layout>
+        <HomeBar name='Pantry' navigation={this.props.navigation}/>
+      </Layout>
     )
   }
 
