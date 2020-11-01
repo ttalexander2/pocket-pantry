@@ -9,7 +9,6 @@ npm-debug.*
 *.key
 *.mobileprovision
 *.orig.*
-Client/web-build/
 web-build/
 .expo/electron/cache
 .expo/web/cache

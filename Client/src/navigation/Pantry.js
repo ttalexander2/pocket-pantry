@@ -23,7 +23,6 @@ export default class Pantry extends React.Component {
       </Layout>
     )
   }
-
 };
 
 /*===========================Styles================================*/
