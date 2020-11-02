@@ -45,8 +45,11 @@ export default class GroceryList extends React.Component {
             list.map((u) => {
                 return (
                   <ul style={{margin: '0', padding: '0',  listStyle: "circle"}}>
-                    <li style={{float: 'left', display: "inline-block"}}>
-                      <Text style={{fontSize: '22px'}}>{u.name}: {u.subtitle}</Text>
+                    <li style={{width: '100%'}}>
+                    <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                      <div style={{fontSize: '22px', display: 'flex'}}>{u.name}:</div>
+                      <div style={{fontSize: '22px', display: 'flex'}}>{u.subtitle}</div>
+                    </div>
                     </li>
                   </ul>
                   );
@@ -54,7 +57,7 @@ export default class GroceryList extends React.Component {
           }
           </Card>
         </React.Fragment>
-        
+
     </Layout>
     )
   }
