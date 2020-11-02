@@ -3,11 +3,11 @@ import { SafeAreaView } from 'react-native';
 import { Drawer, DrawerItem, IndexPath } from '@ui-kitten/components';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
-import Dashboard from './Navigation/Dashboard.js';
-import Pantry from './Navigation/Pantry.js';
-import CalendarView from './Navigation/Calendar.js';
-import Cookbook from './Navigation/Cookbook.js';
-import GroceryList from './Navigation/GroceryList.js';
+import Dashboard from './navigation/Dashboard.js';
+import Pantry from './navigation/Pantry.js';
+import CalendarView from './navigation/Calendar.js';
+import Cookbook from './navigation/Cookbook.js';
+import GroceryList from './navigation/GroceryList.js';
 
 const {Navigator, Screen } = createDrawerNavigator();
 

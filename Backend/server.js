@@ -12,7 +12,7 @@ const port = 42069;
 // Recipe Puppy http://www.recipepuppy.com/about/api/
 
 
-app.use(express.static(path.join(__dirname, '../client/web-build')));
+app.use(express.static(path.join(__dirname, '../Client/web-build')));
 //db.insertFDAInfo(1234, "test", "ur mom", new Date());
 //db.insertIngredientInfo(1234, "test", "ur mom", 6.9, "tbsp", new Date(), new Date());
 //db.insertMealInfo("mush", 2, new Date());
@@ -33,7 +33,7 @@ app.use(cors(corsOptions));
 
 // Once client is built in production
 app.get('/', (_req, res) => {
-    res.sendFile(path.join(__dirname + '../client/web-build/index.html'), function (err) {
+    res.sendFile(path.join(__dirname + '../Client/web-build/index.html'), function (err) {
       if (err) {
         res.status(500).send(err)
       }
