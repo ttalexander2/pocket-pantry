@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
   Text as RNText,
+  ImageBackground,
 } from "react-native";
 import {
   ApplicationProvider,
@@ -75,6 +76,8 @@ const CustomButtonWithIcon = ({
   );
 };
 
+const backgroundImage = { uri: "assets/are you feeling it now mr krabs.png" }
+
 const App = (): React.ReactFragment => {
 
   const [themeName, setThemeName] = useState("light");
@@ -95,23 +98,23 @@ const App = (): React.ReactFragment => {
         {
           !logIn
           ?
-          <Layout style={styles.container}>
-          <Text style={styles.text} category="h1">
-            Welcome to Pocket Pantry
-          </Text>
-          <Text style={styles.text} appearance="hint">
-          The Kitchen Management Tool!
-          </Text>
-          <CustomButtonWithIcon
-            accessibilityRole="button"
-            accessibilityLabel="Login"
-            style={styles.iconButton}
-            text='Hop In!'
-            icon={themeButtonIcon}
-            onPress={() => {setLogIn(!logIn)}}
-            iconStyle={{ tintColor: "white" }}
-          />
-        </Layout>
+          <ImageBackground source={backgroundImage} style={styles.image}>
+              <Text style={styles.text} category="h1">
+                Welcome to Pocket Pantry
+              </Text>
+              <Text style={styles.text} appearance="hint">
+              The Kitchen Management Tool!
+              </Text>
+              <CustomButtonWithIcon
+                accessibilityRole="button"
+                accessibilityLabel="Login"
+                style={styles.iconButton}
+                text='Hop In!'
+                icon={themeButtonIcon}
+                onPress={() => {setLogIn(!logIn)}}
+                iconStyle={{ tintColor: "white" }}
+              />
+          </ImageBackground>
         :
         <AppNavigator/>
         }
@@ -153,6 +156,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#DDDDDD",
     padding: 10,
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
