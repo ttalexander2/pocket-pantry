@@ -45,8 +45,15 @@ export default class Pantry extends React.Component {
             list.map((u) => {
                 return (
                   <ul style={{margin: '0', padding: '0',  listStyle: "circle"}}>
-                    <li style={{float: 'left', display: "inline-block"}}>
-                      <Text style={{fontSize: '22px'}}>{u.name}: {u.subtitle}</Text>
+                    <li style={{width: '100%'}}>
+                    <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                      <div style={{display: 'flex'}}>
+                        <Text style={{fontSize: '22px'}}> {u.name}:</Text>
+                      </div>
+                      <div style={{display: 'flex'}}>
+                        <Text style={{fontSize: '22px'}}> {u.subtitle}</Text>
+                      </div>
+                    </div>
                     </li>
                   </ul>
                   );
@@ -54,7 +61,7 @@ export default class Pantry extends React.Component {
           }
           </Card>
         </React.Fragment>
-        
+
     </Layout>
     )
   }
