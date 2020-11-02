@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView } from 'react-native'; 
+import { SafeAreaView } from 'react-native';
 import { Drawer, DrawerItem, IndexPath } from '@ui-kitten/components';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
