@@ -58,7 +58,7 @@ const HomeBar = (props) => {
 
   return (
     <Layout style={styles.container} level='1'>
-      <TopNavigation
+      <TopNavigation style={{backgroundColor: 'aliceblue'}}
         alignment='center'
         title={props.name}
         accessoryLeft={renderLeftActions}

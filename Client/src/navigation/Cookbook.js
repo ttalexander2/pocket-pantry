@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, ScrollView, Linking, StyleSheet, ActivityIndicator, Image } from "react-native";
-import { Layout, Text, Input, Button, Card } from '@ui-kitten/components';
+import { Layout, Text, Input, Button, Icon, List, ListItem, Card } from '@ui-kitten/components';
 import HomeBar from './HomeBar';
 import Header from '../modules/Header';
 
@@ -22,8 +22,10 @@ export default class Cookbook extends React.Component{
       <Layout>
           <HomeBar name='Cookbook' navigation={this.props.navigation}/>
             <View>
-              <Input placeholder="Ingredient" value={this.state.queryStr} onChangeText={(text) => {this.setState({queryStr: text})}} />
-              <Button onPress={() => { this.getJson()}}>Search</Button>
+            <Text style={{paddingLeft: '24px'}} category='h1'>Search for a Recipe</Text>
+            <Text category='h6' style={{fontStyle: 'italic', paddingLeft: '24px' }}>Enter Ingredients Separated By Commas</Text>
+              <Input style={{paddingLeft: '24px', paddingRight: '24px', backgroundColor: 'aliceblue'}}  placeholder="Noodles, Seaweed, Carrots, Onions, ..." value={this.state.queryStr} onChangeText={(text) => {this.setState({queryStr: text})}} />
+              <Button style={{margin: '24px'}}  onPress={() => { this.getJson()}}>Search</Button>
             </View>
             <View style={styles.fixed}>
                     {
@@ -94,22 +96,23 @@ export default class Cookbook extends React.Component{
                 {
                   this.state.recipeResults.results.map((item) => {
                     return(
-                      <Layout>
-                        <Text>
-                          {item.title.trim()}
-                        </Text>
-                        <Image resizeMode="cover"
-                          source={{ uri: item.thumbnail }}>
-                        </Image>
-                        <Text>Ingredients: {item.ingredients}</Text>
-                        <Text style={{color: 'blue'}}
-                            onPress={() => Linking.openURL(item.href)}>
-                          {item.href}
-                        </Text>
-                        <Button onPress={() => {
-                          this.setState({selected: item.title});
-                          this.scrapeRecipe(item.href);
-                        }}>Open</Button>
+                      <Layout style={{display: 'flex', flexDirection: 'row', borderBottom: '3px solid royalblue', borderTop: '3px solid aliceblue', padding: '5px', margin: '5px'}}>
+                        <Layout >
+                          <Button style={{margin: '10px', marginTop: '20px'}} onPress={() => {
+                            this.setState({selected: item.title});
+                            this.scrapeRecipe(item.href);
+                          }}>Open</Button>
+                          </Layout>
+                          <Layout>
+                            <Text category='h3'>
+                              {item.title.trim()}
+                            </Text>
+                            <Text category= 'h6' style={{fontStyle: 'italic'}}>Ingredients: {item.ingredients}</Text>
+                            <Text style={{color: 'blue'}}
+                                onPress={() => Linking.openURL(item.href)}>
+                              {item.href}
+                            </Text>
+                            </Layout>
                       </Layout>
                     )
                   })

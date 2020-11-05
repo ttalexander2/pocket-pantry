@@ -25,7 +25,7 @@ const DrawerContent = ({ navigation, state }) => (
 
 const AppNavigator = () => (
   <NavigationContainer>
-      <Navigator drawerContent={props => <DrawerContent {...props}/>}>
+      <Navigator style={{backgroundColor: 'blue'}}drawerContent={props => <DrawerContent {...props}/>}>
         <Screen name='Dashboard' component={Dashboard}/>
         <Screen name='Pantry' component={Pantry}/>
         <Screen name='Calendar' component={CalendarView}/>
