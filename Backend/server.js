@@ -1,8 +1,9 @@
 const express = require('express');
-const db = require('./Database')
+const db = require('./Database');
 const path = require('path');
 const fetch = require('node-fetch');
 const bodyParser = require('body-parser');
+const crypto = require('crypto');
 const cors = require('cors');
 const { exec } = require('child_process');
 const jsonParser = bodyParser.json();
