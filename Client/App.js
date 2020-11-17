@@ -19,7 +19,10 @@ import {
 } from "@ui-kitten/components";
 import { EvaIconsPack } from "@ui-kitten/eva-icons";
 import { mapping, light, dark } from "@eva-design/eva";
-import AppNavigator from './src/Navigation'
+import AppNavigator from './src/Navigation';
+import Login from './src/Login.js';
+import * as eva from '@eva-design/eva';
+import { default as theme } from './theme.json';
 
 const themes = {
   light: {
@@ -76,8 +79,6 @@ const CustomButtonWithIcon = ({
   );
 };
 
-const backgroundImage = { uri: "assets/are you feeling it now mr krabs.png" }
-
 const App = (): React.ReactFragment => {
 
   const [themeName, setThemeName] = useState("light");
@@ -94,29 +95,15 @@ const App = (): React.ReactFragment => {
   return (
     <>
       <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider mapping={mapping} theme={theme}>
+      <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
         {
           !logIn
           ?
-          <ImageBackground source={backgroundImage} style={styles.image}>
-              <Text style={styles.text} category="h1">
-                Welcome to Pocket Pantry
-              </Text>
-              <Text style={styles.text} appearance="hint">
-              The Kitchen Management Tool!
-              </Text>
-              <CustomButtonWithIcon
-                accessibilityRole="button"
-                accessibilityLabel="Login"
-                style={styles.iconButton}
-                text='Hop In!'
-                icon={themeButtonIcon}
-                onPress={() => {setLogIn(!logIn)}}
-                iconStyle={{ tintColor: "white" }}
-              />
+          <ImageBackground source={require("./Assets/are you feeling it now mr krabs.png")} style={styles.image}>
+              <Login />
           </ImageBackground>
         :
-        <AppNavigator/>
+        <AppNavigator />
         }
 
       </ApplicationProvider>

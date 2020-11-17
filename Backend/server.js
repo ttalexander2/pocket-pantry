@@ -5,6 +5,10 @@ const fetch = require('node-fetch');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { exec } = require('child_process');
+const auth = require('./Authentication')
+const sanitizer = require('sanitize');
+
+const auth = require('Authentication.ts')
 const jsonParser = bodyParser.json();
 const app = express();
 const port = 42069;
@@ -41,6 +45,25 @@ app.get('/', (_req, res) => {
   })
 
 
+
+app.post('/signup', jsonParser, function (req, res) {
+  const name = req.body.name;
+  const email = req.body.email;
+  const password = req.body.password;
+
+  try {
+    auth.SignUp(name, email, password);
+  } catch (err){
+    res.status('500').send(err);
+  }
+  try {
+    var jwt = auth.LogIn(email, password)
+    //send the token back
+  } catch (err){
+    res.status('500').send(err);
+  }
+  
+});
 
 app.post('/api/recipes', jsonParser, function (req, res) {
 
