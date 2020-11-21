@@ -1,10 +1,46 @@
 const mariadb = require('mariadb');
 const pool = mariadb.createPool({
     host: 'localhost',
-    user: 'root',
+    user: 'admin',
     password: 'BigDaddy',
     connectionLimit: 5
 });
+
+async function createUser(username, email, name, password) {
+  let conn;
+  let result = false;
+  try {
+    conn = await pool.getConnection();
+    const res = await conn.query("USE pantry")
+
+    res = await conn.query("SELECT userid FROM usertable WHERE username='" + username + "'");
+
+    if (res == "") {
+      res = await conn.query("INSERT INTO usertable value (?, ?, ?, ?)", [username, email, name, password]);
+      result = true;
+    }
+  } catch (err) {
+    console.log(err)
+  } finally {
+    if (conn) conn.release();
+    return result;
+  }
+}
+
+async function checkPassword(username, password) {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    const res = await conn.query("USE pantry")
+
+    res = await conn.query("SELECT password FROM usertable WHERE username='" + username +"'")
+    return password == res
+  } catch (err) {
+    console.log(err)
+  } finally {
+    if (conn) conn.release();
+  }
+}
 
 async function insertFDAInfo(upc, name, brand, expiration) {
     let conn;

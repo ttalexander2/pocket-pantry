@@ -7,12 +7,10 @@ const DayCell = ({ date }, style) => (
   <View
     style={[styles.dayContainer, style.container]}>
     <Text style={style.text}>{`${date.getDate()}`}</Text>
-    <Text style={styles.dayContainer}>OH SHIT</Text>
-    <Text style={styles.dayContainer}>OH SHIT</Text>
-    <Text style={styles.dayContainer}>OH SHIT</Text>
-    <Text style={styles.dayContainer}>OH SHIT</Text>
-    <Text style={styles.dayContainer}>OH SHIT</Text>
-    <Text style={styles.dayContainer}>OH SHIT</Text>
+    <Text style={styles.dayContainer}>Pasta Sauce Expires</Text>
+    <Text style={styles.dayContainer}>Cilantro Expires</Text>
+    <Text style={styles.dayContainer}>Onion Expires</Text>
+
   </View>
 );
 
