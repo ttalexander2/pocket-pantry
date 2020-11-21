@@ -1,3 +1,5 @@
+const argon2 = require('argon2')
+
 const mariadb = require('mariadb');
 const pool = mariadb.createPool({
     host: 'localhost',
@@ -6,17 +8,17 @@ const pool = mariadb.createPool({
     connectionLimit: 5
 });
 
-async function createUser(username, email, name, password) {
+async function createUser(email, name, password) {
   let conn;
   let result = false;
   try {
     conn = await pool.getConnection();
     const res = await conn.query("USE pantry")
 
-    res = await conn.query("SELECT userid FROM usertable WHERE username='" + username + "'");
+    res = await conn.query("SELECT userid FROM usertable WHERE email='" + email + "'");
 
     if (res == "") {
-      res = await conn.query("INSERT INTO usertable value (?, ?, ?, ?)", [username, email, name, password]);
+      res = await conn.query("INSERT INTO usertable value (?, ?, ?, ?)", ["", email, name, argon2.hash(password)]);
       result = true;
     }
   } catch (err) {
@@ -27,16 +29,32 @@ async function createUser(username, email, name, password) {
   }
 }
 
-async function checkPassword(username, password) {
+async function checkPassword(email, password) {
   let conn;
   try {
     conn = await pool.getConnection();
     const res = await conn.query("USE pantry")
 
-    res = await conn.query("SELECT password FROM usertable WHERE username='" + username +"'")
-    return password == res
+    res = await conn.query("SELECT password FROM usertable WHERE email='" + email +"'")
+    return argon2.verify(res, password)
   } catch (err) {
     console.log(err)
+  } finally {
+    if (conn) conn.release();
+  }
+}
+
+async function getName(email) {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    const res = await conn.query("USE pantry")
+
+    res = await conn.query("SELECT name FROM usertable WHERE email='" + email +"'")
+    return res;
+  } catch (err) {
+    console.log(err)
+    return ""
   } finally {
     if (conn) conn.release();
   }
