@@ -16,7 +16,8 @@ import {
   IconRegistry,
   Layout,
   Text,
-} from "@ui-kitten/components";
+}
+from "@ui-kitten/components";
 import { EvaIconsPack } from "@ui-kitten/eva-icons";
 import { mapping, light, dark } from "@eva-design/eva";
 import AppNavigator from './src/Navigation';

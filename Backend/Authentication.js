@@ -1,40 +1,31 @@
-import * as argon2 from 'argon2';
-import * as jwt from 'jsonwebtoken';
+const jwt = require('jsonwebtoken');
+const db = require('./Database');
 import 'Secret.js';
 
 
 async function SignUp(name, email, password) {
 
-    try {
-        const hashedAss = argon2.hash(password);
-    }
-    catch (err) {
-        throw new Error('An unexpected error occurred, please try again later.')
-    }
-
     //store shit in database
-
-    const userInfo = {"Name": name, 'Email': email}
-
-    return userInfo;
+    var result = db.createUser(email, name, password);
+    return Login(email, password);
 }
     
 async function Login(email, password) {
-    //Get the user record based on email
-    // If user not found, throw error
-
-    const correctPassword = await argon2.verify(userRecord.password, password);
-    if (!correctPassword) {
-      throw new Error('Incorrect password')
-    }
-
-    return {
-        user: {
-          email: userRecord.email,
-          name: userRecord.name,
+    let res = db.Login();
+    if (res === true) {
+      return {
+        "User": {
+          "Email": email,
+          "Name": db.getName(email),
         },
-        token: this.generateJWT(userRecord),
+        "Token": this.generateJWT(userRecord),
       }
+    }
+    return false;  
+}
+
+async function AuthenticateToken(token) {
+  return jwt.verify(token, JWT_SECRET);
 }
 
 async function generateJWT(user) {

@@ -9,7 +9,7 @@ const { exec } = require('child_process');
 const auth = require('./Authentication')
 const sanitizer = require('sanitize');
 
-const auth = require('Authentication.ts')
+const auth = require('./Authentication.js')
 const jsonParser = bodyParser.json();
 const app = express();
 const port = 42069;
@@ -43,7 +43,7 @@ app.get('/', (_req, res) => {
         res.status(500).send(err)
       }
     });
-  })
+})
 
 
 
