@@ -6,6 +6,10 @@ const bodyParser = require('body-parser');
 const crypto = require('crypto');
 const cors = require('cors');
 const { exec } = require('child_process');
+const auth = require('./Authentication')
+const sanitizer = require('sanitize');
+
+const auth = require('Authentication.ts')
 const jsonParser = bodyParser.json();
 const app = express();
 const port = 42069;
@@ -43,6 +47,39 @@ app.get('/', (_req, res) => {
 
 
 
+app.post('/signup', jsonParser, function (req, res) {
+
+  try {
+    const name = req.body.name;
+    const email = req.body.email;
+    const password = req.body.password;
+    auth.SignUp(name, email, password);
+  } catch (err){
+    res.status('500').send(err);
+  }
+  try {
+    var jwt = auth.LogIn(email, password)
+    //send the token back
+    res.send(jwt);
+  } catch (err){
+    res.status('500').send(err);
+  }
+  
+});
+
+app.post('/login', jsonParser, function (req, res){
+  try{
+    const email = req.body.email;
+    const password = req.body.password;
+    var jwt = auth.LogIn(email, password)
+    //send the token back
+    res.send(jwt);
+  } catch (err){
+    res.status('500').send(err);
+  }
+
+});
+
 app.post('/api/recipes', jsonParser, function (req, res) {
 
 
@@ -75,7 +112,6 @@ app.post('/api/recipes', jsonParser, function (req, res) {
 
 app.post('/api/recipes/scrape', jsonParser, function (req, res) {
   
-
   let pyargs = 'python Recipe-Parser.py '
 
   pyargs = pyargs + "\"" + req.body.url + "\"";

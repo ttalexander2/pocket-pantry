@@ -2,7 +2,6 @@ import * as React from 'react';
 import { View, ScrollView, Linking, StyleSheet, ActivityIndicator, Image } from "react-native";
 import { Layout, Text, Input, Button, Icon, List, ListItem, Card } from '@ui-kitten/components';
 import HomeBar from './HomeBar';
-import Header from '../modules/Header';
 
 
 
