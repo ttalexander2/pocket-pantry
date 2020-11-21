@@ -47,11 +47,11 @@ app.get('/', (_req, res) => {
 
 
 app.post('/signup', jsonParser, function (req, res) {
-  const name = req.body.name;
-  const email = req.body.email;
-  const password = req.body.password;
 
   try {
+    const name = req.body.name;
+    const email = req.body.email;
+    const password = req.body.password;
     auth.SignUp(name, email, password);
   } catch (err){
     res.status('500').send(err);
@@ -59,10 +59,24 @@ app.post('/signup', jsonParser, function (req, res) {
   try {
     var jwt = auth.LogIn(email, password)
     //send the token back
+    res.send(jwt);
   } catch (err){
     res.status('500').send(err);
   }
   
+});
+
+app.post('/login', jsonParser, function (req, res){
+  try{
+    const email = req.body.email;
+    const password = req.body.password;
+    var jwt = auth.LogIn(email, password)
+    //send the token back
+    res.send(jwt);
+  } catch (err){
+    res.status('500').send(err);
+  }
+
 });
 
 app.post('/api/recipes', jsonParser, function (req, res) {
@@ -97,7 +111,6 @@ app.post('/api/recipes', jsonParser, function (req, res) {
 
 app.post('/api/recipes/scrape', jsonParser, function (req, res) {
   
-
   let pyargs = 'python Recipe-Parser.py '
 
   pyargs = pyargs + "\"" + req.body.url + "\"";

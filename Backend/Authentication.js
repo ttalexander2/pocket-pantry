@@ -21,7 +21,6 @@ async function SignUp(name, email, password) {
     
 async function Login(email, password) {
     //Get the user record based on email
-
     // If user not found, throw error
 
     const correctPassword = await argon2.verify(userRecord.password, password);
