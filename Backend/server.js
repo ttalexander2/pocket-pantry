@@ -55,6 +55,7 @@ app.post('/signup', jsonParser, function (req, res) {
     const password = req.body.password;
     auth.SignUp(name, email, password);
   } catch (err){
+    console.log(err);
     res.status('500').send(err);
   }
   try {

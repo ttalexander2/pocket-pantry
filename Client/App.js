@@ -84,6 +84,7 @@ const App = (): React.ReactFragment => {
 
   const [themeName, setThemeName] = useState("light");
   const theme = themes[themeName].theme;
+
   const [logIn, setLogIn] = useState(false);
 
   const changeTheme = () => {
@@ -101,10 +102,10 @@ const App = (): React.ReactFragment => {
           !logIn
           ?
           <ImageBackground source={require("./Assets/are you feeling it now mr krabs.png")} style={styles.image}>
-              <Login />
+              <Login onLogIn={() => {setLogIn(true)}}/>
           </ImageBackground>
         :
-        <AppNavigator />
+        <AppNavigator/>
         }
 
       </ApplicationProvider>
