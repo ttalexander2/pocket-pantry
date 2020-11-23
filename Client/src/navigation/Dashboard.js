@@ -2,7 +2,6 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Layout, Card, Text, List, ListItem } from '@ui-kitten/components';
 import HomeBar from './HomeBar';
-import Header from '../modules/Header';
 
 const foodExpire = [{name: 'sushi', date: 'xx/xx'}, {name: 'nigiri', date: 'xx/xx'}, {name: 'ramen', date: 'xx/xx'}, {name: 'tempura', date: 'xx/xx'}]
 const foodFavorite = [{name: 'sushi'}, {name: 'ramen'}]
@@ -31,11 +30,16 @@ const HeaderRecipe = (props) => (
 </View>
 );
 
+
+
+
+
 const Dashboard = ({ navigation }) => {
+
     return (
         <Layout>
             <HomeBar name='Dashboard' navigation={navigation} />
-            <Text style={{paddingLeft: '24px', paddingBottom: '16px', borderBottom: '5px solid royalblue'}} category='h1'>Hello, User!</Text>
+                <Text style={{paddingLeft: '24px', paddingBottom: '16px', borderBottom: '5px solid royalblue'}} category='h1'>Hello, {}!</Text>
             <React.Fragment >
                 <Card style={styles.card, {width: '90%', margin: 'auto', marginTop: '15px', marginBottom: '15px'}} header={HeaderExpire}>
                 {
@@ -82,6 +86,8 @@ const Dashboard = ({ navigation }) => {
 }
 
 export default Dashboard;
+
+
 
 /*===========================Styles================================*/
 const styles = StyleSheet.create({

@@ -75,7 +75,6 @@ app.post('/signup', jsonParser, function (req, res) {
     {
       res.status('500').send("The server had an unknown error. Please try again later.");
     }
-
   }
   
 });
