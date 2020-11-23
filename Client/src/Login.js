@@ -204,7 +204,6 @@ const Login = (props) => {
             response.text().then(response2 => {
                 jwt.TOKEN = response2;
                 jwt.DECODED = jwt_decode(jwt.TOKEN);
-                setUserName(jwt.DECODED.user.name);
                 console.log(JSON.stringify(jwt.DECODED));
             });
             if (response.status === 200){
@@ -265,7 +264,6 @@ const Login = (props) => {
                 response.text().then(response2 => {
                     jwt.TOKEN = response2;
                     jwt.DECODED = jwt_decode(jwt.TOKEN);
-                    setUserName(jwt.DECODED.user.name);
                     console.log(JSON.stringify(jwt.DECODED));
                 });
                 if (response.status === 200){
