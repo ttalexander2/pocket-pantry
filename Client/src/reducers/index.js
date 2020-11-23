@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
-import UserInfo from './UserInfo';
+import UserData from './UserData';
+import CalendarData from './CalendarData';
 
 export default combineReducers({
-    UserInfo,
+    UserData,
+    CalendarData,
 })
