@@ -6,10 +6,10 @@ const bodyParser = require('body-parser');
 const crypto = require('crypto');
 const cors = require('cors');
 const { exec } = require('child_process');
-const auth = require('./Authentication')
 const sanitizer = require('sanitize');
+const auth = require('./Authentication');
+const exceptions = require('./Exceptions')
 
-const auth = require('./Authentication.js')
 const jsonParser = bodyParser.json();
 const app = express();
 const port = 42069;
@@ -53,16 +53,29 @@ app.post('/signup', jsonParser, function (req, res) {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
-    auth.SignUp(name, email, password);
-  } catch (err){
-    res.status('500').send(err);
-  }
-  try {
-    var jwt = auth.LogIn(email, password)
-    //send the token back
-    res.send(jwt);
-  } catch (err){
-    res.status('500').send(err);
+    auth.SignUp(name, email, password).then(token => {
+      console.log(token);
+      res.status('200').send(token);
+    })    
+    .catch(err => {
+      console.log(err);
+      if (err instanceof exceptions.AuthenticationError){
+        res.status('401').send(err.message);
+      }
+      else
+      {
+        res.status('500').send("The server had an unknown error. Please try again later.");
+      }
+    });
+  } catch (err) {
+    if (err instanceof exceptions.AuthenticationError){
+      res.status('401').send(err.message);
+    }
+    else
+    {
+      res.status('500').send("The server had an unknown error. Please try again later.");
+    }
+
   }
   
 });
@@ -71,11 +84,27 @@ app.post('/login', jsonParser, function (req, res){
   try{
     const email = req.body.email;
     const password = req.body.password;
-    var jwt = auth.LogIn(email, password)
-    //send the token back
-    res.send(jwt);
+    auth.Login(email, password).then(token => {
+      console.log(token);
+      res.status('200').send(token);
+    })
+    .catch(err => {
+      if (err instanceof exceptions.AuthenticationError){
+        res.status('401').send(err.message);
+      }
+      else
+      {
+        res.status('500').send("The server had an unknown error. Please try again later.");
+      }
+    });
   } catch (err){
-    res.status('500').send(err);
+    if (err instanceof exceptions.AuthenticationError){
+      res.status('401').send(err.message);
+    }
+    else
+    {
+      res.status('500').send("The server had an unknown error. Please try again later.");
+    }
   }
 
 });

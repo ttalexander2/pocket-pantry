@@ -1,44 +1,47 @@
 const jwt = require('jsonwebtoken');
 const db = require('./Database');
-import 'Secret.js';
+const argon2 = require('argon2');
+const secret = require('./Secret');
+const exceptions = require('./Exceptions');
 
 
 async function SignUp(name, email, password) {
 
     //store shit in database
-    var result = db.createUser(email, name, password);
-    return Login(email, password);
+    var hash = await argon2.hash(password);
+    var result = await db.createUser(email, name, hash);
+    if (result === true){
+      return  await Login(email, password); 
+    }
+    else {
+      throw new exceptions.AuthenticationError('User already exists. Please log in.')
+    }
+
 }
     
 async function Login(email, password) {
-    let res = db.Login();
-    if (res === true) {
-      return {
-        "User": {
-          "Email": email,
-          "Name": db.getName(email),
-        },
-        "Token": this.generateJWT(userRecord),
-      }
+    let res = await db.checkPassword(email, password);
+    if (res === false) {
+      throw new exceptions.AuthenticationError('Invalid Email or Password.');
+    }      
+    var userRecord = {
+        "email": email,
+        "name":  await db.getName(email),
     }
-    return false;  
+    return await generateJWT(userRecord);
 }
 
 async function AuthenticateToken(token) {
-  return jwt.verify(token, JWT_SECRET);
+  return jwt.verify(token, secret.JWT_SECRET);
 }
 
 async function generateJWT(user) {
 
-    const data =  {
-      _id: user._id,
-      name: user.name,
-      email: user.email
-    };
-    const signature = JWT_SECRET;
+
+    const signature = secret.JWT_SECRET;
     const expiration = '1h';
 
-    return jwt.sign({ data, }, signature, { expiresIn: expiration });
+    return jwt.sign({ user, }, signature, { expiresIn: expiration });
 }
 
 module.exports = { Login, SignUp }
