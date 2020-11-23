@@ -2,10 +2,13 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Layout, Card, Text, List, ListItem } from '@ui-kitten/components';
 import HomeBar from './HomeBar';
+import jwtDecode from 'jwt-decode';
+import * as jwt from '../JWT';
+import { connect, useSelector } from 'react-redux';
 
-const foodExpire = [{name: 'sushi', date: 'xx/xx'}, {name: 'nigiri', date: 'xx/xx'}, {name: 'ramen', date: 'xx/xx'}, {name: 'tempura', date: 'xx/xx'}]
-const foodFavorite = [{name: 'sushi'}, {name: 'ramen'}]
-const foodRecipe = [{name: 'sushi'}]
+export var foodExpire = [{name: 'sushi', date: 'xx/xx'}, {name: 'nigiri', date: 'xx/xx'}, {name: 'ramen', date: 'xx/xx'}, {name: 'tempura', date: 'xx/xx'}]
+export var foodFavorite = [{name: 'sushi'}, {name: 'ramen'}]
+export var foodRecipe = [{name: 'sushi'}]
 
 
 const HeaderExpire = (props) => (
@@ -32,14 +35,14 @@ const HeaderRecipe = (props) => (
 
 
 
+const Dashboard = (props) => {
 
-
-const Dashboard = ({ navigation }) => {
+    const username = useSelector(state => state.UserInfo.username);
 
     return (
-        <Layout>
-            <HomeBar name='Dashboard' navigation={navigation} />
-                <Text style={{paddingLeft: '24px', paddingBottom: '16px', borderBottom: '5px solid royalblue'}} category='h1'>Hello, {}!</Text>
+        <Layout >
+            <HomeBar name='Dashboard' navigation={props.navigation} />
+                <Text style={{paddingLeft: '24px', paddingBottom: '16px', borderBottom: '5px solid royalblue'}} category='h1'>Hello, {username}!</Text>
             <React.Fragment >
                 <Card style={styles.card, {width: '90%', margin: 'auto', marginTop: '15px', marginBottom: '15px'}} header={HeaderExpire}>
                 {
@@ -83,10 +86,9 @@ const Dashboard = ({ navigation }) => {
             </React.Fragment>
         </Layout>
     );
-}
+};
 
-export default Dashboard;
-
+export default connect()(Dashboard);
 
 
 /*===========================Styles================================*/

@@ -8,6 +8,7 @@ import Pantry from './navigation/Pantry.js';
 import CalendarView from './navigation/Calendar.js';
 import Cookbook from './navigation/Cookbook.js';
 import GroceryList from './navigation/GroceryList.js';
+import { PropsService } from '@ui-kitten/components/devsupport';
 
 const {Navigator, Screen } = createDrawerNavigator();
 
@@ -23,9 +24,9 @@ const DrawerContent = ({ navigation, state }) => (
   </Drawer>
 );
 
-const AppNavigator = () => (
-  <NavigationContainer>
-      <Navigator style={{backgroundColor: 'blue'}}drawerContent={props => <DrawerContent {...props}/>}>
+const AppNavigator = (props) => (
+  <NavigationContainer >
+      <Navigator style={{backgroundColor: 'blue'}} drawerContent={props => <DrawerContent {...props}/>}>
         <Screen name='Dashboard' component={Dashboard}/>
         <Screen name='Pantry' component={Pantry}/>
         <Screen name='Calendar' component={CalendarView}/>

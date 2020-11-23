@@ -20,10 +20,12 @@ import {
 from "@ui-kitten/components";
 import { EvaIconsPack } from "@ui-kitten/eva-icons";
 import { mapping, light, dark } from "@eva-design/eva";
-import AppNavigator from './src/Navigation';
 import Login from './src/Login.js';
 import * as eva from '@eva-design/eva';
 import { default as theme } from './theme.json';
+import AppNavigator from './src/Navigation';
+import Store from './src/Store';
+import { Provider } from 'react-redux';
 
 const themes = {
   light: {
@@ -95,21 +97,21 @@ const App = (): React.ReactFragment => {
     themeName === "light" ? themes.dark : themes.light;
 
   return (
-    <>
+    <Provider store={Store}>
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
         {
           !logIn
           ?
           <ImageBackground source={require("./Assets/are you feeling it now mr krabs.png")} style={styles.image}>
-              <Login onLogIn={() => {setLogIn(true)}}/>
+              <Login onLogIn={() => {setLogIn(true)}} />
           </ImageBackground>
         :
         <AppNavigator/>
         }
 
       </ApplicationProvider>
-    </>
+    </ Provider>
   );
 };
 
