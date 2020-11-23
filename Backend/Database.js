@@ -2,6 +2,7 @@ const argon2 = require('argon2');
 const util = require('util');
 const mariadb = require('mariadb');
 const exceptions = require('./Exceptions');
+const { strict } = require('assert');
 
 
 const pool = mariadb.createPool({
@@ -75,13 +76,77 @@ async function getName(email) {
   }
 }
 
+async function getID(email) {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    var res = await conn.query("USE pantry")
+
+    res = await conn.query("SELECT userid FROM usertable WHERE email='" + email +"'")
+    if (res.length > 0) {
+      return int(res[0].name);
+    }
+    else {
+      return "";
+    }
+  } catch (err) {
+    return ""
+  } finally {
+    if (conn) conn.release();
+  }
+}
+
+async function getCurrentMeals(email) {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    var res = await conn.query("USE pantry")
+
+    res = getID(email)
+
+    res = await conn.query("SELECT name, portions, dateofcreation FROM meals WHERE id=" + res)
+    if (res.length > 0) {
+      return res;
+    }
+    else {
+      return "";
+    }
+  } catch (err) {
+    return ""
+  } finally {
+    if (conn) conn.release();
+  }
+}
+
+async function getCurrentIngredients(email) {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    var res = await conn.query("USE pantry")
+
+    res = getID(email)
+
+    res = await conn.query("SELECT name, amount, unitofamount, expirationdate FROM ingredients WHERE id=" + res)
+    if (res.length > 0) {
+      return res;
+    }
+    else {
+      return "";
+    }
+  } catch (err) {
+    return ""
+  } finally {
+    if (conn) conn.release();
+  }
+}
+
 async function insertFDAInfo(upc, name, brand, expiration) {
     let conn;
     try {
       conn = await pool.getConnection();
       var res = await conn.query("USE pantry");
       
-      res = await conn.query("INSERT INTO FDARecommendations value (?, ?, ?, ?)", [upc, name, brand, expiration]);
+      res = await conn.query("INSERT INTO FDARecommendations (upc, name, brand, timetillexpiration) value (?, ?, ?, ?)", [upc, name, brand, expiration]);
       
     } catch (err) {
       throw new exceptions.DatabaseError("The server had an unknown error.");
@@ -105,13 +170,15 @@ async function insertFDAInfo(upc, name, brand, expiration) {
     }
   }
   
-  async function insertIngredientInfo(upc, name, brand, amount, unitOfAmount, expiration, datePurchased) {
+  async function insertIngredientInfo(email, upc, name, brand, amount, unitOfAmount, expiration, datePurchased) {
     let conn;
     try {
       conn = await pool.getConnection();
       var res = await conn.query("USE pantry");
+
+      res = getID(email)
       
-      res = await conn.query("INSERT INTO Ingredients(upc,name,brand,amount,unitOfAmount,expirationDate,dateOfPurchase) value (?, ?, ?, ?, ?, ?, ?)", [upc, name, brand, amount, unitOfAmount, expiration, datePurchased]);
+      res = await conn.query("INSERT INTO Ingredients(userid,upc,name,brand,amount,unitOfAmount,expirationDate,dateOfPurchase) value (?, ?, ?, ?, ?, ?, ?)", [res, upc, name, brand, amount, unitOfAmount, expiration, datePurchased]);
       
     } catch (err) {
       throw new exceptions.DatabaseError("The server had an unknown error.");
@@ -135,13 +202,15 @@ async function insertFDAInfo(upc, name, brand, expiration) {
     }
   }
   
-  async function insertMealInfo(name, portions, dateOfCreation) {
+  async function insertMealInfo(email, name, portions, dateOfCreation) {
     let conn;
     try {
       conn = await pool.getConnection();
       var res = await conn.query("USE pantry");
       
-      res = await conn.query("INSERT INTO Meals(name,portions,dateOfCreation) value (?, ?, ?)", [name, portions, dateOfCreation]);
+      res = getID(email);
+
+      res = await conn.query("INSERT INTO Meals (userid,name,portions,dateOfCreation) value (?, ?, ?)", [res, name, portions, dateOfCreation]);
       
     } catch (err) {
       throw new exceptions.DatabaseError("The server had an unknown error.");
