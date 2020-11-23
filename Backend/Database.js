@@ -1,6 +1,9 @@
-const argon2 = require('argon2')
-
+const argon2 = require('argon2');
+const util = require('util');
 const mariadb = require('mariadb');
+const exceptions = require('./Exceptions');
+
+
 const pool = mariadb.createPool({
     host: 'localhost',
     user: 'admin',
@@ -13,16 +16,16 @@ async function createUser(email, name, password) {
   let result = false;
   try {
     conn = await pool.getConnection();
-    const res = await conn.query("USE pantry")
+    var res = await conn.query("USE pantry")
 
     res = await conn.query("SELECT userid FROM usertable WHERE email='" + email + "'");
 
-    if (res == "") {
-      res = await conn.query("INSERT INTO usertable value (?, ?, ?, ?)", ["", email, name, argon2.hash(password)]);
+    if (res.length === 0) {
+      res = await conn.query("INSERT INTO usertable (email, name, password) VALUES (?, ?, ?)", [email, name, password]);
       result = true;
     }
   } catch (err) {
-    console.log(err)
+    throw new exceptions.DatabaseError("The server had an unknown error.");
   } finally {
     if (conn) conn.release();
     return result;
@@ -33,12 +36,20 @@ async function checkPassword(email, password) {
   let conn;
   try {
     conn = await pool.getConnection();
-    const res = await conn.query("USE pantry")
+    var res = await conn.query("USE pantry")
 
     res = await conn.query("SELECT password FROM usertable WHERE email='" + email +"'")
-    return argon2.verify(res, password)
+
+    if (res.length === 0) {
+      console.log("No user in database with email: " + email);
+      return false;
+    }
+    if (await argon2.verify(res[0].password, password)){
+      return true;
+    }
+    return false;
   } catch (err) {
-    console.log(err)
+    throw new exceptions.DatabaseError("The server had an unknown error.");
   } finally {
     if (conn) conn.release();
   }
@@ -48,12 +59,16 @@ async function getName(email) {
   let conn;
   try {
     conn = await pool.getConnection();
-    const res = await conn.query("USE pantry")
+    var res = await conn.query("USE pantry")
 
     res = await conn.query("SELECT name FROM usertable WHERE email='" + email +"'")
-    return res;
+    if (res.length > 0) {
+      return res[0].name;
+    }
+    else {
+      return "";
+    }
   } catch (err) {
-    console.log(err)
     return ""
   } finally {
     if (conn) conn.release();
@@ -64,12 +79,12 @@ async function insertFDAInfo(upc, name, brand, expiration) {
     let conn;
     try {
       conn = await pool.getConnection();
-      const res = await conn.query("USE pantry");
+      var res = await conn.query("USE pantry");
       
       res = await conn.query("INSERT INTO FDARecommendations value (?, ?, ?, ?)", [upc, name, brand, expiration]);
       
     } catch (err) {
-      console.log(err);
+      throw new exceptions.DatabaseError("The server had an unknown error.");
     } finally {
       if (conn) conn.release();
     }
@@ -79,12 +94,12 @@ async function insertFDAInfo(upc, name, brand, expiration) {
     let conn;
     try {
       conn = await pool.getConnection();
-      const res = await conn.query("USE pantry");
+      var res = await conn.query("USE pantry");
       
       res = await conn.query("DELETE FROM FDARecommendations WHERE upc='" + upc + "'");
       
     } catch (err) {
-      console.log(err);
+      throw new exceptions.DatabaseError("The server had an unknown error.");
     } finally {
       if (conn) conn.release();
     }
@@ -94,12 +109,12 @@ async function insertFDAInfo(upc, name, brand, expiration) {
     let conn;
     try {
       conn = await pool.getConnection();
-      const res = await conn.query("USE pantry");
+      var res = await conn.query("USE pantry");
       
       res = await conn.query("INSERT INTO Ingredients(upc,name,brand,amount,unitOfAmount,expirationDate,dateOfPurchase) value (?, ?, ?, ?, ?, ?, ?)", [upc, name, brand, amount, unitOfAmount, expiration, datePurchased]);
       
     } catch (err) {
-      console.log(err);
+      throw new exceptions.DatabaseError("The server had an unknown error.");
     } finally {
       if (conn) conn.release();
     }
@@ -109,12 +124,12 @@ async function insertFDAInfo(upc, name, brand, expiration) {
     let conn;
     try {
       conn = await pool.getConnection();
-      const res = await conn.query("USE pantry");
+      var res = await conn.query("USE pantry");
       
       res = await conn.query("DELETE FROM Ingredients WHERE upc='" + upc + "'");
       
     } catch (err) {
-      console.log(err);
+      throw new exceptions.DatabaseError("The server had an unknown error.");
     } finally {
       if (conn) conn.release();
     }
@@ -124,12 +139,12 @@ async function insertFDAInfo(upc, name, brand, expiration) {
     let conn;
     try {
       conn = await pool.getConnection();
-      const res = await conn.query("USE pantry");
+      var res = await conn.query("USE pantry");
       
       res = await conn.query("INSERT INTO Meals(name,portions,dateOfCreation) value (?, ?, ?)", [name, portions, dateOfCreation]);
       
     } catch (err) {
-      console.log(err);
+      throw new exceptions.DatabaseError("The server had an unknown error.");
     } finally {
       if (conn) conn.release();
     }
@@ -139,12 +154,12 @@ async function insertFDAInfo(upc, name, brand, expiration) {
     let conn;
     try {
       conn = await pool.getConnection();
-      const res = await conn.query("USE pantry");
+      var res = await conn.query("USE pantry");
       
       res = await conn.query("DELETE FROM Meals WHERE name='" + name + "'");
      
     } catch (err) {
-      console.log(err);
+      throw new exceptions.DatabaseError("The server had an unknown error.");
     } finally {
       if (conn) conn.release();
     }
@@ -157,5 +172,8 @@ async function insertFDAInfo(upc, name, brand, expiration) {
     insertIngredientInfo,
     deleteIngredientInfo,
     insertMealInfo,
-    deleteMealInfo
+    deleteMealInfo,
+    createUser,
+    checkPassword,
+    getName
   }
