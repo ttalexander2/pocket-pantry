@@ -38,7 +38,7 @@ app.use(cors(corsOptions));
 
 // Once client is built in production
 app.get('/', (_req, res) => {
-    res.sendFile(path.join(__dirname + '../Client/web-build/index.html'), function (err) {
+    res.sendFile(path.join(__dirname + './web-build/index.html'), function (err) {
       if (err) {
         res.status(500).send(err)
       }
