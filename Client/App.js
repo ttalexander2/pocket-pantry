@@ -103,7 +103,7 @@ const App = (): React.ReactFragment => {
         {
           !logIn
           ?
-          <ImageBackground source={require("./Assets/are you feeling it now mr krabs.png")} style={styles.image}>
+          <ImageBackground source={require("./assets/are you feeling it now mr krabs.png")} style={styles.image}>
               <Login onLogIn={() => {setLogIn(true)}} />
           </ImageBackground>
         :
