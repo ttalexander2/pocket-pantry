@@ -44,4 +44,4 @@ async function generateJWT(user) {
     return jwt.sign({ user, }, signature, { expiresIn: expiration });
 }
 
-module.exports = { Login, SignUp }
+module.exports = { Login, SignUp, AuthenticateToken }

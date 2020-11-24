@@ -45,8 +45,6 @@ app.get('/', (_req, res) => {
     });
 })
 
-
-
 app.post('/signup', jsonParser, function (req, res) {
 
   try {
@@ -108,6 +106,36 @@ app.post('/login', jsonParser, function (req, res){
 
 });
 
+app.post('/api/userdata', jsonParser, function (req, res) {
+  try{
+    const token = req.body.token;
+    auth.AuthenticateToken(token).then(result => {
+      db.getCurrentIngredients(result.user.email).then((dbResult) => {
+          res.status('200').send(JSON.stringify(dbResult));
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      if (err instanceof exceptions.AuthenticationError){
+        res.status('401').send(err.message);
+      }
+      else
+      {
+        res.status('500').send("The server had an unknown error. Please try again later.");
+      }
+    });
+  } catch (err) {
+    if (err instanceof exceptions.AuthenticationError){
+      res.status('401').send(err.message);
+    }
+    else
+    {
+      res.status('500').send("The server had an unknown error. Please try again later.");
+    }
+  }
+
+});
+
 app.post('/api/recipes', jsonParser, function (req, res) {
 
 
@@ -140,7 +168,7 @@ app.post('/api/recipes', jsonParser, function (req, res) {
 
 app.post('/api/recipes/scrape', jsonParser, function (req, res) {
   
-  let pyargs = 'python Recipe-Parser.py '
+  let pyargs = 'python3 Recipe-Parser.py '
 
   pyargs = pyargs + "\"" + req.body.url + "\"";
 
