@@ -1,7 +1,7 @@
 self.__precacheManifest = [
   {
-    "revision": "989e30b87dc242cfaca2",
-    "url": "/static/js/app.ef8d049b.chunk.js"
+    "revision": "bc9fd51db77b07ee3ba0",
+    "url": "/static/js/app.d66fb230.chunk.js"
   },
   {
     "revision": "66090dc4495d4ce3dfb9",
@@ -16,7 +16,7 @@ self.__precacheManifest = [
     "url": "/static/media/are you feeling it now mr krabs.0937fa4e.png"
   },
   {
-    "revision": "e14fb6f0ec420d2bf7155bdf169699a5",
+    "revision": "44f4bbc042bd0254b774fee8af55cd9d",
     "url": "/index.html"
   },
   {
