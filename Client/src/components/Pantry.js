@@ -1,18 +1,8 @@
 import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
-import { Layout, Text, Card, Button } from '@ui-kitten/components';
+import { Layout, Text, Card, Button, ListItem, List } from '@ui-kitten/components';
 import HomeBar from './HomeBar';
-
-const list = [
-  {
-    name: 'Rice',
-    subtitle: '120 Grains'
-  },
-  {
-    name: 'Pasta',
-    subtitle: '232 Shells'
-  }
-]
+import { connect, useSelector } from 'react-redux';
 
 const Header = (props) => (
   <View {...props} >
@@ -33,40 +23,49 @@ const Header = (props) => (
   </View>
 );
 
-export default class Pantry extends React.Component {
+const Pantry = (props) => {
 
-  render(){
-    return(
-      <Layout>
-        <HomeBar name='Pantry' navigation={this.props.navigation}/>
-        <React.Fragment>
-          <Card style={styles.card} header={Header}>
-          {
-            list.map((u) => {
-                return (
-                  <ul style={{margin: '0', padding: '0',  listStyle: "circle"}}>
-                    <li style={{width: '100%'}}>
-                    <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                      <div style={{display: 'flex'}}>
-                        <Text style={{fontSize: '22px'}}> {u.name}:</Text>
-                      </div>
-                      <div style={{display: 'flex'}}>
-                        <Text style={{fontSize: '22px'}}> {u.subtitle}</Text>
-                      </div>
-                    </div>
-                    </li>
-                  </ul>
-                  );
-            })
-          }
-          </Card>
-        </React.Fragment>
+  const ingredients = useSelector(state => state.PantryData.ingredients);
 
+  const renderItem = ({ item, index }) => (
+    <View style={{alignSelf: 'stretch'}}>
+      <Card style={styles.card}
+      header={(headerProps) => {   
+        return(
+          <Text style={styles.margin} category='h6'>
+          {item.name}
+          </Text>
+        )  
+
+      }}
+      >
+        <Text style={styles.margin}>
+          {<Text style={styles.margin}>{`Amount: ${item.amount} ${item.unit}\tExpires: ${item.expiration}`}</Text>}
+        </Text>
+      </Card>
+    </View>
+  );
+
+  return(
+    <Layout>
+      <HomeBar name='Pantry' navigation={props.navigation}/>
+      <React.Fragment>
+        <Card style={styles.card} header={Header}>
+        {
+          <List
+            data={ingredients}
+            renderItem={renderItem}
+          />
+        }
+        </Card>
+      </React.Fragment>
     </Layout>
-    )
-  }
+  )
 
-};
+}
+
+
+export default connect()(Pantry);
 
 /*===========================Styles================================*/
 const styles = StyleSheet.create({
@@ -78,5 +77,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  margin: {
+    margin: 2,
   },
 });

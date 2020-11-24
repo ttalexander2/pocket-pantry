@@ -24,7 +24,7 @@ import Login from './src/Login.js';
 import * as eva from '@eva-design/eva';
 import { default as theme } from './theme.json';
 import AppNavigator from './src/Navigation';
-import Store from './src/Store';
+import Store from './src/store';
 import { Provider } from 'react-redux';
 
 const themes = {

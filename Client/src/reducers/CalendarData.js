@@ -12,4 +12,5 @@ const CalendarData = (state = initialState, action) => {
             return state;
     }
 }
+
 export default CalendarData;
