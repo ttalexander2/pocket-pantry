@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
-import { Layout, Text, Card, Button } from '@ui-kitten/components';
+import { Layout, Text, Card, Button, ListItem, List, Icon } from '@ui-kitten/components';
 import HomeBar from './HomeBar';
+import { connect, useSelector } from 'react-redux';
 
 const list = [
   {
@@ -15,54 +16,86 @@ const list = [
 ]
 
 const Header = (props) => (
-  <View {...props} >
-    <div style={{display: 'flex', justifyContent: 'space-between'}}>
+  <View {...props}>
+    <div style={{display: 'flex', justifyContent: 'space-between', margin: 15}}>
       <Text category='h1'>Grocery List</Text>
       <div style={{display: 'flex'}}>
-        <Button style={{paddingBottom: '15px', marginLeft: '15px'  }} title="Add an Item"  onPress={() => { }}>
-          Add an Item
-        </Button>
-        <Button style={{paddingBottom: '15px', marginLeft: '15px'  }} title="Update an Item"  onPress={() => { }}>
-          Update an Item
-        </Button>
-        <Button style={{paddingBottom: '15px', marginLeft: '15px'  }} title="Remove an Item"  onPress={() => { }}>
-          Remove an Item
-        </Button>
+      <Button style={{paddingBottom: '15px', marginLeft: '10px'  }} onPress={() => { }}
+        appearance='outline'
+        accessoryLeft={renderAddIcon}
+        onPress={() => props.dispatch({type: 'SET_EDITING', editing:true})}
+      />
+
       </div>
     </div>
   </View>
 );
 
-export default class GroceryList extends React.Component {
+const renderAddIcon = (props) => (
+  <Icon {...props}
+  name='plus-outline'
+  />
+);
 
-  render(){
+
+
+const GroceryList = (props) => {
+
+  const renderDeleteIcon = (props) => (
+    <Icon {...props}
+    name='trash-2-outline'
+    />
+  );
+  
+  const renderEditIcon = (props) => (
+    <Icon {...props}
+    name='edit-outline'
+    />
+  );
+  
+  
+  const renderItem = ({ item, index }) => (
+    <View>
+      <ListItem
+      >
+      <View appearance='outline' style={{ flex: 1, alignSelf: 'stretch', flexDirection: 'row', marginLeft: 5, marginRight: 5, justifyContent: 'center',
+      alignItems: 'center' }}>
+        <Text style={{ flex: 1, alignSelf: 'center' }}>
+          {item.name}
+        </Text>
+    
+        <Button style={styles.icon} appearance='outline'
+        accessoryLeft={renderEditIcon}
+        />
+        <Button style={styles.icon} appearance='outline'
+        accessoryLeft={renderDeleteIcon}
+        />
+      </View>   
+      </ListItem>
+  
+    </View>
+  
+  );
+
+  
     return(
       <Layout>
-        <HomeBar name='Groceries' navigation={this.props.navigation}/>
-        <React.Fragment>
-          <Card style={styles.card} header={Header}>
-          {
-            list.map((u) => {
-                return (
-                  <ul style={{margin: '0', padding: '0',  listStyle: "circle"}}>
-                    <li style={{width: '100%'}}>
-                    <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                      <div style={{fontSize: '22px', display: 'flex'}}>{u.name}:</div>
-                      <div style={{fontSize: '22px', display: 'flex'}}>{u.subtitle}</div>
-                    </div>
-                    </li>
-                  </ul>
-                  );
-            })
-          }
-          </Card>
-        </React.Fragment>
+      <HomeBar name='Grocery List' navigation={props.navigation} style={styles.homebar}/>
+      <React.Fragment>
+        <Card style={styles.card} header={(headerProps) => {return(Header(props))}}>
 
+          <List
+            data={list}
+            renderItem={renderItem}
+          />        
+
+        </Card>
+      </React.Fragment>
     </Layout>
     )
   }
 
-};
+export default connect()(GroceryList);
 
 /*===========================Styles================================*/
 const styles = StyleSheet.create({

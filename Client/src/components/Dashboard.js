@@ -6,9 +6,9 @@ import jwtDecode from 'jwt-decode';
 import * as jwt from '../JWT';
 import { connect, useSelector } from 'react-redux';
 
-export var foodExpire = [{name: 'sushi', date: 'xx/xx'}, {name: 'nigiri', date: 'xx/xx'}, {name: 'ramen', date: 'xx/xx'}, {name: 'tempura', date: 'xx/xx'}]
-export var foodFavorite = [{name: 'sushi'}, {name: 'ramen'}]
-export var foodRecipe = [{name: 'sushi'}]
+export var foodExpire = []
+export var foodFavorite = []
+export var foodRecipe = []
 
 
 const HeaderExpire = (props) => (
@@ -58,7 +58,7 @@ const AboutToExpire = (expireData) => {
 const Dashboard = (props) => {
 
     const username = useSelector(state => state.UserData.username);
-    const expireData = useSelector(state => state.CalendarData.expiration);
+    const expireData = useSelector(state => state.PantryData.ingredients);
 
     return (
         <Layout >
