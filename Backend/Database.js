@@ -105,7 +105,7 @@ async function getCurrentMeals(email) {
 
     res = await getID(email)
 
-    res = await conn.query("SELECT id, name, portions, dateofcreation FROM meals WHERE userid=" + res)
+    res = await conn.query("SELECT * FROM meals WHERE userid=" + res)
     if (res.length > 0) {
       return res[0].id;
     }
@@ -127,7 +127,31 @@ async function getCurrentIngredients(email) {
 
     res = await getID(email);
 
-    res = await conn.query("SELECT id, name, brand, amount, unitofamount, expirationdate, dateofpurchase FROM ingredients WHERE userid=" + res);
+    res = await conn.query("SELECT * FROM ingredients WHERE userid=" + res);
+
+    if (res.length > 0) {
+      return res;
+    }
+    else {
+      return "";
+    }
+  } catch (err) {
+    console.log(err);
+    return ""
+  } finally {
+    if (conn) conn.release();
+  }
+}
+
+async function getGroceryList(email) {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    var res = await conn.query("USE pantry")
+
+    res = await getID(email);
+
+    res = await conn.query("SELECT * FROM groceryList WHERE userid=" + res);
 
     if (res.length > 0) {
       return res;
@@ -189,15 +213,81 @@ async function insertFDAInfo(upc, name, brand, expiration) {
     } finally {
       if (conn) conn.release();
     }
-  }
-  
-  async function deleteIngredientInfo(upc) {
+  }  
+
+  async function updateIngredientInfo(id, email, name, brand, amount, unitOfAmount, expiration, datePurchased) {
     let conn;
     try {
       conn = await pool.getConnection();
       var res = await conn.query("USE pantry");
+
+      res = await getID(email);
+      res = await conn.query(("UPDATE ingredients SET (name=?,brand=?,amount=?,unitOfAmount=?,expirationDate=?,dateOfPurchase=?) WHERE id='" + id + "' AND userid='" + res + "'"), [name, brand, amount, unitOfAmount, expiration, datePurchased]);
+    
+    } catch (err) {
+      console.log(err);
+      throw new exceptions.DatabaseError("The server had an unknown error.");
+    } finally {
+      if (conn) conn.release();
+    }
+  }  
+  
+  async function deleteIngredientInfo(id, email) {
+    let conn;
+    try {
+      conn = await pool.getConnection();
+      var res = await conn.query("USE pantry");
+      res = await getID(email);
+      res = await conn.query("DELETE FROM Ingredients WHERE id='" + id + "' AND userid='" + res + "'");
       
-      res = await conn.query("DELETE FROM Ingredients WHERE upc='" + upc + "'");
+    } catch (err) {
+      throw new exceptions.DatabaseError("The server had an unknown error.");
+    } finally {
+      if (conn) conn.release();
+    }
+  }
+
+  async function insertGroceryListInfo(email, name, amount, unitOfAmount) {
+    let conn;
+    try {
+      conn = await pool.getConnection();
+      var res = await conn.query("USE pantry");
+
+      res = await getID(email);
+      res = await conn.query("INSERT INTO groceryList (userid, name, amount, unitOfAmount) value (?, ?, ?, ?)", [res, name, amount, unitOfAmount]);
+      
+    } catch (err) {
+      console.log(err);
+      throw new exceptions.DatabaseError("The server had an unknown error.");
+    } finally {
+      if (conn) conn.release();
+    }
+  }
+
+  async function updateGroceryListInfo(id, email, name, amount, unitOfAmount) {
+    let conn;
+    try {
+      conn = await pool.getConnection();
+      var res = await conn.query("USE pantry");
+
+      res = await getID(email);
+      res = await conn.query(("UPDATE groceryList SET (name=?,amount=?,unitOfAmount=?) WHERE id='" + id + "' AND userid='" + res + "'"), [name, amount, unitOfAmount]);
+      
+    } catch (err) {
+      console.log(err);
+      throw new exceptions.DatabaseError("The server had an unknown error.");
+    } finally {
+      if (conn) conn.release();
+    }
+  }  
+
+  async function deleteGroceryListInfo(id, email) {
+    let conn;
+    try {
+      conn = await pool.getConnection();
+      var res = await conn.query("USE pantry");
+      res = await getID(email);
+      res = await conn.query("DELETE FROM groceryList WHERE id='" + id + "' AND userid='" + res + "'");
       
     } catch (err) {
       throw new exceptions.DatabaseError("The server had an unknown error.");
@@ -223,13 +313,31 @@ async function insertFDAInfo(upc, name, brand, expiration) {
     }
   }
   
-  async function deleteMealInfo(name) {
+  
+  async function updateMealInfo(id, email, name, portions, dateOfCreation) {
     let conn;
     try {
       conn = await pool.getConnection();
       var res = await conn.query("USE pantry");
+
+      res = await getID(email);
+      res = await conn.query(("UPDATE Meals SET (name=?,portions=?,dateOfCreation=?) WHERE id='" + id + "' AND userid='" + res + "'"), [name, portions, dateOfCreation]);
       
-      res = await conn.query("DELETE FROM Meals WHERE name='" + name + "'");
+    } catch (err) {
+      console.log(err);
+      throw new exceptions.DatabaseError("The server had an unknown error.");
+    } finally {
+      if (conn) conn.release();
+    }
+  }  
+
+  async function deleteMealInfo(id, email) {
+    let conn;
+    try {
+      conn = await pool.getConnection();
+      var res = await conn.query("USE pantry");
+      res = await getID(email);
+      res = await conn.query("DELETE FROM Meals WHERE id='" + id + "' AND userid='" + res + "'");
      
     } catch (err) {
       throw new exceptions.DatabaseError("The server had an unknown error.");
@@ -240,15 +348,22 @@ async function insertFDAInfo(upc, name, brand, expiration) {
 
 
   module.exports = {
-    insertFDAInfo,
-    deleteFDAInfo,
-    insertIngredientInfo,
-    deleteIngredientInfo,
-    insertMealInfo,
-    deleteMealInfo,
     createUser,
     checkPassword,
     getName,
+    getID,
+    getCurrentMeals,
     getCurrentIngredients,
-    insertIngredientInfo
-  }
+    getGroceryList,
+    insertFDAInfo,
+    deleteFDAInfo,
+    insertIngredientInfo,
+    updateIngredientInfo,
+    deleteIngredientInfo,
+    insertGroceryListInfo,
+    updateGroceryListInfo,
+    deleteGroceryListInfo,
+    insertMealInfo,
+    updateMealInfo,
+    deleteMealInfo
+    }
