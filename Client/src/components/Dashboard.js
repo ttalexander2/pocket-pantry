@@ -3,7 +3,6 @@ import { StyleSheet, View } from 'react-native';
 import { Layout, Card, Text, List, ListItem } from '@ui-kitten/components';
 import HomeBar from './HomeBar';
 import jwtDecode from 'jwt-decode';
-import * as jwt from '../JWT';
 import { connect, useSelector } from 'react-redux';
 
 export var foodExpire = []

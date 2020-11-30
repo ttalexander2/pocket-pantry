@@ -31,6 +31,7 @@ const Pantry = (props) => {
 
   const ingredients = useSelector(state => state.PantryData.ingredients);
   const editing = useSelector(state => state.PantryEditData.editing);
+  const token = useSelector(state => state.UserData.token);
 
   const renderDeleteIcon = (props) => (
     <Icon {...props}
@@ -44,10 +45,18 @@ const Pantry = (props) => {
     />
   );
 
-  const renderItem = ({ item, index }) => (
+  const renderItem = (renderProps, props, token) => {
+
+    let item = renderProps.item;
+    let index = renderProps.index;
+
+    if (item == undefined || item == null){
+      return;
+    }
+
+    return(
     <View>
-      <ListItem
-      >
+      <ListItem>
       <View appearance='outline' style={{ flex: 1, alignSelf: 'stretch', flexDirection: 'row', marginLeft: 5, marginRight: 5, justifyContent: 'center',
       alignItems: 'center' }}>
         <Text style={{ flex: 1, alignSelf: 'center' }}>
@@ -67,16 +76,46 @@ const Pantry = (props) => {
         </Text>
         <Button style={styles.icon} appearance='outline'
         accessoryLeft={renderEditIcon}
+        onPress={() => {
+        }}
         />
         <Button style={styles.icon} appearance='outline'
         accessoryLeft={renderDeleteIcon}
+        onPress={() => {
+
+          let data = {
+            token: token,
+            id: item.id
+          }
+
+          var myHeaders = new Headers();
+          myHeaders.append("Content-Type", "application/json");
+          myHeaders.append('Access-Control-Allow-Origin', '*');
+
+          let requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: JSON.stringify(data),
+            redirect: 'follow'
+          };
+
+
+          fetch("https://pocketpantry.app/api/delete/pantry", requestOptions)
+          .then((response) => {
+              if (response.status === 200) {
+                //retrieve data from server
+              }
+          })
+          .then(result => {})
+          .catch(error => console.log('error', error))
+        }}
         />
       </View>   
       </ListItem>
 
     </View>
-
-  );
+    );
+  };
 
   return(
     editing
@@ -111,7 +150,7 @@ const Pantry = (props) => {
           </View>
           <List
             data={ingredients}
-            renderItem={renderItem}
+            renderItem={(renderProps) => {return renderItem(renderProps, props, token);}}
           />        
           </View>
 

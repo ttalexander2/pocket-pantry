@@ -84,17 +84,31 @@ const initialState = {
 }
 
 const PantryData = (state = initialState, action) => {
+    let res = {}
     switch(action.type){
         case "SET_INGREDIENT_DATA":
-            let res = {
-                ingredients: action.ingredients,
+            res = {
+                ingredients: [...action.ingredients],
                 meals: state.meals,
             }
             for (let i = 0; i < res.ingredients.length; i ++){
                 res.ingredients[i].expirationdate = new Date(res.ingredients[i].expirationdate);
                 res.ingredients[i].dateofpurchase = new Date(res.ingredients[i].dateofpurchase);
             }
+            res.ingredients = [...res.ingredients]
             return (res);
+        case "DELETE_INGREDIENT":
+            res = {
+                ...state,
+            }
+            for (let i = 0; i < res.ingredients.length + 1; i ++){
+                if (res.ingredients[i].id === action.id){
+                    res.ingredients.splice(i, 1);
+                    res.ingredients = [...res.ingredients]
+                    return Object.assign({}, res);
+                }
+            }
+            return (state);
         default:
             return state;
     }

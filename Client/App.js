@@ -20,10 +20,10 @@ import {
 from "@ui-kitten/components";
 import { EvaIconsPack } from "@ui-kitten/eva-icons";
 import { mapping, light, dark } from "@eva-design/eva";
-import Login from './src/Login.js';
+import Login from './src/components/Login.js';
 import * as eva from '@eva-design/eva';
 import { default as theme } from './theme.json';
-import AppNavigator from './src/Navigation';
+import AppNavigator from './src/components/Navigation';
 import Store from './src/store';
 import { Provider } from 'react-redux';
 
