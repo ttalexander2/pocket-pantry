@@ -13,7 +13,7 @@ const Header = (props) => (
       <Button style={{paddingBottom: '15px', marginLeft: '10px'  }} onPress={() => { }}
         appearance='outline'
         accessoryLeft={renderAddIcon}
-        onPress={() => props.dispatch({type: 'SET_EDITING', editing:true})}
+        onPress={() => {props.dispatch({type: 'SET_ACTIVE', active:true}); props.dispatch({type: 'SET_EDITING', edit:false});}}
       />
 
       </div>
@@ -30,7 +30,7 @@ const renderAddIcon = (props) => (
 const Pantry = (props) => {
 
   const ingredients = useSelector(state => state.PantryData.ingredients);
-  const editing = useSelector(state => state.PantryEditData.editing);
+  const active = useSelector(state => state.PantryEditData.active);
   const token = useSelector(state => state.UserData.token);
 
   const renderDeleteIcon = (props) => (
@@ -76,7 +76,18 @@ const Pantry = (props) => {
         </Text>
         <Button style={styles.icon} appearance='outline'
         accessoryLeft={renderEditIcon}
-        onPress={() => {
+        onPress={() =>{ 
+          props.dispatch({type: 'SET_EDIT_ITEM', item: {
+            id: item.id,
+            name: item.name, 
+            brand: item.brand,
+            amount: item.amount,
+            unitOfAmount: item.unitOfAmount,
+            expirationDate: item.expirationDate,
+            dateOfPurchase: item.dateOfPurchase,
+          }});
+          props.dispatch({type: 'SET_EDITING', editing:true});
+          props.dispatch({type: 'SET_ACTIVE', active:true});
         }}
         />
         <Button style={styles.icon} appearance='outline'
@@ -125,9 +136,9 @@ const Pantry = (props) => {
   };
 
   return(
-    editing
+    active
     ?
-    <NewItem name='Add an item' {...props} return={() => {props.dispatch({type: 'SET_EDITING', editing:false}); props.dispatch({type: 'RESET_EDIT_ITEM'})}}/>
+    <NewItem name='Add an item' {...props} return={() => {props.dispatch({type: 'SET_ACTIVE', active:false}); props.dispatch({type: 'RESET_EDIT_ITEM'})}}/>
     :
     <Layout>
       <HomeBar name='Pantry' style={styles.homebar} navigation={props.navigation}/>

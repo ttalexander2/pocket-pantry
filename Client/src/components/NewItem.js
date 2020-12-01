@@ -10,6 +10,7 @@ const NewItem = (props) => {
 
     const editingItem = useSelector(state => state.PantryEditData.item);
     const validItems = useSelector(state => state.PantryEditData.valid);
+    const editing = useSelector(state => state.PantryEditData.editing);
     const token = useSelector(state => state.UserData.token);
 
     return (
@@ -85,6 +86,7 @@ const NewItem = (props) => {
 
                     let data = {
                       token: token,
+                      id: editingItem.id,
                       name: editingItem.name,
                       brand: editingItem.brand,
                       amount: editingItem.amount,
@@ -103,30 +105,53 @@ const NewItem = (props) => {
                       body: JSON.stringify(data),
                       redirect: 'follow'
                     };
+                    
+                    if (editing){
+                      fetch("https://pocketpantry.app/api/update/pantry", requestOptions)
+                      .then((response) => {
+                          if (response.status === 200) {
+                            fetch("https://pocketpantry.app/api/userdata", requestOptions)
+                                .then((response2) => {
+                                  console.log('fetched again')
+                                  response2.json().then((jsonResult) => {
+                                        props.dispatch({type: 'SET_ACTIVE', active:false});
+                                        props.dispatch({type: 'RESET_EDIT_ITEM'});
+                                        props.dispatch({type: 'SET_INGREDIENT_DATA', ingredients:jsonResult});
+                                    });
+                                })
+                                .then(result => {})
+                                .catch(error => console.log('error', error))
+                          }
+                      })
+                      .then(result => {})
+                      .catch(error => console.log('error', error))
+                    }
+                    else {
+                      fetch("https://pocketpantry.app/api/add/pantry", requestOptions)
+                      .then((response) => {
+                          if (response.status === 200) {
+                            fetch("https://pocketpantry.app/api/userdata", requestOptions)
+                                .then((response2) => {
+                                  console.log('fetched again')
+                                  response2.json().then((jsonResult) => {
+                                        props.dispatch({type: 'SET_ACTIVE', active:false});
+                                        props.dispatch({type: 'RESET_EDIT_ITEM'});
+                                        props.dispatch({type: 'SET_INGREDIENT_DATA', ingredients:jsonResult});
+                                    });
+                                })
+                                .then(result => {})
+                                .catch(error => console.log('error', error))
+                          }
+                      })
+                      .then(result => {})
+                      .catch(error => console.log('error', error))
+                    }
           
-          
-                    fetch("https://pocketpantry.app/api/add/pantry", requestOptions)
-                    .then((response) => {
-                        if (response.status === 200) {
-                          console.log('added')
-                          fetch("https://pocketpantry.app/api/userdata", requestOptions)
-                              .then((response2) => {
-                                console.log('fetched again')
-                                response2.json().then((jsonResult) => {
-                                      props.dispatch({type: 'SET_EDITING', editing:false});
-                                      props.dispatch({type: 'SET_INGREDIENT_DATA', ingredients:jsonResult});
-                                  });
-                              })
-                              .then(result => {})
-                              .catch(error => console.log('error', error))
-                        }
-                    })
-                    .then(result => {})
-                    .catch(error => console.log('error', error))
+
                   }
                 }
                   >
-                    Add Item!
+                    Submit
                   </Button>
                 </Card>
               </React.Fragment>

@@ -1,6 +1,8 @@
 const initialState = {
+    active: false,
     editing: false,
     item: {
+        id: 0,
         name: "",
         brand: "",
         amount: 1,
@@ -18,16 +20,25 @@ const initialState = {
 
 const PantryEditData = (state = initialState, action) => {
     switch(action.type){
+        case 'SET_ACTIVE':
+            return {
+                active: action.active,
+                editing: state.editing,
+                item: state.item,
+                valid: state.valid,
+            } 
         case 'SET_EDITING':
             return {
+                active: state.active,
                 editing: action.editing,
                 item: state.item,
                 valid: state.valid,
             } 
         case 'SET_EDIT_ITEM':
             return {
+                active: state.active,
                 editing: state.editing,
-                item: action.item,
+                item: {...action.item},
                 valid: state.valid,
             }
         case 'SET_EDIT_NAME':
@@ -36,6 +47,7 @@ const PantryEditData = (state = initialState, action) => {
                 valid_name = 'danger';
             }
             return {
+                active: state.active,
                 editing: state.editing,
                 item: {
                     ...state.item,
@@ -52,6 +64,7 @@ const PantryEditData = (state = initialState, action) => {
                 valid_brand = 'danger';
             }
             return {
+                active: state.active,
                 editing: state.editing,
                 item: {
                     ...state.item,
@@ -68,6 +81,7 @@ const PantryEditData = (state = initialState, action) => {
                 valid_amount = 'danger';
             }
             return {
+                active: state.active,
                 editing: state.editing,
                 item: {
                     ...state.item,
@@ -84,6 +98,7 @@ const PantryEditData = (state = initialState, action) => {
                 valid_unit = 'danger';
             }
             return {
+                active: state.active,
                 editing: state.editing,
                 item: {
                     ...state.item,
@@ -96,6 +111,7 @@ const PantryEditData = (state = initialState, action) => {
             }
         case 'SET_EDIT_EXPIRATION':
                 return {
+                    active: state.active,
                     editing: state.editing,
                     item: {
                         ...state.item,
@@ -105,6 +121,7 @@ const PantryEditData = (state = initialState, action) => {
                 }
         case 'SET_EDIT_PURCHASE':
             return {
+                active: state.active,
                 editing: state.editing,
                 item: {
                     ...state.item,
@@ -114,6 +131,7 @@ const PantryEditData = (state = initialState, action) => {
             }
         case 'RESET_EDIT_ITEM':
             return {
+                active: state.active,
                 editing: state.editing,
                 item: initialState.item,
                 valid: state.valid,
