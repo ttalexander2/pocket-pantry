@@ -218,15 +218,9 @@ app.post('/api/add/pantry', jsonParser, function (req, res) {
   try{
     const token = req.body.token;
     auth.AuthenticateToken(token).then(result => {
-<<<<<<< HEAD
       db.insertIngredientInfo(result.user.email, req.body.name, req.body.brand, req.body.amount, req.body.unitOfAmount, new Date(req.body.expirationDate).toMysqlFormat(), new Date(req.body.dateOfPurchase).toMysqlFormat(0)).then(() => {
         res.status('200').send();
     }); 
-=======
-      db.insertIngredientInfo(result.user.email, req.body.name, req.body.brand, req.body.amount, req.body.unitofamount, req.body.expirationdate, req.body.dateofpurchase).then(() => {
-        res.status('200');
-    });
->>>>>>> f4cfdabe0185551abd45b61a05df5707f4c5aa84
 
     })
     .catch(err => {
@@ -255,15 +249,9 @@ app.post('/api/add/grocery', jsonParser, function (req, res) {
   try{
     const token = req.body.token;
     auth.AuthenticateToken(token).then(result => {
-<<<<<<< HEAD
       db.insertGroceryListInfo(result.user.email, req.body.name, req.body.amount, req.body.unitOfAmount).then(() => {
         res.status('200').send();
     }); 
-=======
-      db.insertGroceryListInfo(result.user.email, req.body.name, req.body.amount, req.body.unitofamount).then(() => {
-        res.status('200');
-    });
->>>>>>> f4cfdabe0185551abd45b61a05df5707f4c5aa84
 
     })
     .catch(err => {
@@ -293,13 +281,8 @@ app.post('/api/add/meal', jsonParser, function (req, res) {
     const token = req.body.token;
     auth.AuthenticateToken(token).then(result => {
       db.insertMealInfo(result.user.email, req.body.name, req.body.portions, req.body.dateOfCreation).then(() => {
-<<<<<<< HEAD
         res.status('200').send();
     }); 
-=======
-        res.status('200');
-    });
->>>>>>> f4cfdabe0185551abd45b61a05df5707f4c5aa84
 
     })
     .catch(err => {
@@ -328,15 +311,9 @@ app.post('/api/update/pantry', jsonParser, function (req, res) {
   try{
     const token = req.body.token;
     auth.AuthenticateToken(token).then(result => {
-<<<<<<< HEAD
       db.updateIngredientInfo(req.body.id, result.user.email, req.body.name, req.body.brand, req.body.amount, req.body.unitOfAmount, new Date(req.body.expirationDate), new Date(req.body.dateOfPurchase)).then(() => {
         res.status('200').send();
     }); 
-=======
-      db.updateIngredientInfo(req.body.id, result.user.email, req.body.name, req.body.brand, req.body.amount, req.body.unitofamount, req.body.expirationdate, req.body.dateofpurchase).then(() => {
-        res.status('200');
-    });
->>>>>>> f4cfdabe0185551abd45b61a05df5707f4c5aa84
 
     })
     .catch(err => {
@@ -365,15 +342,9 @@ app.post('/api/update/grocery', jsonParser, function (req, res) {
   try{
     const token = req.body.token;
     auth.AuthenticateToken(token).then(result => {
-<<<<<<< HEAD
       db.updateGroceryListInfo(req.body.id, result.user.email, req.body.name, req.body.amount, req.body.unitOfAmount).then(() => {
         res.status('200').send();
     }); 
-=======
-      db.updateGroceryListInfo(req.body.id, result.user.email, req.body.name, req.body.amount, req.body.unitofamount).then(() => {
-        res.status('200');
-    });
->>>>>>> f4cfdabe0185551abd45b61a05df5707f4c5aa84
 
     })
     .catch(err => {
@@ -403,13 +374,8 @@ app.post('/api/update/meal', jsonParser, function (req, res) {
     const token = req.body.token;
     auth.AuthenticateToken(token).then(result => {
       db.updateMealInfo(req.body.id, result.user.email, req.body.name, req.body.portions, req.body.dateOfCreation).then(() => {
-<<<<<<< HEAD
         res.status('200').send();
     }); 
-=======
-        res.status('200');
-    });
->>>>>>> f4cfdabe0185551abd45b61a05df5707f4c5aa84
 
     })
     .catch(err => {
