@@ -1,3 +1,10 @@
+/*
+This file creates the UI element for the back bar we use in our program.
+This makes navigating the app easier and makes menus more easily accessible
+from any location in the app.
+*/
+
+
 import React from 'react';
 import { View, Icon, Layout, MenuItem, OverflowMenu, TopNavigation, TopNavigationAction, Button } from '@ui-kitten/components';
 import { StyleSheet } from 'react-native';

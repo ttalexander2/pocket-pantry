@@ -1,3 +1,10 @@
+/*
+This component handles the login page of our application. It allows the user to
+either sign into their account or it allows them to create a new account. The
+component ensures that the email address entered is valif using regex and we
+authenticate to ensure that logins are accurate and secure
+*/
+
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TabBar, Tab, Button, Input, Text } from '@ui-kitten/components';
@@ -199,7 +206,7 @@ const Login = (props) => {
             body: raw,
             redirect: 'follow'
         };
-      
+
         var result = await fetch("https://pocketpantry.app/login", requestOptions)
         .then(response => {
             if (response.status === 200){
@@ -216,16 +223,59 @@ const Login = (props) => {
                         body: JSON.stringify({token: response2}),
                         redirect: 'follow'
                     };
-                    
+
 
                     fetch("https://pocketpantry.app/api/userdata", requestOptions)
                     .then((response) => {
                         response.json().then((jsonResult) => {
-                            props.dispatch({type: 'SET_INGREDIENT_DATA', ingredients:jsonResult});
+                            props.dispatch({type: 'SET_GROCERYLIST_DATA', groceryList:jsonResult.grocery});
+                            props.dispatch({type: 'SET_INGREDIENT_DATA', ingredients:jsonResult.ingredients});
+
+                            // Get recipe of the day
+
+                            if (jsonResult.ingredients.length > 0) {
+
+                                jsonResult.ingredients.sort((a, b) => (a.expirationDate > b.expirationDate) ? 1 : -1);
+                                let search = "";
+                                [...Array(Math.min(5, jsonResult.ingredients.length)).keys()].map((i) => {
+                                    let expirationDate = new Date(jsonResult.ingredients[i].expirationDate);
+                                    let food = String(jsonResult.ingredients[i].name);
+                                    search += food 
+                                    if (i < 4){
+                                    search += ", "
+                                    }
+                                })
+                    
+                                let stuff = {
+                                    ingredients: search.split(','),
+                                }
+                                var raw = JSON.stringify(stuff);
+                            
+                                requestOptions = {
+                                method: 'POST',
+                                headers: myHeaders,
+                                body: raw,
+                                redirect: 'follow'
+                                };
+                            
+                                fetch("https://pocketpantry.app/api/recipes", requestOptions)
+                                .then(response => response.text())
+                                .then(result => {
+                                    let results6 = JSON.parse(result);
+                                    props.dispatch({type: 'SET_DASHBOARD_RECIPE', recipe: results6});
+                                    })
+                                .catch(error => console.log('error', error));
+
+                            }
+
                         });
-                    })
+                        })
                     .then(result => {})
                     .catch(error => console.log('error', error))
+
+
+
+                      
 
                     props.onLogIn();
 
@@ -240,7 +290,7 @@ const Login = (props) => {
         })
         .then(result => {})
         .catch(error => console.log('error', error));
-          
+
 
     }
 
@@ -286,7 +336,7 @@ const Login = (props) => {
                 body: raw,
                 redirect: 'follow'
             };
-          
+
             fetch("https://pocketpantry.app/signup", requestOptions)
             .then((response) => {
                 if (response.status === 200){
@@ -296,26 +346,27 @@ const Login = (props) => {
                         props.dispatch({type: 'SET_USERNAME', username:decoded.user.name});
                         props.dispatch({type: 'SET_EMAIL', email:decoded.user.email});
                         props.dispatch({type: 'SET_JWT_TOKEN', token:token});
-    
+
                         requestOptions = {
                             method: 'POST',
                             headers: myHeaders,
                             body: JSON.stringify({token: response2}),
                             redirect: 'follow'
                         };
-                        
+
 
                         fetch("https://pocketpantry.app/api/userdata", requestOptions)
                         .then((response) => {
                             response.json().then((jsonResult) => {
-                                props.dispatch({type: 'SET_INGREDIENT_DATA', ingredients:jsonResult});
+                                props.dispatch({type: 'SET_GROCERYLIST_DATA', groceryList:jsonResult.grocery});
+                                props.dispatch({type: 'SET_INGREDIENT_DATA', ingredients:jsonResult.ingredients});
                             });
                         })
                         .then(result => {})
                         .catch(error => console.log('error', error))
 
                         props.onLogIn();
-    
+
                     });
                 }
                 else {
@@ -369,7 +420,7 @@ const styles = StyleSheet.create({
         marginBottom: 16,
     },
     passwordInput2: {
-        marginBottom: 16, 
+        marginBottom: 16,
     },
     signInLabel: {
         flex: 1,
@@ -382,7 +433,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     text: {
-        alignSelf: 'center',     
+        alignSelf: 'center',
         color: 'rgba(250, 250, 250, 1)',
     },
     socialAuthButtonsContainer: {

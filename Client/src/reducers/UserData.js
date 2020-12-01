@@ -1,3 +1,8 @@
+/*
+This file holds the information about the user's account. It holds their
+username, email, and a token specific to them
+*/
+
 const initialState = {
     username : "User",
     email: "Email",
@@ -20,7 +25,7 @@ const UserInfo = (state = initialState, action) => {
             return {
                 ...state,
                 token: action.token
-            }   
+            }
         default:
             return state;
     }

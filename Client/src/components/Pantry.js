@@ -1,3 +1,10 @@
+/*
+This file represents the pantry component of the app. Ingredients that
+users have added to their profiles will appear here, displaying the information
+in a text view, as opposed to the calendar view. Users can also add or remove
+an item from their pantry here.
+*/
+
 import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
 import { Layout, Text, Card, Button, ListItem, List, Icon } from '@ui-kitten/components';
@@ -13,7 +20,7 @@ const Header = (props) => (
       <Button style={{paddingBottom: '15px', marginLeft: '10px'  }} onPress={() => { }}
         appearance='outline'
         accessoryLeft={renderAddIcon}
-        onPress={() => props.dispatch({type: 'SET_EDITING', editing:true})}
+        onPress={() => {props.dispatch({type: 'SET_ACTIVE', active:true}); props.dispatch({type: 'SET_EDITING', edit:false});}}
       />
 
       </div>
@@ -30,7 +37,7 @@ const renderAddIcon = (props) => (
 const Pantry = (props) => {
 
   const ingredients = useSelector(state => state.PantryData.ingredients);
-  const editing = useSelector(state => state.PantryEditData.editing);
+  const active = useSelector(state => state.PantryEditData.active);
   const token = useSelector(state => state.UserData.token);
 
   const renderDeleteIcon = (props) => (
@@ -66,17 +73,28 @@ const Pantry = (props) => {
           {item.brand}
         </Text>
         <Text style={{ flex: 1, alignSelf: 'center' }}>
-          {`${item.amount} ${item.unitofamount}`}
+          {`${item.amount} ${item.unitOfAmount}`}
         </Text>
         <Text style={{ flex: 1, alignSelf: 'center' }}>
-          {item.expirationdate.toDateString()}
+          {item.expirationDate.toDateString()}
         </Text>
         <Text style={{ flex: 1, alignSelf: 'center' }}>
-          {item.dateofpurchase.toDateString()}
+          {item.dateOfPurchase.toDateString()}
         </Text>
         <Button style={styles.icon} appearance='outline'
         accessoryLeft={renderEditIcon}
-        onPress={() => {
+        onPress={() =>{
+          props.dispatch({type: 'SET_EDIT_ITEM', item: {
+            id: item.id,
+            name: item.name,
+            brand: item.brand,
+            amount: item.amount,
+            unitOfAmount: item.unitOfAmount,
+            expirationDate: item.expirationDate,
+            dateOfPurchase: item.dateOfPurchase,
+          }});
+          props.dispatch({type: 'SET_EDITING', editing:true});
+          props.dispatch({type: 'SET_ACTIVE', active:true});
         }}
         />
         <Button style={styles.icon} appearance='outline'
@@ -103,14 +121,21 @@ const Pantry = (props) => {
           fetch("https://pocketpantry.app/api/delete/pantry", requestOptions)
           .then((response) => {
               if (response.status === 200) {
-                //retrieve data from server
+                fetch("https://pocketpantry.app/api/userdata", requestOptions)
+                    .then((response2) => {
+                      response2.json().then((jsonResult) => {
+                            props.dispatch({type: 'SET_INGREDIENT_DATA', ingredients:jsonResult.ingredients});
+                        });
+                    })
+                    .then(result => {})
+                    .catch(error => console.log('error', error))
               }
           })
           .then(result => {})
           .catch(error => console.log('error', error))
         }}
         />
-      </View>   
+      </View>
       </ListItem>
 
     </View>
@@ -118,9 +143,9 @@ const Pantry = (props) => {
   };
 
   return(
-    editing
+    active
     ?
-    <NewItem name='Add an item' return={() => {props.dispatch({type: 'SET_EDITING', editing:false}); props.dispatch({type: 'RESET_EDIT_ITEM'})}}/>
+    <NewItem name='Add an item' {...props} return={() => {props.dispatch({type: 'SET_ACTIVE', active:false}); props.dispatch({type: 'RESET_EDIT_ITEM'})}}/>
     :
     <Layout>
       <HomeBar name='Pantry' style={styles.homebar} navigation={props.navigation}/>
@@ -151,7 +176,7 @@ const Pantry = (props) => {
           <List
             data={ingredients}
             renderItem={(renderProps) => {return renderItem(renderProps, props, token);}}
-          />        
+          />
           </View>
 
         }
@@ -182,7 +207,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   margin: {
-    
+
   },
   icon: {
     width: 16,
