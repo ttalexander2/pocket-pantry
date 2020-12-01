@@ -27,39 +27,81 @@ const HeaderExpire = (props) => (
 const HeaderFavorite = (props) => (
 <View {...props} >
     <div style={{display: 'flex', justifyContent: 'space-between'}}>
-    <Text category='h3'>Your Food Favorites...</Text>
+    <Text category='h3'>Your Current Food Favorite...</Text>
     </div>
 </View>
 );
 const HeaderRecipe = (props) => (
 <View {...props} >
     <div style={{display: 'flex', justifyContent: 'space-between'}}>
-    <Text category='h3'>Recommended Recipes...</Text>
+    <Text category='h3'>Recommended Recipe Search:</Text>
     </div>
 </View>
 );
 
 const AboutToExpire = (expireData) => {
+    expireData.sort((a, b) => (a.expirationDate > b.expirationDate) ? 1 : -1);
     return(
-        [...Array(10).keys()].map((i) => {
-            let date = new Date();
-            date.setDate(date.getDate() + i);
-            let dateStr = date.toISOString().split('T')[0];
-            if(expireData[dateStr]){
-                return (
+        [...Array(Math.min(5, expireData.length)).keys()].map((i) => {
+                let expirationDate = new Date(expireData[i].expirationDate);
+                let food = String(expireData[i].name)
+
+                var weekday = new Array(7);
+                weekday[0] = "Sunday";
+                weekday[1] = "Monday";
+                weekday[2] = "Tuesday";
+                weekday[3] = "Wednesday";
+                weekday[4] = "Thursday";
+                weekday[5] = "Friday";
+                weekday[6] = "Saturday";
+
+                var day = weekday[expirationDate.getDay()];
+
+                let date = String(day + ", " + (expirationDate.getMonth()+1) + "/" + expirationDate.getDate() + "/" + expirationDate.getFullYear());
+                return (                      
                     <ul style={{margin: '0', padding: '0',  listStyle: "circle"}}>
                         <li style={{float: 'left', display: "inline-block"}}>
-                        <Text style={{fontSize: '22px'}}>{expireData[dateStr][0]}: {date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear()}</Text>
+                        <Text style={{fontSize: '22px'}}>({i+1}) {food} expires on {date}</Text>
                         </li>
                     </ul>
                 )
-
-            }
+    
         })
     )
 }
 
+const Favorites = (expireData) => {
+    let favItem = "";
+    let highestAmount = 0;
+    expireData.map((food) => {
+        if (food.amount > highestAmount) {
+            favItem = food.name;
+            highestAmount = food.amount;
+        }
+    })
+    return (
+    <ul style={{margin: '0', padding: '0',  listStyle: "circle"}}>
+        <li style={{float: 'left', display: "inline-block"}}>
+        <Text style={{fontSize: '22px'}}>{favItem}</Text>
+        </li>
+    </ul>
+    );
+}
 
+const Recommended = (expireData) => {
+    expireData.sort((a, b) => (a.expirationDate > b.expirationDate) ? 1 : -1);
+    let search = "";
+    [...Array(Math.min(5, expireData.length)).keys()].map((i) => {
+        let expirationDate = new Date(expireData[i].expirationDate);
+        let food = String(expireData[i].name);
+        search += food 
+        if (i < 4){
+           search += ", "
+        }
+    })
+    return search;
+    
+}
 
 const Dashboard = (props) => {
 
@@ -78,28 +120,12 @@ const Dashboard = (props) => {
                 </Card>
                 <Card style={styles.card, {width: '90%', margin: 'auto', marginTop: '15px', marginBottom: '15px'}} header={HeaderFavorite}>
                 {
-                    foodFavorite.map((f) => {
-                        return (
-                        <ul style={{margin: '0', padding: '0',  listStyle: "circle"}}>
-                            <li style={{float: 'left', display: "inline-block"}}>
-                            <Text style={{fontSize: '22px'}}>{f.name}: {f.date}</Text>
-                            </li>
-                        </ul>
-                        );
-                    })
+                   Favorites(expireData)
                 }
                 </Card>
                 <Card style={styles.card, {width: '90%', margin: 'auto', marginTop: '15px', marginBottom: '15px'}} header={HeaderRecipe}>
                 {
-                    foodRecipe.map((r) => {
-                        return (
-                        <ul style={{margin: '0', padding: '0',  listStyle: "circle"}}>
-                            <li style={{float: 'left', display: "inline-block"}}>
-                            <Text style={{fontSize: '22px'}}>{r.name}: {r.date}</Text>
-                            </li>
-                        </ul>
-                        );
-                    })
+                    <Text style={{fontSize: '22px'}}>{Recommended(expireData)}</Text>
                 }
                 </Card>
             </React.Fragment>
