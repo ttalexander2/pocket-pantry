@@ -68,12 +68,6 @@ const GroceryList = (props) => {
         <Text style={{ flex: 1, alignSelf: 'center' }}>
           {`${item.amount} ${item.unitOfAmount}`}
         </Text>
-        <Text style={{ flex: 1, alignSelf: 'center' }}>
-          {item.expirationDate.toDateString()}
-        </Text>
-        <Text style={{ flex: 1, alignSelf: 'center' }}>
-          {item.dateOfPurchase.toDateString()}
-        </Text>
         <Button style={styles.icon} appearance='outline'
         accessoryLeft={renderEditIcon}
         onPress={() =>{ 
@@ -83,8 +77,6 @@ const GroceryList = (props) => {
             brand: item.brand,
             amount: item.amount,
             unitOfAmount: item.unitOfAmount,
-            expirationDate: item.expirationDate,
-            dateOfPurchase: item.dateOfPurchase,
           }});
           props.dispatch({type: 'SET_EDITING', editing:true});
           props.dispatch({type: 'SET_ACTIVE', active:true});

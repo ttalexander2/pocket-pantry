@@ -7,8 +7,6 @@ const initialState = {
         brand: "",
         amount: 1,
         unitOfAmount: "",
-        expirationDate: new Date(),
-        dateOfPurchase: new Date(),
     },
     valid: {
         name: 'primary',
@@ -108,26 +106,6 @@ const GroceryListEditData = (state = initialState, action) => {
                     ...state.valid,
                     unitOfAmount:valid_unit
                 }
-            }
-        case 'SET_EDIT_EXPIRATION':
-                return {
-                    active: state.active,
-                    editing: state.editing,
-                    item: {
-                        ...state.item,
-                        expirationDate: action.expirationDate,
-                    },
-                    valid: state.valid,
-                }
-        case 'SET_EDIT_PURCHASE':
-            return {
-                active: state.active,
-                editing: state.editing,
-                item: {
-                    ...state.item,
-                    dateOfPurchase: action.dateOfPurchase,
-                },
-                valid: state.valid,
             }
         case 'RESET_EDIT_ITEM':
             return {
