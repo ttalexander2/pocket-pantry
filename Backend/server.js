@@ -109,10 +109,27 @@ app.post('/login', jsonParser, function (req, res){
 app.post('/api/userdata', jsonParser, function (req, res) {
   try{
     const token = req.body.token;
+    let toSend = {}
     auth.AuthenticateToken(token).then(result => {
       db.getCurrentIngredients(result.user.email).then((dbResult) => {
-          res.status('200').send(JSON.stringify(dbResult));
-      });
+          toSend = {
+            ...toSend,
+            ingredients: dbResult,
+          }
+          db.getCurrentMeals(result.user.email).then((dbResult2) => {
+            toSend = {
+              ...toSend,
+              meals: dbResult2,
+            }
+              db.getGroceryList(result.user.email).then((dbResult3) => {
+                toSend = {
+                  ...toSend,
+                  grocery: dbResult3,
+                }
+                res.status('200').json(toSend);
+              });
+          });
+        });
     })
     .catch(err => {
       console.log(err);
@@ -182,12 +199,22 @@ app.post('/api/recipes/scrape', jsonParser, function (req, res) {
 
 })
 
+function twoDigits(d) {
+  if(0 <= d && d < 10) return "0" + d.toString();
+  if(-10 < d && d < 0) return "-0" + (-1*d).toString();
+  return d.toString();
+}
+
+Date.prototype.toMysqlFormat = function() {
+  return this.getUTCFullYear() + "-" + twoDigits(1 + this.getUTCMonth()) + "-" + twoDigits(this.getUTCDate()) + " " + twoDigits(this.getUTCHours()) + ":" + twoDigits(this.getUTCMinutes()) + ":" + twoDigits(this.getUTCSeconds());
+};
+
 app.post('/api/add/pantry', jsonParser, function (req, res) {
   try{
     const token = req.body.token;
     auth.AuthenticateToken(token).then(result => {
-      db.insertIngredientInfo(result.user.email, req.body.name, req.body.brand, req.body.amount, req.body.unitofamount, req.body.expirationdate, req.body.dateofpurchase).then(() => {
-        res.status('200');
+      db.insertIngredientInfo(result.user.email, req.body.name, req.body.brand, req.body.amount, req.body.unitOfAmount, new Date(req.body.expirationDate).toMysqlFormat(), new Date(req.body.dateOfPurchase).toMysqlFormat(0)).then(() => {
+        res.status('200').send();
     }); 
 
     })
@@ -217,8 +244,8 @@ app.post('/api/add/grocery', jsonParser, function (req, res) {
   try{
     const token = req.body.token;
     auth.AuthenticateToken(token).then(result => {
-      db.insertGroceryListInfo(result.user.email, req.body.name, req.body.amount, req.body.unitofamount).then(() => {
-        res.status('200');
+      db.insertGroceryListInfo(result.user.email, req.body.name, req.body.amount, req.body.unitOfAmount).then(() => {
+        res.status('200').send();
     }); 
 
     })
@@ -249,7 +276,7 @@ app.post('/api/add/meal', jsonParser, function (req, res) {
     const token = req.body.token;
     auth.AuthenticateToken(token).then(result => {
       db.insertMealInfo(result.user.email, req.body.name, req.body.portions, req.body.dateOfCreation).then(() => {
-        res.status('200');
+        res.status('200').send();
     }); 
 
     })
@@ -279,8 +306,8 @@ app.post('/api/update/pantry', jsonParser, function (req, res) {
   try{
     const token = req.body.token;
     auth.AuthenticateToken(token).then(result => {
-      db.updateIngredientInfo(req.body.id, result.user.email, req.body.name, req.body.brand, req.body.amount, req.body.unitofamount, req.body.expirationdate, req.body.dateofpurchase).then(() => {
-        res.status('200');
+      db.updateIngredientInfo(req.body.id, result.user.email, req.body.name, req.body.brand, req.body.amount, req.body.unitOfAmount, new Date(req.body.expirationDate), new Date(req.body.dateOfPurchase)).then(() => {
+        res.status('200').send();
     }); 
 
     })
@@ -310,8 +337,8 @@ app.post('/api/update/grocery', jsonParser, function (req, res) {
   try{
     const token = req.body.token;
     auth.AuthenticateToken(token).then(result => {
-      db.updateGroceryListInfo(req.body.id, result.user.email, req.body.name, req.body.amount, req.body.unitofamount).then(() => {
-        res.status('200');
+      db.updateGroceryListInfo(req.body.id, result.user.email, req.body.name, req.body.amount, req.body.unitOfAmount).then(() => {
+        res.status('200').send();
     }); 
 
     })
@@ -342,7 +369,7 @@ app.post('/api/update/meal', jsonParser, function (req, res) {
     const token = req.body.token;
     auth.AuthenticateToken(token).then(result => {
       db.updateMealInfo(req.body.id, result.user.email, req.body.name, req.body.portions, req.body.dateOfCreation).then(() => {
-        res.status('200');
+        res.status('200').send();
     }); 
 
     })
