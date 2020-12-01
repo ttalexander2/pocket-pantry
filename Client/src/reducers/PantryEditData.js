@@ -1,3 +1,9 @@
+/*
+This file contains the data for being able to edit items that currently exist in
+the pantry. This allows the user to update any info they may have incorrectly entered
+the first time
+*/
+
 const initialState = {
     active: false,
     editing: false,
@@ -14,7 +20,7 @@ const initialState = {
         name: 'primary',
         brand: 'primary',
         amount: 'primary',
-        unitOfAmount: 'primary',   
+        unitOfAmount: 'primary',
     }
 }
 
@@ -26,14 +32,14 @@ const PantryEditData = (state = initialState, action) => {
                 editing: state.editing,
                 item: state.item,
                 valid: state.valid,
-            } 
+            }
         case 'SET_EDITING':
             return {
                 active: state.active,
                 editing: action.editing,
                 item: state.item,
                 valid: state.valid,
-            } 
+            }
         case 'SET_EDIT_ITEM':
             return {
                 active: state.active,

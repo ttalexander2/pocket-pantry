@@ -1,3 +1,10 @@
+/*
+This file represents the pantry component of the app. Ingredients that
+users have added to their profiles will appear here, displaying the information
+in a text view, as opposed to the calendar view. Users can also add or remove
+an item from their pantry here.
+*/
+
 import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
 import { Layout, Text, Card, Button, ListItem, List, Icon } from '@ui-kitten/components';
@@ -76,10 +83,10 @@ const Pantry = (props) => {
         </Text>
         <Button style={styles.icon} appearance='outline'
         accessoryLeft={renderEditIcon}
-        onPress={() =>{ 
+        onPress={() =>{
           props.dispatch({type: 'SET_EDIT_ITEM', item: {
             id: item.id,
-            name: item.name, 
+            name: item.name,
             brand: item.brand,
             amount: item.amount,
             unitOfAmount: item.unitOfAmount,
@@ -128,7 +135,7 @@ const Pantry = (props) => {
           .catch(error => console.log('error', error))
         }}
         />
-      </View>   
+      </View>
       </ListItem>
 
     </View>
@@ -169,7 +176,7 @@ const Pantry = (props) => {
           <List
             data={ingredients}
             renderItem={(renderProps) => {return renderItem(renderProps, props, token);}}
-          />        
+          />
           </View>
 
         }
@@ -200,7 +207,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   margin: {
-    
+
   },
   icon: {
     width: 16,

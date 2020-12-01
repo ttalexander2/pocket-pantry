@@ -1,3 +1,10 @@
+/*
+This file holds the information for the grocery list page. This page functions
+similarly to the pantry page but it is a grocery list, so it is made up of items
+that the user likely does not already have. Like the pantry, you are able to add
+and remove items and those items stay stored on your account
+*/
+
 import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
 import { Layout, Text, Card, Button, ListItem, List, Icon } from '@ui-kitten/components';
@@ -46,14 +53,14 @@ const GroceryList = (props) => {
     name='trash-2-outline'
     />
   );
-  
+
   const renderEditIcon = (props) => (
     <Icon {...props}
     name='edit-outline'
     />
   );
-  
-  
+
+
   const renderItem = ({ item, index }) => (
     <View>
       <ListItem
@@ -63,21 +70,21 @@ const GroceryList = (props) => {
         <Text style={{ flex: 1, alignSelf: 'center' }}>
           {item.name}
         </Text>
-    
+
         <Button style={styles.icon} appearance='outline'
         accessoryLeft={renderEditIcon}
         />
         <Button style={styles.icon} appearance='outline'
         accessoryLeft={renderDeleteIcon}
         />
-      </View>   
+      </View>
       </ListItem>
-  
+
     </View>
-  
+
   );
 
-  
+
     return(
       <Layout>
       <HomeBar name='Grocery List' navigation={props.navigation} style={styles.homebar}/>
@@ -87,7 +94,7 @@ const GroceryList = (props) => {
           <List
             data={list}
             renderItem={renderItem}
-          />        
+          />
 
         </Card>
       </React.Fragment>
