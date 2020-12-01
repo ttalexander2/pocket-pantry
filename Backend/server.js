@@ -1,10 +1,15 @@
 const express = require('express');
-const db = require('./Database')
+const db = require('./Database');
 const path = require('path');
 const fetch = require('node-fetch');
 const bodyParser = require('body-parser');
+const crypto = require('crypto');
 const cors = require('cors');
 const { exec } = require('child_process');
+const sanitizer = require('sanitize');
+const auth = require('./Authentication');
+const exceptions = require('./Exceptions')
+
 const jsonParser = bodyParser.json();
 const app = express();
 const port = 42069;
@@ -38,12 +43,100 @@ app.get('/', (_req, res) => {
         res.status(500).send(err)
       }
     });
-  })
+})
 
+app.post('/signup', jsonParser, function (req, res) {
 
+  try {
+    const name = req.body.name;
+    const email = req.body.email;
+    const password = req.body.password;
+    auth.SignUp(name, email, password).then(token => {
+      console.log(token);
+      res.status('200').send(token);
+    })    
+    .catch(err => {
+      console.log(err);
+      if (err instanceof exceptions.AuthenticationError){
+        res.status('401').send(err.message);
+      }
+      else
+      {
+        res.status('500').send("The server had an unknown error. Please try again later.");
+      }
+    });
+  } catch (err) {
+    if (err instanceof exceptions.AuthenticationError){
+      res.status('401').send(err.message);
+    }
+    else
+    {
+      res.status('500').send("The server had an unknown error. Please try again later.");
+    }
+  }
+  
+});
+
+app.post('/login', jsonParser, function (req, res){
+  try{
+    const email = req.body.email;
+    const password = req.body.password;
+    auth.Login(email, password).then(token => {
+      console.log(token);
+      res.status('200').send(token);
+    })
+    .catch(err => {
+      if (err instanceof exceptions.AuthenticationError){
+        res.status('401').send(err.message);
+      }
+      else
+      {
+        res.status('500').send("The server had an unknown error. Please try again later.");
+      }
+    });
+  } catch (err){
+    if (err instanceof exceptions.AuthenticationError){
+      res.status('401').send(err.message);
+    }
+    else
+    {
+      res.status('500').send("The server had an unknown error. Please try again later.");
+    }
+  }
+
+});
+
+app.post('/api/userdata', jsonParser, function (req, res) {
+  try{
+    const token = req.body.token;
+    auth.AuthenticateToken(token).then(result => {
+      db.getCurrentIngredients(result.user.email).then((dbResult) => {
+          res.status('200').send(JSON.stringify(dbResult));
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      if (err instanceof exceptions.AuthenticationError){
+        res.status('401').send(err.message);
+      }
+      else
+      {
+        res.status('500').send("The server had an unknown error. Please try again later.");
+      }
+    });
+  } catch (err) {
+    if (err instanceof exceptions.AuthenticationError){
+      res.status('401').send(err.message);
+    }
+    else
+    {
+      res.status('500').send("The server had an unknown error. Please try again later.");
+    }
+  }
+
+});
 
 app.post('/api/recipes', jsonParser, function (req, res) {
-
 
   const ingredients = req.body.ingredients;
 
@@ -56,8 +149,6 @@ app.post('/api/recipes', jsonParser, function (req, res) {
   for (var i = 1; i < ingredients.length; i++){
     url += "," + ingredients[i];
   }
-
-  
 
   (async () => {
       const body = {a: 1};
@@ -74,8 +165,7 @@ app.post('/api/recipes', jsonParser, function (req, res) {
 
 app.post('/api/recipes/scrape', jsonParser, function (req, res) {
   
-
-  let pyargs = 'python Recipe-Parser.py '
+  let pyargs = 'python3 Recipe-Parser.py '
 
   pyargs = pyargs + "\"" + req.body.url + "\"";
 
@@ -90,10 +180,286 @@ app.post('/api/recipes/scrape', jsonParser, function (req, res) {
     res.send(stdout);
   });
 
-
 })
 
+app.post('/api/add/pantry', jsonParser, function (req, res) {
+  try{
+    const token = req.body.token;
+    auth.AuthenticateToken(token).then(result => {
+      db.insertIngredientInfo(result.user.email, req.body.name, req.body.brand, req.body.amount, req.body.unitofamount, req.body.expirationdate, req.body.dateofpurchase).then(() => {
+        res.status('200');
+    }); 
 
+    })
+    .catch(err => {
+      console.log(err);
+      if (err instanceof exceptions.AuthenticationError){
+        res.status('401').send(err.message);
+      }
+      else
+      {
+        res.status('500').send("The server had an unknown error. Please try again later.");
+      }
+    });
+  } catch (err) {
+    if (err instanceof exceptions.AuthenticationError){
+      res.status('401').send(err.message);
+    }
+    else
+    {
+      res.status('500').send("The server had an unknown error. Please try again later.");
+    }
+  }
+
+});
+
+app.post('/api/add/grocery', jsonParser, function (req, res) {
+  try{
+    const token = req.body.token;
+    auth.AuthenticateToken(token).then(result => {
+      db.insertGroceryListInfo(result.user.email, req.body.name, req.body.amount, req.body.unitofamount).then(() => {
+        res.status('200');
+    }); 
+
+    })
+    .catch(err => {
+      console.log(err);
+      if (err instanceof exceptions.AuthenticationError){
+        res.status('401').send(err.message);
+      }
+      else
+      {
+        res.status('500').send("The server had an unknown error. Please try again later.");
+      }
+    });
+  } catch (err) {
+    if (err instanceof exceptions.AuthenticationError){
+      res.status('401').send(err.message);
+    }
+    else
+    {
+      res.status('500').send("The server had an unknown error. Please try again later.");
+    }
+  }
+
+});
+
+app.post('/api/add/meal', jsonParser, function (req, res) {
+  try{
+    const token = req.body.token;
+    auth.AuthenticateToken(token).then(result => {
+      db.insertMealInfo(result.user.email, req.body.name, req.body.portions, req.body.dateOfCreation).then(() => {
+        res.status('200');
+    }); 
+
+    })
+    .catch(err => {
+      console.log(err);
+      if (err instanceof exceptions.AuthenticationError){
+        res.status('401').send(err.message);
+      }
+      else
+      {
+        res.status('500').send("The server had an unknown error. Please try again later.");
+      }
+    });
+  } catch (err) {
+    if (err instanceof exceptions.AuthenticationError){
+      res.status('401').send(err.message);
+    }
+    else
+    {
+      res.status('500').send("The server had an unknown error. Please try again later.");
+    }
+  }
+
+});
+
+app.post('/api/update/pantry', jsonParser, function (req, res) {
+  try{
+    const token = req.body.token;
+    auth.AuthenticateToken(token).then(result => {
+      db.updateIngredientInfo(req.body.id, result.user.email, req.body.name, req.body.brand, req.body.amount, req.body.unitofamount, req.body.expirationdate, req.body.dateofpurchase).then(() => {
+        res.status('200');
+    }); 
+
+    })
+    .catch(err => {
+      console.log(err);
+      if (err instanceof exceptions.AuthenticationError){
+        res.status('401').send(err.message);
+      }
+      else
+      {
+        res.status('500').send("The server had an unknown error. Please try again later.");
+      }
+    });
+  } catch (err) {
+    if (err instanceof exceptions.AuthenticationError){
+      res.status('401').send(err.message);
+    }
+    else
+    {
+      res.status('500').send("The server had an unknown error. Please try again later.");
+    }
+  }
+
+});
+
+app.post('/api/update/grocery', jsonParser, function (req, res) {
+  try{
+    const token = req.body.token;
+    auth.AuthenticateToken(token).then(result => {
+      db.updateGroceryListInfo(req.body.id, result.user.email, req.body.name, req.body.amount, req.body.unitofamount).then(() => {
+        res.status('200');
+    }); 
+
+    })
+    .catch(err => {
+      console.log(err);
+      if (err instanceof exceptions.AuthenticationError){
+        res.status('401').send(err.message);
+      }
+      else
+      {
+        res.status('500').send("The server had an unknown error. Please try again later.");
+      }
+    });
+  } catch (err) {
+    if (err instanceof exceptions.AuthenticationError){
+      res.status('401').send(err.message);
+    }
+    else
+    {
+      res.status('500').send("The server had an unknown error. Please try again later.");
+    }
+  }
+
+});
+
+app.post('/api/update/meal', jsonParser, function (req, res) {
+  try{
+    const token = req.body.token;
+    auth.AuthenticateToken(token).then(result => {
+      db.updateMealInfo(req.body.id, result.user.email, req.body.name, req.body.portions, req.body.dateOfCreation).then(() => {
+        res.status('200');
+    }); 
+
+    })
+    .catch(err => {
+      console.log(err);
+      if (err instanceof exceptions.AuthenticationError){
+        res.status('401').send(err.message);
+      }
+      else
+      {
+        res.status('500').send("The server had an unknown error. Please try again later.");
+      }
+    });
+  } catch (err) {
+    if (err instanceof exceptions.AuthenticationError){
+      res.status('401').send(err.message);
+    }
+    else
+    {
+      res.status('500').send("The server had an unknown error. Please try again later.");
+    }
+  }
+
+});
+
+app.post('/api/delete/pantry', jsonParser, function (req, res) {
+  try{
+    const token = req.body.token;
+    auth.AuthenticateToken(token).then(result => {
+      db.deleteIngredientInfo(req.body.id, result.user.email).then((dbResult) => {
+        res.status('200').send(JSON.stringify(dbResult));
+    }); 
+
+    })
+    .catch(err => {
+      console.log(err);
+      if (err instanceof exceptions.AuthenticationError){
+        res.status('401').send(err.message);
+      }
+      else
+      {
+        res.status('500').send("The server had an unknown error. Please try again later.");
+      }
+    });
+  } catch (err) {
+    if (err instanceof exceptions.AuthenticationError){
+      res.status('401').send(err.message);
+    }
+    else
+    {
+      res.status('500').send("The server had an unknown error. Please try again later.");
+    }
+  }
+
+});
+
+app.post('/api/delete/grocery', jsonParser, function (req, res) {
+  try{
+    const token = req.body.token;
+    auth.AuthenticateToken(token).then(result => {
+      db.deleteGroceryListInfo(req.body.id, result.user.email).then((dbResult) => {
+        res.status('200').send(JSON.stringify(dbResult));
+    }); 
+
+    })
+    .catch(err => {
+      console.log(err);
+      if (err instanceof exceptions.AuthenticationError){
+        res.status('401').send(err.message);
+      }
+      else
+      {
+        res.status('500').send("The server had an unknown error. Please try again later.");
+      }
+    });
+  } catch (err) {
+    if (err instanceof exceptions.AuthenticationError){
+      res.status('401').send(err.message);
+    }
+    else
+    {
+      res.status('500').send("The server had an unknown error. Please try again later.");
+    }
+  }
+
+});
+
+app.post('/api/delete/meal', jsonParser, function (req, res) {
+  try{
+    const token = req.body.token;
+    auth.AuthenticateToken(token).then(result => {
+      db.deleteMealInfo(req.body.id, result.user.email).then((dbResult) => {
+        res.status('200').send(JSON.stringify(dbResult));
+    }); 
+
+    })
+    .catch(err => {
+      console.log(err);
+      if (err instanceof exceptions.AuthenticationError){
+        res.status('401').send(err.message);
+      }
+      else
+      {
+        res.status('500').send("The server had an unknown error. Please try again later.");
+      }
+    });
+  } catch (err) {
+    if (err instanceof exceptions.AuthenticationError){
+      res.status('401').send(err.message);
+    }
+    else
+    {
+      res.status('500').send("The server had an unknown error. Please try again later.");
+    }
+  }
+
+});
 
 app.listen(port, () => {
     console.log(`Pocket pantry running at http://localhost:${port}`)

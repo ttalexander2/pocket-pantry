@@ -16,10 +16,16 @@ import {
   IconRegistry,
   Layout,
   Text,
-} from "@ui-kitten/components";
+}
+from "@ui-kitten/components";
 import { EvaIconsPack } from "@ui-kitten/eva-icons";
 import { mapping, light, dark } from "@eva-design/eva";
-import AppNavigator from './src/Navigation'
+import Login from './src/components/Login.js';
+import * as eva from '@eva-design/eva';
+import { default as theme } from './theme.json';
+import AppNavigator from './src/components/Navigation';
+import Store from './src/store';
+import { Provider } from 'react-redux';
 
 const themes = {
   light: {
@@ -76,12 +82,11 @@ const CustomButtonWithIcon = ({
   );
 };
 
-const backgroundImage = { uri: "assets/are you feeling it now mr krabs.png" }
-
 const App = (): React.ReactFragment => {
 
   const [themeName, setThemeName] = useState("light");
   const theme = themes[themeName].theme;
+
   const [logIn, setLogIn] = useState(false);
 
   const changeTheme = () => {
@@ -92,35 +97,21 @@ const App = (): React.ReactFragment => {
     themeName === "light" ? themes.dark : themes.light;
 
   return (
-    <>
+    <Provider store={Store}>
       <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider mapping={mapping} theme={theme}>
+      <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
         {
           !logIn
           ?
-          <ImageBackground source={backgroundImage} style={styles.image}>
-              <Text style={styles.text} category="h1">
-                Welcome to Pocket Pantry
-              </Text>
-              <Text style={styles.text} appearance="hint">
-              The Kitchen Management Tool!
-              </Text>
-              <CustomButtonWithIcon
-                accessibilityRole="button"
-                accessibilityLabel="Login"
-                style={styles.iconButton}
-                text='Hop In!'
-                icon={themeButtonIcon}
-                onPress={() => {setLogIn(!logIn)}}
-                iconStyle={{ tintColor: "white" }}
-              />
+          <ImageBackground source={require("./assets/are you feeling it now mr krabs.png")} style={styles.image}>
+              <Login onLogIn={() => {setLogIn(true)}} />
           </ImageBackground>
         :
         <AppNavigator/>
         }
 
       </ApplicationProvider>
-    </>
+    </ Provider>
   );
 };
 

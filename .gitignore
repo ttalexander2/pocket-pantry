@@ -14,6 +14,7 @@ npm-debug.*
 .vscode/*
 .expo/*
 Backend/MariaDB/data/my.ini
+Backend/Secret.js
 
 
 # macOS
