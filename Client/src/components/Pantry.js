@@ -66,13 +66,13 @@ const Pantry = (props) => {
           {item.brand}
         </Text>
         <Text style={{ flex: 1, alignSelf: 'center' }}>
-          {`${item.amount} ${item.unitofamount}`}
+          {`${item.amount} ${item.unitOfAmount}`}
         </Text>
         <Text style={{ flex: 1, alignSelf: 'center' }}>
-          {item.expirationdate.toDateString()}
+          {item.expirationDate.toDateString()}
         </Text>
         <Text style={{ flex: 1, alignSelf: 'center' }}>
-          {item.dateofpurchase.toDateString()}
+          {item.dateOfPurchase.toDateString()}
         </Text>
         <Button style={styles.icon} appearance='outline'
         accessoryLeft={renderEditIcon}
@@ -103,7 +103,14 @@ const Pantry = (props) => {
           fetch("https://pocketpantry.app/api/delete/pantry", requestOptions)
           .then((response) => {
               if (response.status === 200) {
-                //retrieve data from server
+                fetch("https://pocketpantry.app/api/userdata", requestOptions)
+                    .then((response2) => {
+                      response2.json().then((jsonResult) => {
+                            props.dispatch({type: 'SET_INGREDIENT_DATA', ingredients:jsonResult});
+                        });
+                    })
+                    .then(result => {})
+                    .catch(error => console.log('error', error))
               }
           })
           .then(result => {})
@@ -120,7 +127,7 @@ const Pantry = (props) => {
   return(
     editing
     ?
-    <NewItem name='Add an item' return={() => {props.dispatch({type: 'SET_EDITING', editing:false}); props.dispatch({type: 'RESET_EDIT_ITEM'})}}/>
+    <NewItem name='Add an item' {...props} return={() => {props.dispatch({type: 'SET_EDITING', editing:false}); props.dispatch({type: 'RESET_EDIT_ITEM'})}}/>
     :
     <Layout>
       <HomeBar name='Pantry' style={styles.homebar} navigation={props.navigation}/>

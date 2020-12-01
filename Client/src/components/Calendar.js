@@ -12,7 +12,7 @@ const datesAreOnSameDay = (first, second) =>
 
 const MapDay = (date, ingredientData) => {
   return ingredientData.map((item) => {
-    if (datesAreOnSameDay(date, item.expirationdate)) {
+    if (datesAreOnSameDay(date, item.expirationDate)) {
       return(<Text style={styles.dayContainer}>{item.name}</Text>)
     }
       else return;

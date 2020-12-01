@@ -9,6 +9,8 @@ import { connect, useSelector } from 'react-redux';
 const NewItem = (props) => {
 
     const editingItem = useSelector(state => state.PantryEditData.item);
+    const validItems = useSelector(state => state.PantryEditData.valid);
+    const token = useSelector(state => state.UserData.token);
 
     return (
         <Layout >
@@ -27,21 +29,103 @@ const NewItem = (props) => {
                       <Text category='h6' style={styles.input}>Purchase Date</Text>
                     </View>
                     <View>
-                      <Input placeholder='Name'/>
-                      <Input placeholder='Brand'/>
-                      <Input placeholder='Amount'/>
-                      <Input placeholder='Units'/>
-                      <Datepicker
-                        date={editingItem.expirationdate}
-                        onSelect={nextDate => {}}
+                      <Input placeholder='Name'
+                        value={editingItem.name}
+                        status={validItems.name}
+                        onChangeText={value => {props.dispatch({type: 'SET_EDIT_NAME', name:value});}}                    
+                      />
+                      <Input placeholder='Brand'
+                        value={editingItem.brand}
+                        status={validItems.brand}
+                        onChangeText={value => {props.dispatch({type: 'SET_EDIT_BRAND', brand:value});}} 
+                      />
+                      <Input placeholder='Amount'
+                        value={editingItem.amount}
+                        status={validItems.amount}
+                        onChangeText={value => {props.dispatch({type: 'SET_EDIT_AMOUNT', amount:value});}} 
+                      />
+                      <Input placeholder='Units'
+                        value={editingItem.unitOfAmount}
+                        status={validItems.unitOfAmount}
+                        onChangeText={value => {props.dispatch({type: 'SET_EDIT_UNIT', unitOfAmount:value});}} 
+                        
                       />
                       <Datepicker
-                        date={editingItem.dateofpurchase}
-                        onSelect={nextDate => {}}
+                        date={editingItem.expirationDate}
+                        onSelect={nextDate => {props.dispatch({type: 'SET_EDIT_EXPIRATION', expirationDate:nextDate});}}
+                      />
+                      <Datepicker
+                        date={editingItem.dateOfPurchase}
+                        onSelect={nextDate => {props.dispatch({type: 'SET_EDIT_PURCHASE', dateOfPurchase:nextDate});}}
                       />
                     </View>
                   </View>
-                  <Button>
+                  <Button
+                  onPress ={() => {
+                    let valid = true;
+                    if (!editingItem.name){
+                      valid = false;
+                    }
+                    if (!editingItem.brand){
+                      valid = false;
+                    }
+                    if (!editingItem.amount || Number.isNaN(Number.parseFloat(editingItem.amount))) {
+                      valid = false;
+                    }
+                    else {
+                      props.dispatch({type: 'SET_EDIT_AMOUNT', amount:Number.parseFloat(editingItem.amount)});
+                    }
+                    if (!editingItem.unitOfAmount){
+                      valid = false;
+                    }
+
+                    if (!valid){
+                      return;
+                    }
+
+                    let data = {
+                      token: token,
+                      name: editingItem.name,
+                      brand: editingItem.brand,
+                      amount: editingItem.amount,
+                      unitOfAmount: editingItem.unitOfAmount,
+                      expirationDate: new Date(editingItem.expirationDate + 1),
+                      dateOfPurchase: new Date(editingItem.dateOfPurchase),
+                    }
+          
+                    var myHeaders = new Headers();
+                    myHeaders.append("Content-Type", "application/json");
+                    myHeaders.append('Access-Control-Allow-Origin', '*');
+          
+                    let requestOptions = {
+                      method: 'POST',
+                      headers: myHeaders,
+                      body: JSON.stringify(data),
+                      redirect: 'follow'
+                    };
+          
+          
+                    fetch("https://pocketpantry.app/api/add/pantry", requestOptions)
+                    .then((response) => {
+                        if (response.status === 200) {
+                          console.log('added')
+                          fetch("https://pocketpantry.app/api/userdata", requestOptions)
+                              .then((response2) => {
+                                console.log('fetched again')
+                                response2.json().then((jsonResult) => {
+                                      props.dispatch({type: 'SET_EDITING', editing:false});
+                                      props.dispatch({type: 'SET_INGREDIENT_DATA', ingredients:jsonResult});
+                                  });
+                              })
+                              .then(result => {})
+                              .catch(error => console.log('error', error))
+                        }
+                    })
+                    .then(result => {})
+                    .catch(error => console.log('error', error))
+                  }
+                }
+                  >
                     Add Item!
                   </Button>
                 </Card>

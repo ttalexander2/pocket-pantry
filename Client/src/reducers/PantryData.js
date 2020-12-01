@@ -5,72 +5,72 @@ const initialState = {
             name: "Cilantro",
             brand: "N/A",
             amount: 1,
-            unitofamount: "bushel",
-            expirationdate: new Date("12/5/2020"),
-            dateofpurchase: new Date("11/25/2020"),
+            unitOfAmount: "bushel",
+            expirationDate: new Date("12/5/2020"),
+            dateOfPurchase: new Date("11/25/2020"),
         },
         {
             id: 0,
             name: "Green Onions",
             brand: "N/A",
             amount: 2.0,
-            unitofamount: "gram(s)",
-            expirationdate: new Date("12/10/2020"),
-            dateofpurchase: new Date("11/25/2020"),
+            unitOfAmount: "gram(s)",
+            expirationDate: new Date("12/10/2020"),
+            dateOfPurchase: new Date("11/25/2020"),
         },
         {
             id: 0,
             name: "Banana",
             brand: "N/A",
             amount: 2.0,
-            unitofamount: "",
-            expirationdate: new Date("12/5/2020"),
-            dateofpurchase: new Date("11/25/2020"),
+            unitOfAmount: "",
+            expirationDate: new Date("12/5/2020"),
+            dateOfPurchase: new Date("11/25/2020"),
         },
         {
             id: 0,
             name: "Chicken",
             brand: "Ol' McDonald",
             amount: 1.0,
-            unitofamount: "whole chickens",
-            expirationdate: new Date("11/30/2020"),
-            dateofpurchase: new Date("11/20/2020"),
+            unitOfAmount: "whole chickens",
+            expirationDate: new Date("11/30/2020"),
+            dateOfPurchase: new Date("11/20/2020"),
         },
         {
             id: 0,
             name: "Carrots",
             brand: "N/A",
             amount: 10.0,
-            unitofamount: "",
-            expirationdate: new Date("12/10/2020"),
-            dateofpurchase: new Date("11/25/2020"),
+            unitOfAmount: "",
+            expirationDate: new Date("12/10/2020"),
+            dateOfPurchase: new Date("11/25/2020"),
         },
         {
             id: 0,
             name: "Pomegranate",
             brand: "N/A",
             amount: 2.0,
-            unitofamount: "",
-            expirationdate: new Date("12/19/2020"),
-            dateofpurchase: new Date("11/25/2020"),
+            unitOfAmount: "",
+            expirationDate: new Date("12/19/2020"),
+            dateOfPurchase: new Date("11/25/2020"),
         },
         {
             id: 0,
             name: "Beef Jerky",
             brand: "Jack Links",
             amount: 0.5,
-            unitofamount: "lb",
-            expirationdate: new Date("10/1/2021"),
-            dateofpurchase: new Date("11/25/2020"),
+            unitOfAmount: "lb",
+            expirationDate: new Date("10/1/2021"),
+            dateOfPurchase: new Date("11/25/2020"),
         },
         {
             id: 0,
             name: "Peanut Butter",
             brand: "Jif (its pronounced gif not jif)",
             amount: 1,
-            unitofamount: "container",
-            expirationdate: new Date("1/1/2022"),
-            dateofpurchase: new Date("9/25/2020"),
+            unitOfAmount: "container",
+            expirationDate: new Date("1/1/2022"),
+            dateOfPurchase: new Date("9/25/2020"),
         },
     ],
     meals: [
@@ -92,23 +92,11 @@ const PantryData = (state = initialState, action) => {
                 meals: state.meals,
             }
             for (let i = 0; i < res.ingredients.length; i ++){
-                res.ingredients[i].expirationdate = new Date(res.ingredients[i].expirationdate);
-                res.ingredients[i].dateofpurchase = new Date(res.ingredients[i].dateofpurchase);
+                res.ingredients[i].expirationDate = new Date(res.ingredients[i].expirationDate);
+                res.ingredients[i].dateOfPurchase = new Date(res.ingredients[i].dateOfPurchase);
             }
             res.ingredients = [...res.ingredients]
             return (res);
-        case "DELETE_INGREDIENT":
-            res = {
-                ...state,
-            }
-            for (let i = 0; i < res.ingredients.length + 1; i ++){
-                if (res.ingredients[i].id === action.id){
-                    res.ingredients.splice(i, 1);
-                    res.ingredients = [...res.ingredients]
-                    return Object.assign({}, res);
-                }
-            }
-            return (state);
         default:
             return state;
     }
