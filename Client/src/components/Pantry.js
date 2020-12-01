@@ -124,7 +124,7 @@ const Pantry = (props) => {
                 fetch("https://pocketpantry.app/api/userdata", requestOptions)
                     .then((response2) => {
                       response2.json().then((jsonResult) => {
-                            props.dispatch({type: 'SET_INGREDIENT_DATA', ingredients:jsonResult});
+                            props.dispatch({type: 'SET_INGREDIENT_DATA', ingredients:jsonResult.ingredients});
                         });
                     })
                     .then(result => {})

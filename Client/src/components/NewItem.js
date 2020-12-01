@@ -122,7 +122,7 @@ const NewItem = (props) => {
                                   response2.json().then((jsonResult) => {
                                         props.dispatch({type: 'SET_ACTIVE', active:false});
                                         props.dispatch({type: 'RESET_EDIT_ITEM'});
-                                        props.dispatch({type: 'SET_INGREDIENT_DATA', ingredients:jsonResult});
+                                        props.dispatch({type: 'SET_INGREDIENT_DATA', ingredients:jsonResult.ingredients});
                                     });
                                 })
                                 .then(result => {})
@@ -142,7 +142,7 @@ const NewItem = (props) => {
                                   response2.json().then((jsonResult) => {
                                         props.dispatch({type: 'SET_ACTIVE', active:false});
                                         props.dispatch({type: 'RESET_EDIT_ITEM'});
-                                        props.dispatch({type: 'SET_INGREDIENT_DATA', ingredients:jsonResult});
+                                        props.dispatch({type: 'SET_INGREDIENT_DATA', ingredients:jsonResult.ingredients});
                                     });
                                 })
                                 .then(result => {})

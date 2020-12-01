@@ -228,7 +228,8 @@ const Login = (props) => {
                     fetch("https://pocketpantry.app/api/userdata", requestOptions)
                     .then((response) => {
                         response.json().then((jsonResult) => {
-                            props.dispatch({type: 'SET_INGREDIENT_DATA', ingredients:jsonResult});
+                            props.dispatch({type: 'SET_GROCERYLIST_DATA', groceryList:jsonResult.grocery});
+                                props.dispatch({type: 'SET_INGREDIENT_DATA', ingredients:jsonResult.ingredients});
                         });
                     })
                     .then(result => {})
@@ -315,7 +316,8 @@ const Login = (props) => {
                         fetch("https://pocketpantry.app/api/userdata", requestOptions)
                         .then((response) => {
                             response.json().then((jsonResult) => {
-                                props.dispatch({type: 'SET_INGREDIENT_DATA', ingredients:jsonResult});
+                                props.dispatch({type: 'SET_GROCERYLIST_DATA', groceryList:jsonResult.grocery});
+                                props.dispatch({type: 'SET_INGREDIENT_DATA', ingredients:jsonResult.ingredients});
                             });
                         })
                         .then(result => {})

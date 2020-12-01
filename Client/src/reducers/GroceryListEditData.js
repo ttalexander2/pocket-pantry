@@ -18,28 +18,28 @@ const initialState = {
 
 const GroceryListEditData = (state = initialState, action) => {
     switch(action.type){
-        case 'SET_ACTIVE':
+        case 'SET_GROCERY_ACTIVE':
             return {
                 active: action.active,
                 editing: state.editing,
                 item: state.item,
                 valid: state.valid,
             } 
-        case 'SET_EDITING':
+        case 'SET_GROCERY_EDITING':
             return {
                 active: state.active,
                 editing: action.editing,
                 item: state.item,
                 valid: state.valid,
             } 
-        case 'SET_EDIT_ITEM':
+        case 'SET_GROCERY_EDIT_ITEM':
             return {
                 active: state.active,
                 editing: state.editing,
                 item: {...action.item},
                 valid: state.valid,
             }
-        case 'SET_EDIT_NAME':
+        case 'SET_GROCERY_EDIT_NAME':
             let valid_name = 'primary';
             if (!action.name){
                 valid_name = 'danger';
@@ -56,7 +56,7 @@ const GroceryListEditData = (state = initialState, action) => {
                     name:valid_name
                 }
             }
-        case 'SET_EDIT_BRAND':
+        case 'SET_GROCERY_EDIT_BRAND':
             let valid_brand = 'primary';
             if (!action.brand){
                 valid_brand = 'danger';
@@ -73,7 +73,7 @@ const GroceryListEditData = (state = initialState, action) => {
                     brand:valid_brand
                 }
             }
-        case 'SET_EDIT_AMOUNT':
+        case 'SET_GROCERY_EDIT_AMOUNT':
             let valid_amount = 'primary';
             if (Number.isNaN(action.amount) || Number.isNaN(+(action.amount)) || Number.isNaN(Number.parseFloat(action.amount))){
                 valid_amount = 'danger';
@@ -90,7 +90,7 @@ const GroceryListEditData = (state = initialState, action) => {
                     amount:valid_amount
                 }
             }
-        case 'SET_EDIT_UNIT':
+        case 'SET_GROCERY_EDIT_UNIT':
             let valid_unit = 'primary';
             if (!action.unitOfAmount){
                 valid_unit = 'danger';
@@ -107,7 +107,7 @@ const GroceryListEditData = (state = initialState, action) => {
                     unitOfAmount:valid_unit
                 }
             }
-        case 'RESET_EDIT_ITEM':
+        case 'RESET_GROCERY_EDIT_ITEM':
             return {
                 active: state.active,
                 editing: state.editing,

@@ -23,41 +23,25 @@ const NewItem = (props) => {
                   <View style={{flex: 1, flexDirection: 'row', alignItems: 'stretch'}}>
                     <View>
                       <Text category='h6' style={styles.input}>Name</Text>
-                      <Text category='h6' style={styles.input} >Brand</Text>
                       <Text category='h6' style={styles.input}>Amount</Text>
                       <Text category='h6' style={styles.input}>Units</Text>
-                      <Text category='h6' style={styles.input}>Expiration Date</Text>
-                      <Text category='h6' style={styles.input}>Purchase Date</Text>
                     </View>
                     <View>
                       <Input placeholder='Name'
                         value={editingItem.name}
                         status={validItems.name}
-                        onChangeText={value => {props.dispatch({type: 'SET_EDIT_NAME', name:value});}}                    
-                      />
-                      <Input placeholder='Brand'
-                        value={editingItem.brand}
-                        status={validItems.brand}
-                        onChangeText={value => {props.dispatch({type: 'SET_EDIT_BRAND', brand:value});}} 
+                        onChangeText={value => {props.dispatch({type: 'SET_GROCERY_EDIT_NAME', name:value});}}                    
                       />
                       <Input placeholder='Amount'
                         value={editingItem.amount}
                         status={validItems.amount}
-                        onChangeText={value => {props.dispatch({type: 'SET_EDIT_AMOUNT', amount:value});}} 
+                        onChangeText={value => {props.dispatch({type: 'SET_GROCERY_EDIT_AMOUNT', amount:value});}} 
                       />
                       <Input placeholder='Units'
                         value={editingItem.unitOfAmount}
                         status={validItems.unitOfAmount}
-                        onChangeText={value => {props.dispatch({type: 'SET_EDIT_UNIT', unitOfAmount:value});}} 
+                        onChangeText={value => {props.dispatch({type: 'SET_GROCERY_EDIT_UNIT', unitOfAmount:value});}} 
                         
-                      />
-                      <Datepicker
-                        date={editingItem.expirationDate}
-                        onSelect={nextDate => {props.dispatch({type: 'SET_EDIT_EXPIRATION', expirationDate:nextDate});}}
-                      />
-                      <Datepicker
-                        date={editingItem.dateOfPurchase}
-                        onSelect={nextDate => {props.dispatch({type: 'SET_EDIT_PURCHASE', dateOfPurchase:nextDate});}}
                       />
                     </View>
                   </View>
@@ -67,20 +51,18 @@ const NewItem = (props) => {
                     if (!editingItem.name){
                       valid = false;
                     }
-                    if (!editingItem.brand){
-                      valid = false;
-                    }
                     if (!editingItem.amount || Number.isNaN(Number.parseFloat(editingItem.amount))) {
                       valid = false;
                     }
                     else {
-                      props.dispatch({type: 'SET_EDIT_AMOUNT', amount:Number.parseFloat(editingItem.amount)});
+                      props.dispatch({type: 'SET_GROCERY_EDIT_AMOUNT', amount:Number.parseFloat(editingItem.amount)});
                     }
                     if (!editingItem.unitOfAmount){
                       valid = false;
                     }
 
                     if (!valid){
+                      console.log('invalid')
                       return;
                     }
 
@@ -88,11 +70,8 @@ const NewItem = (props) => {
                       token: token,
                       id: editingItem.id,
                       name: editingItem.name,
-                      brand: editingItem.brand,
                       amount: editingItem.amount,
                       unitOfAmount: editingItem.unitOfAmount,
-                      expirationDate: new Date(editingItem.expirationDate + 1),
-                      dateOfPurchase: new Date(editingItem.dateOfPurchase),
                     }
           
                     var myHeaders = new Headers();
@@ -107,6 +86,7 @@ const NewItem = (props) => {
                     };
                     
                     if (editing){
+                      console.log('aaaa')
                       fetch("https://pocketpantry.app/api/update/grocery", requestOptions)
                       .then((response) => {
                           if (response.status === 200) {
@@ -114,9 +94,9 @@ const NewItem = (props) => {
                                 .then((response2) => {
                                   console.log('fetched again')
                                   response2.json().then((jsonResult) => {
-                                        props.dispatch({type: 'SET_ACTIVE', active:false});
-                                        props.dispatch({type: 'RESET_EDIT_ITEM'});
-                                        props.dispatch({type: 'SET_GROCERYLIST_DATA', groceryList:jsonResult});
+                                        props.dispatch({type: 'SET_GROCERY_ACTIVE', active:false});
+                                        props.dispatch({type: 'RESET_GROCERY_EDIT_ITEM'});
+                                        props.dispatch({type: 'SET_GROCERYLIST_DATA', groceryList:jsonResult.grocery});
                                     });
                                 })
                                 .then(result => {})
@@ -127,6 +107,7 @@ const NewItem = (props) => {
                       .catch(error => console.log('error', error))
                     }
                     else {
+                      console.log('bbbb')
                       fetch("https://pocketpantry.app/api/add/grocery", requestOptions)
                       .then((response) => {
                           if (response.status === 200) {
@@ -134,9 +115,9 @@ const NewItem = (props) => {
                                 .then((response2) => {
                                   console.log('fetched again')
                                   response2.json().then((jsonResult) => {
-                                        props.dispatch({type: 'SET_ACTIVE', active:false});
-                                        props.dispatch({type: 'RESET_EDIT_ITEM'});
-                                        props.dispatch({type: 'SET_GROCERYLIST_DATA', groceryList:jsonResult});
+                                        props.dispatch({type: 'SET_GROCERY_ACTIVE', active:false});
+                                        props.dispatch({type: 'RESET_GROCERY_EDIT_ITEM'});
+                                        props.dispatch({type: 'SET_GROCERYLIST_DATA', groceryList:jsonResult.grocery});
                                     });
                                 })
                                 .then(result => {})

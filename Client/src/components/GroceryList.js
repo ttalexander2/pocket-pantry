@@ -20,7 +20,7 @@ const Header = (props) => (
       <Button style={{paddingBottom: '15px', marginLeft: '10px'  }} onPress={() => { }}
         appearance='outline'
         accessoryLeft={renderAddIcon}
-        onPress={() => {props.dispatch({type: 'SET_ACTIVE', active:true}); props.dispatch({type: 'SET_EDITING', edit:false});}}
+        onPress={() => {props.dispatch({type: 'SET_GROCERY_ACTIVE', active:true}); props.dispatch({type: 'SET_GROCERY_EDITING', edit:false});}}
       />
 
       </div>
@@ -71,24 +71,20 @@ const GroceryList = (props) => {
           {item.name}
         </Text>
         <Text style={{ flex: 1, alignSelf: 'center' }}>
-          {item.brand}
-        </Text>
-        <Text style={{ flex: 1, alignSelf: 'center' }}>
           {`${item.amount} ${item.unitOfAmount}`}
         </Text>
 
         <Button style={styles.icon} appearance='outline'
         accessoryLeft={renderEditIcon}
         onPress={() =>{ 
-          props.dispatch({type: 'SET_EDIT_ITEM', item: {
+          props.dispatch({type: 'SET_GROCERY_EDIT_ITEM', item: {
             id: item.id,
             name: item.name, 
-            brand: item.brand,
             amount: item.amount,
             unitOfAmount: item.unitOfAmount,
           }});
-          props.dispatch({type: 'SET_EDITING', editing:true});
-          props.dispatch({type: 'SET_ACTIVE', active:true});
+          props.dispatch({type: 'SET_GROCERY_EDITING', editing:true});
+          props.dispatch({type: 'SET_GROCERY_ACTIVE', active:true});
         }}
         />
         <Button style={styles.icon} appearance='outline'
@@ -118,7 +114,7 @@ const GroceryList = (props) => {
                 fetch("https://pocketpantry.app/api/userdata", requestOptions)
                     .then((response2) => {
                       response2.json().then((jsonResult) => {
-                            props.dispatch({type: 'SET_GROCERYLIST_DATA', groceryList:jsonResult});
+                            props.dispatch({type: 'SET_GROCERYLIST_DATA', groceryList:jsonResult.grocery});
                         });
                     })
                     .then(result => {})
@@ -139,7 +135,7 @@ const GroceryList = (props) => {
   return(
     active
     ?
-    <NewItem name='Add an item' {...props} return={() => {props.dispatch({type: 'SET_ACTIVE', active:false}); props.dispatch({type: 'RESET_EDIT_ITEM'})}}/>
+    <NewItem name='Add an item' {...props} return={() => {props.dispatch({type: 'SET_GROCERY_ACTIVE', active:false}); props.dispatch({type: 'RESET_GROCERY_EDIT_ITEM'})}}/>
     :
     <Layout>
       <HomeBar name='GroceryList' style={styles.homebar} navigation={props.navigation}/>
@@ -153,16 +149,7 @@ const GroceryList = (props) => {
               Food
             </Text>
             <Text category='h6' style={{ flex: 1, alignSelf: 'center' }}>
-              Brand
-            </Text>
-            <Text category='h6' style={{ flex: 1, alignSelf: 'center' }}>
               Amount
-            </Text>
-            <Text category='h6' style={{ flex: 1, alignSelf: 'center' }}>
-              Expiration
-            </Text>
-            <Text category='h6' style={{ flex: 1, alignSelf: 'center' }}>
-              Purchase
             </Text>
             <View style={styles.emptyIcon} />
             <View style={styles.emptyIcon} />
