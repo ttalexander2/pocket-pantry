@@ -229,11 +229,53 @@ const Login = (props) => {
                     .then((response) => {
                         response.json().then((jsonResult) => {
                             props.dispatch({type: 'SET_GROCERYLIST_DATA', groceryList:jsonResult.grocery});
-                                props.dispatch({type: 'SET_INGREDIENT_DATA', ingredients:jsonResult.ingredients});
+                            props.dispatch({type: 'SET_INGREDIENT_DATA', ingredients:jsonResult.ingredients});
+
+                            // Get recipe of the day
+
+                            if (jsonResult.ingredients.length > 0) {
+
+                                jsonResult.ingredients.sort((a, b) => (a.expirationDate > b.expirationDate) ? 1 : -1);
+                                let search = "";
+                                [...Array(Math.min(5, jsonResult.ingredients.length)).keys()].map((i) => {
+                                    let expirationDate = new Date(jsonResult.ingredients[i].expirationDate);
+                                    let food = String(jsonResult.ingredients[i].name);
+                                    search += food 
+                                    if (i < 4){
+                                    search += ", "
+                                    }
+                                })
+                    
+                                let stuff = {
+                                    ingredients: search.split(','),
+                                }
+                                var raw = JSON.stringify(stuff);
+                            
+                                requestOptions = {
+                                method: 'POST',
+                                headers: myHeaders,
+                                body: raw,
+                                redirect: 'follow'
+                                };
+                            
+                                fetch("https://pocketpantry.app/api/recipes", requestOptions)
+                                .then(response => response.text())
+                                .then(result => {
+                                    let results6 = JSON.parse(result);
+                                    props.dispatch({type: 'SET_DASHBOARD_RECIPE', recipe: results6});
+                                    })
+                                .catch(error => console.log('error', error));
+
+                            }
+
                         });
-                    })
+                        })
                     .then(result => {})
                     .catch(error => console.log('error', error))
+
+
+
+                      
 
                     props.onLogIn();
 

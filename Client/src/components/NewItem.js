@@ -19,6 +19,10 @@ const NewItem = (props) => {
     const editing = useSelector(state => state.PantryEditData.editing);
     const token = useSelector(state => state.UserData.token);
 
+    const now = new Date();
+    const next = new Date(now.getFullYear() + 10, now.getMonth(), now.getDate());
+    const prev = new Date(now.getFullYear() - 10, now.getMonth(), now.getDate());
+
     return (
         <Layout >
             <BackBar name='Edit an Item' return={props.return} />
@@ -60,10 +64,14 @@ const NewItem = (props) => {
                       <Datepicker
                         date={editingItem.expirationDate}
                         onSelect={nextDate => {props.dispatch({type: 'SET_EDIT_EXPIRATION', expirationDate:nextDate});}}
+                        max={next}
+                        min={prev}
                       />
                       <Datepicker
                         date={editingItem.dateOfPurchase}
                         onSelect={nextDate => {props.dispatch({type: 'SET_EDIT_PURCHASE', dateOfPurchase:nextDate});}}
+                        max={next}
+                        min={prev}
                       />
                     </View>
                   </View>

@@ -136,7 +136,7 @@ export default class Cookbook extends React.Component{
   getJson(){
 
     const stuff = {
-        ingredients: this.state.queryStr.split(', ')
+        ingredients: this.state.queryStr.split(',')
     };
 
     var myHeaders = new Headers();
