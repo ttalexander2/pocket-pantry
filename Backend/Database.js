@@ -228,8 +228,13 @@ async function insertFDAInfo(upc, name, brand, expiration) {
       var res = await conn.query("USE pantry");
 
       res = await getID(email);
+<<<<<<< HEAD
+      res = await conn.query(("UPDATE ingredients SET name=?, brand=?, amount=?, unitOfAmount=?, expirationDate=?, dateOfPurchase=? WHERE id='" + id + "' AND userid='" + res + "'"), [name, brand, amount, unitOfAmount, expiration, datePurchased]);
+    
+=======
       res = await conn.query(("UPDATE ingredients SET (name=?,brand=?,amount=?,unitOfAmount=?,expirationDate=?,dateOfPurchase=?) WHERE id='" + id + "' AND userid='" + res + "'"), [name, brand, amount, unitOfAmount, expiration, datePurchased]);
 
+>>>>>>> f4cfdabe0185551abd45b61a05df5707f4c5aa84
     } catch (err) {
       console.log(err);
       throw new exceptions.DatabaseError("The server had an unknown error.");
@@ -244,8 +249,13 @@ async function insertFDAInfo(upc, name, brand, expiration) {
       conn = await pool.getConnection();
       var res = await conn.query("USE pantry");
       res = await getID(email);
+<<<<<<< HEAD
+      res = await conn.query("DELETE FROM ingredients WHERE id='" + id + "' AND userid='" + res + "'");
+      
+=======
       res = await conn.query("DELETE FROM Ingredients WHERE id='" + id + "' AND userid='" + res + "'");
 
+>>>>>>> f4cfdabe0185551abd45b61a05df5707f4c5aa84
     } catch (err) {
       throw new exceptions.DatabaseError("The server had an unknown error.");
     } finally {
@@ -277,8 +287,13 @@ async function insertFDAInfo(upc, name, brand, expiration) {
       var res = await conn.query("USE pantry");
 
       res = await getID(email);
+<<<<<<< HEAD
+      res = await conn.query(("UPDATE groceryList SET name=?, amount=?, unitOfAmount=? WHERE id='" + id + "' AND userid='" + res + "'"), [name, amount, unitOfAmount]);
+      
+=======
       res = await conn.query(("UPDATE groceryList SET (name=?,amount=?,unitOfAmount=?) WHERE id='" + id + "' AND userid='" + res + "'"), [name, amount, unitOfAmount]);
 
+>>>>>>> f4cfdabe0185551abd45b61a05df5707f4c5aa84
     } catch (err) {
       console.log(err);
       throw new exceptions.DatabaseError("The server had an unknown error.");
