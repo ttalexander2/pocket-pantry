@@ -1,3 +1,9 @@
+/*
+This file creates the component for creating a new item to be added to the pantry.
+It has several fields for the user to to enter information about the item and
+we verify that the information is present and in the correct form.
+*/
+
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Layout, Card, Text, List, Button, Input, Datepicker } from '@ui-kitten/components';
@@ -33,23 +39,23 @@ const NewItem = (props) => {
                       <Input placeholder='Name'
                         value={editingItem.name}
                         status={validItems.name}
-                        onChangeText={value => {props.dispatch({type: 'SET_EDIT_NAME', name:value});}}                    
+                        onChangeText={value => {props.dispatch({type: 'SET_EDIT_NAME', name:value});}}
                       />
                       <Input placeholder='Brand'
                         value={editingItem.brand}
                         status={validItems.brand}
-                        onChangeText={value => {props.dispatch({type: 'SET_EDIT_BRAND', brand:value});}} 
+                        onChangeText={value => {props.dispatch({type: 'SET_EDIT_BRAND', brand:value});}}
                       />
                       <Input placeholder='Amount'
                         value={editingItem.amount}
                         status={validItems.amount}
-                        onChangeText={value => {props.dispatch({type: 'SET_EDIT_AMOUNT', amount:value});}} 
+                        onChangeText={value => {props.dispatch({type: 'SET_EDIT_AMOUNT', amount:value});}}
                       />
                       <Input placeholder='Units'
                         value={editingItem.unitOfAmount}
                         status={validItems.unitOfAmount}
-                        onChangeText={value => {props.dispatch({type: 'SET_EDIT_UNIT', unitOfAmount:value});}} 
-                        
+                        onChangeText={value => {props.dispatch({type: 'SET_EDIT_UNIT', unitOfAmount:value});}}
+
                       />
                       <Datepicker
                         date={editingItem.expirationDate}
@@ -94,18 +100,18 @@ const NewItem = (props) => {
                       expirationDate: new Date(editingItem.expirationDate + 1),
                       dateOfPurchase: new Date(editingItem.dateOfPurchase),
                     }
-          
+
                     var myHeaders = new Headers();
                     myHeaders.append("Content-Type", "application/json");
                     myHeaders.append('Access-Control-Allow-Origin', '*');
-          
+
                     let requestOptions = {
                       method: 'POST',
                       headers: myHeaders,
                       body: JSON.stringify(data),
                       redirect: 'follow'
                     };
-                    
+
                     if (editing){
                       fetch("https://pocketpantry.app/api/update/pantry", requestOptions)
                       .then((response) => {
@@ -146,7 +152,7 @@ const NewItem = (props) => {
                       .then(result => {})
                       .catch(error => console.log('error', error))
                     }
-          
+
 
                   }
                 }

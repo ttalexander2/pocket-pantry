@@ -1,3 +1,11 @@
+/*
+This file represents our cookbook which is where users can search for
+and view new recipes. This displays results from the API call and allows
+the users to click and expand recipes or to view their original website.
+The data is gathered using our python file to display the ingredients and
+steps needed to follow the recipe
+*/
+
 import * as React from 'react';
 import { View, ScrollView, Linking, StyleSheet, ActivityIndicator, Image } from "react-native";
 import { Layout, Text, Input, Button, Icon, List, ListItem, Card } from '@ui-kitten/components';
@@ -42,7 +50,7 @@ export default class Cookbook extends React.Component{
                             {
                               this.state.recipeContent.hasOwnProperty('image')
                               &&
-                              <Image 
+                              <Image
                               source={{ uri: this.state.recipeContent.image }}
                               style={{ width: 200, height: 200 }}
                               PlaceholderContent={<ActivityIndicator/>}
@@ -87,7 +95,7 @@ export default class Cookbook extends React.Component{
                           }
                         </Text>
                       </Layout>
-                    }    
+                    }
             </View>
             <ScrollView>
               <View style={styles.container} >
@@ -152,10 +160,10 @@ export default class Cookbook extends React.Component{
         } catch (e) {
           console.log(e)
         }
-        
+
         })
       .catch(error => console.log('error', error));
- 
+
   }
 
   scrapeRecipe(url){
@@ -178,12 +186,12 @@ export default class Cookbook extends React.Component{
       .then(result => {
         try {
           this.setState({recipeContent: JSON.parse(result)});
-          
+
         } catch (e) {
             this.setState({recipeContent: result})
         }
       })
-      .catch(error => console.log('error', error));   
+      .catch(error => console.log('error', error));
     }
 }
 
