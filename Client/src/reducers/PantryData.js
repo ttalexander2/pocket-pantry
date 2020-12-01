@@ -1,3 +1,11 @@
+/*
+This file contains the data for items placed in the pantry, such as their id,
+the name of the item, its brand, the amount of the item in the pantry, the unit
+of that amount, the expiration date, and the original date of purchase. This helps
+determine where a food item should be placed on the calendar and other various
+spots in the app
+*/
+
 const initialState = {
     ingredients: [
         {

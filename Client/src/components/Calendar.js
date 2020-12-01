@@ -1,3 +1,9 @@
+/*
+This file creates the calendar component that we use to display ingredient
+data in a calendar layout. The items are placed based on when they are
+set to expire
+*/
+
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Layout, Header, Calendar, Text, Button  } from '@ui-kitten/components';
