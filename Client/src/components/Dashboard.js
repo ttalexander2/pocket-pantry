@@ -1,3 +1,10 @@
+/*
+This file is the first screen the user is brought to when they open our app.
+They can view items they have that are expiring soon, they can see their
+current favorite food item, and a suggested recipe. They can also navigate
+to any of the other pages in the app
+*/
+
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Layout, Card, Text, List, ListItem } from '@ui-kitten/components';
@@ -59,7 +66,6 @@ const AboutToExpire = (expireData) => {
                     </ul>
                 )
     
-            //}
         })
     )
 }

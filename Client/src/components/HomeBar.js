@@ -1,3 +1,10 @@
+/*
+This file holds our home bar component. This component works with the back bar
+to make navigating the website as easy as possible. It allows the user to click to
+any of the other pages from the current page in the app and allows them to
+log out of their account
+*/
+
 import React from 'react';
 import { Text, Icon, Layout, MenuItem, OverflowMenu, TopNavigation, TopNavigationAction, Button } from '@ui-kitten/components';
 import { StyleSheet } from 'react-native';

@@ -1,3 +1,8 @@
+/*
+This file represents the primary server for our application. This file handles
+get and post requests from the app when needed
+*/
+
 const express = require('express');
 const db = require('./Database');
 const path = require('path');
@@ -54,7 +59,7 @@ app.post('/signup', jsonParser, function (req, res) {
     auth.SignUp(name, email, password).then(token => {
       console.log(token);
       res.status('200').send(token);
-    })    
+    })
     .catch(err => {
       console.log(err);
       if (err instanceof exceptions.AuthenticationError){
@@ -74,7 +79,7 @@ app.post('/signup', jsonParser, function (req, res) {
       res.status('500').send("The server had an unknown error. Please try again later.");
     }
   }
-  
+
 });
 
 app.post('/login', jsonParser, function (req, res){
@@ -152,19 +157,19 @@ app.post('/api/recipes', jsonParser, function (req, res) {
 
   (async () => {
       const body = {a: 1};
-    
+
       const response = await fetch(url, {
         method: 'GET'
       });
       const json = await response.json();
-    
+
       res.send(JSON.stringify(json));
     })();
 
 })
 
 app.post('/api/recipes/scrape', jsonParser, function (req, res) {
-  
+
   let pyargs = 'python3 Recipe-Parser.py '
 
   pyargs = pyargs + "\"" + req.body.url + "\"";
@@ -188,7 +193,7 @@ app.post('/api/add/pantry', jsonParser, function (req, res) {
     auth.AuthenticateToken(token).then(result => {
       db.insertIngredientInfo(result.user.email, req.body.name, req.body.brand, req.body.amount, req.body.unitofamount, req.body.expirationdate, req.body.dateofpurchase).then(() => {
         res.status('200');
-    }); 
+    });
 
     })
     .catch(err => {
@@ -219,7 +224,7 @@ app.post('/api/add/grocery', jsonParser, function (req, res) {
     auth.AuthenticateToken(token).then(result => {
       db.insertGroceryListInfo(result.user.email, req.body.name, req.body.amount, req.body.unitofamount).then(() => {
         res.status('200');
-    }); 
+    });
 
     })
     .catch(err => {
@@ -250,7 +255,7 @@ app.post('/api/add/meal', jsonParser, function (req, res) {
     auth.AuthenticateToken(token).then(result => {
       db.insertMealInfo(result.user.email, req.body.name, req.body.portions, req.body.dateOfCreation).then(() => {
         res.status('200');
-    }); 
+    });
 
     })
     .catch(err => {
@@ -281,7 +286,7 @@ app.post('/api/update/pantry', jsonParser, function (req, res) {
     auth.AuthenticateToken(token).then(result => {
       db.updateIngredientInfo(req.body.id, result.user.email, req.body.name, req.body.brand, req.body.amount, req.body.unitofamount, req.body.expirationdate, req.body.dateofpurchase).then(() => {
         res.status('200');
-    }); 
+    });
 
     })
     .catch(err => {
@@ -312,7 +317,7 @@ app.post('/api/update/grocery', jsonParser, function (req, res) {
     auth.AuthenticateToken(token).then(result => {
       db.updateGroceryListInfo(req.body.id, result.user.email, req.body.name, req.body.amount, req.body.unitofamount).then(() => {
         res.status('200');
-    }); 
+    });
 
     })
     .catch(err => {
@@ -343,7 +348,7 @@ app.post('/api/update/meal', jsonParser, function (req, res) {
     auth.AuthenticateToken(token).then(result => {
       db.updateMealInfo(req.body.id, result.user.email, req.body.name, req.body.portions, req.body.dateOfCreation).then(() => {
         res.status('200');
-    }); 
+    });
 
     })
     .catch(err => {
@@ -374,7 +379,7 @@ app.post('/api/delete/pantry', jsonParser, function (req, res) {
     auth.AuthenticateToken(token).then(result => {
       db.deleteIngredientInfo(req.body.id, result.user.email).then((dbResult) => {
         res.status('200').send(JSON.stringify(dbResult));
-    }); 
+    });
 
     })
     .catch(err => {
@@ -405,7 +410,7 @@ app.post('/api/delete/grocery', jsonParser, function (req, res) {
     auth.AuthenticateToken(token).then(result => {
       db.deleteGroceryListInfo(req.body.id, result.user.email).then((dbResult) => {
         res.status('200').send(JSON.stringify(dbResult));
-    }); 
+    });
 
     })
     .catch(err => {
@@ -436,7 +441,7 @@ app.post('/api/delete/meal', jsonParser, function (req, res) {
     auth.AuthenticateToken(token).then(result => {
       db.deleteMealInfo(req.body.id, result.user.email).then((dbResult) => {
         res.status('200').send(JSON.stringify(dbResult));
-    }); 
+    });
 
     })
     .catch(err => {
@@ -464,4 +469,3 @@ app.post('/api/delete/meal', jsonParser, function (req, res) {
 app.listen(port, () => {
     console.log(`Pocket pantry running at http://localhost:${port}`)
 })
-

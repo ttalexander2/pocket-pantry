@@ -1,9 +1,3 @@
-/*
-This file contains the data for being able to edit items that currently exist in
-the pantry. This allows the user to update any info they may have incorrectly entered
-the first time
-*/
-
 const initialState = {
     active: false,
     editing: false,
@@ -13,18 +7,16 @@ const initialState = {
         brand: "",
         amount: 1,
         unitOfAmount: "",
-        expirationDate: new Date(),
-        dateOfPurchase: new Date(),
     },
     valid: {
         name: 'primary',
         brand: 'primary',
         amount: 'primary',
-        unitOfAmount: 'primary',
+        unitOfAmount: 'primary',   
     }
 }
 
-const PantryEditData = (state = initialState, action) => {
+const GroceryListEditData = (state = initialState, action) => {
     switch(action.type){
         case 'SET_ACTIVE':
             return {
@@ -32,14 +24,14 @@ const PantryEditData = (state = initialState, action) => {
                 editing: state.editing,
                 item: state.item,
                 valid: state.valid,
-            }
+            } 
         case 'SET_EDITING':
             return {
                 active: state.active,
                 editing: action.editing,
                 item: state.item,
                 valid: state.valid,
-            }
+            } 
         case 'SET_EDIT_ITEM':
             return {
                 active: state.active,
@@ -115,26 +107,6 @@ const PantryEditData = (state = initialState, action) => {
                     unitOfAmount:valid_unit
                 }
             }
-        case 'SET_EDIT_EXPIRATION':
-                return {
-                    active: state.active,
-                    editing: state.editing,
-                    item: {
-                        ...state.item,
-                        expirationDate: action.expirationDate,
-                    },
-                    valid: state.valid,
-                }
-        case 'SET_EDIT_PURCHASE':
-            return {
-                active: state.active,
-                editing: state.editing,
-                item: {
-                    ...state.item,
-                    dateOfPurchase: action.dateOfPurchase,
-                },
-                valid: state.valid,
-            }
         case 'RESET_EDIT_ITEM':
             return {
                 active: state.active,
@@ -146,4 +118,4 @@ const PantryEditData = (state = initialState, action) => {
             return state;
     }
 }
-export default PantryEditData;
+export default GroceryListEditData;

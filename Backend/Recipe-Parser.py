@@ -1,3 +1,8 @@
+# This file collects data from the websites where the recipes are held
+# and collects data from it and displays it to the user natively on our
+# app
+
+
 import sys
 import json
 import recipe_scrapers
@@ -41,10 +46,3 @@ for url in args:
         except Exception as e:
             print(e)
             continue
-    
-
-
-
-
-
-

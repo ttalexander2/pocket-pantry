@@ -1,5 +1,11 @@
+/*
+This component handles the different pages that the user can navigate through
+on the app. It allows them to click between the dashboard, pantry, calendar,
+cookbook, and grocery list.
+*/
+
 import React from 'react';
-import { SafeAreaView } from 'react-native'; 
+import { SafeAreaView } from 'react-native';
 import { Drawer, DrawerItem, IndexPath } from '@ui-kitten/components';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
