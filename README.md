@@ -1,5 +1,7 @@
 # Pocket Pantry
 
+Simple web app for managing grocery lists and recipes.
+
 The client is setup to run on web, android, ios, windows, osx, and linux.
 
 The client is built with [expo](docs.expo.io) and will be written in react native.
