@@ -15,8 +15,6 @@ Here's some quick notes on how to get it up and running.
 2. Install expo-cli:
 	`npm install --global expo-cli`
 
-I *think* thats all you need, I'll have to double check.
-
 
 ## Client Commands
 
@@ -31,10 +29,6 @@ Build the expo distributions:
 Compile and start Electron
 `yarn expo-electron start`
 
-Idk how to build electron distributions yet lmao
-
-
-For most of this, the [expo documentation](docs.expo.io) will be useful.
 
 ## Client Development Notes
 
