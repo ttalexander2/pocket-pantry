@@ -1,6 +1,4 @@
 # Pocket Pantry
-So I have the Client all set up. I have an example server in Node.js just for testing,
-but for the backend we can do whatever.
 
 The client is setup to run on web, android, ios, windows, osx, and linux.
 
